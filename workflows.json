@@ -1,1 +1,793 @@
-[{"updatedAt":"2026-02-02T12:14:52.898Z","createdAt":"2026-01-26T10:25:05.754Z","id":"FD-wAr0hEKnJbSdxLj9xM","name":"Email Weather Repport","active":true,"isArchived":false,"nodes":[{"parameters":{"fromEmail":"Nando.goat@gmail.com","toEmail":"Nando.goat@gmail.com","subject":"Todays weather in Copenhagen","emailFormat":"text","text":"=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C","options":{}},"type":"n8n-nodes-base.emailSend","typeVersion":2.1,"position":[832,0],"id":"a507acac-750b-4fca-b471-c924973c1e9f","name":"Send email","webhookId":"43a918b1-7d8c-40e5-b577-c03e4d757ac5","credentials":{"smtp":{"id":"nlH29n5hGnWuJhmn","name":"SMTP account 2"}}},{"parameters":{"url":"https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric","options":{}},"type":"n8n-nodes-base.httpRequest","typeVersion":4.3,"position":[416,0],"id":"ebc76887-6d7e-46eb-941a-c24709ec9fbc","name":"HTTP Request"},{"parameters":{"assignments":{"assignments":[{"id":"d94852b8-d813-48ec-abb6-c898a642480e","name":"city","value":"={{ $json.name }}","type":"string"},{"id":"ead085d8-0993-4d64-8f43-1b56161f6026","name":"temp","value":"={{ $json.main.temp }}","type":"number"},{"id":"8c8d62d6-399a-4bcc-8e98-2a3d19a4695b","name":"feels_like","value":"={{ $json.main.feels_like }}","type":"number"}]},"options":{}},"type":"n8n-nodes-base.set","typeVersion":3.4,"position":[624,0],"id":"9033f712-cd4c-4781-af2e-e43535bebe7d","name":"Edit Fields"},{"parameters":{"rule":{"interval":[{"field":"weeks"}]}},"type":"n8n-nodes-base.scheduleTrigger","typeVersion":1.3,"position":[208,0],"id":"1ce3e4fa-3572-4efd-8a28-5f1deb445b31","name":"Schedule Trigger"}],"connections":{"HTTP Request":{"main":[[{"node":"Edit Fields","type":"main","index":0}]]},"Edit Fields":{"main":[[{"node":"Send email","type":"main","index":0}]]},"Schedule Trigger":{"main":[[{"node":"HTTP Request","type":"main","index":0}]]}},"settings":{"executionOrder":"v1","availableInMCP":false,"timeSavedMode":"fixed","callerPolicy":"workflowsFromSameOwner"},"staticData":null,"meta":{"templateCredsSetupCompleted":true},"pinData":{},"versionId":"60b38817-7bad-4d92-a903-4e86ce86ba59","activeVersionId":"5fd26e0f-fd60-4fb5-a902-07c953dd7e53","triggerCount":1,"shared":[{"updatedAt":"2026-01-26T10:25:05.758Z","createdAt":"2026-01-26T10:25:05.758Z","role":"workflow:owner","workflowId":"FD-wAr0hEKnJbSdxLj9xM","projectId":"GgnpOEHS9agizanl"}],"activeVersion":{"updatedAt":"2026-01-26T18:53:54.000Z","createdAt":"2026-01-26T14:45:44.686Z","versionId":"5fd26e0f-fd60-4fb5-a902-07c953dd7e53","workflowId":"FD-wAr0hEKnJbSdxLj9xM","nodes":[{"parameters":{"fromEmail":"Nando.goat@gmail.com","toEmail":"Nando.goat@gmail.com","subject":"Todays weather in Copenhagen","emailFormat":"text","text":"=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C","options":{}},"type":"n8n-nodes-base.emailSend","typeVersion":2.1,"position":[832,0],"id":"a507acac-750b-4fca-b471-c924973c1e9f","name":"Send email","webhookId":"43a918b1-7d8c-40e5-b577-c03e4d757ac5","credentials":{"smtp":{"id":"nlH29n5hGnWuJhmn","name":"SMTP account 2"}}},{"parameters":{"url":"https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric","options":{}},"type":"n8n-nodes-base.httpRequest","typeVersion":4.3,"position":[416,0],"id":"ebc76887-6d7e-46eb-941a-c24709ec9fbc","name":"HTTP Request"},{"parameters":{"assignments":{"assignments":[{"id":"d94852b8-d813-48ec-abb6-c898a642480e","name":"city","value":"={{ $json.name }}","type":"string"},{"id":"ead085d8-0993-4d64-8f43-1b56161f6026","name":"temp","value":"={{ $json.main.temp }}","type":"number"},{"id":"8c8d62d6-399a-4bcc-8e98-2a3d19a4695b","name":"feels_like","value":"={{ $json.main.feels_like }}","type":"number"}]},"options":{}},"type":"n8n-nodes-base.set","typeVersion":3.4,"position":[624,0],"id":"9033f712-cd4c-4781-af2e-e43535bebe7d","name":"Edit Fields"},{"parameters":{"rule":{"interval":[{"field":"hours"}]}},"type":"n8n-nodes-base.scheduleTrigger","typeVersion":1.3,"position":[208,0],"id":"1ce3e4fa-3572-4efd-8a28-5f1deb445b31","name":"Schedule Trigger"}],"connections":{"HTTP Request":{"main":[[{"node":"Edit Fields","type":"main","index":0}]]},"Edit Fields":{"main":[[{"node":"Send email","type":"main","index":0}]]},"Schedule Trigger":{"main":[[{"node":"HTTP Request","type":"main","index":0}]]}},"authors":"Peyton Hunter","name":"Emai CBH vejr","description":"","autosaved":true},"tags":[]},{"updatedAt":"2026-02-02T12:38:31.688Z","createdAt":"2026-02-02T12:15:46.064Z","id":"OkhT4IadkpYzZYVL","name":"Backup Flow","active":false,"isArchived":false,"nodes":[{"parameters":{"url":"http://localhost:5678/api/v1/workflows","authentication":"genericCredentialType","genericAuthType":"httpHeaderAuth","options":{}},"type":"n8n-nodes-base.httpRequest","typeVersion":4.3,"position":[416,0],"id":"283b4d92-23a6-4e97-9409-1e7a7ad4c7c9","name":"HTTP Request","credentials":{"httpHeaderAuth":{"id":"bcqhBliZI2HgWOjo","name":"Header Auth account"}}},{"parameters":{"assignments":{"assignments":[{"id":"8875d39f-7b40-4b10-8ed7-bb0e749bdae5","name":"data","value":"={{ $json.data }}","type":"array"}]},"options":{}},"type":"n8n-nodes-base.set","typeVersion":3.4,"position":[624,0],"id":"eaa76ac5-128d-4a1e-bd0a-027247bd5552","name":"Edit Fields"},{"parameters":{"rule":{"interval":[{"field":"hours"}]}},"type":"n8n-nodes-base.scheduleTrigger","typeVersion":1.3,"position":[208,0],"id":"8d38e1ea-7b63-47bb-ae82-02631ba66924","name":"Schedule Trigger"},{"parameters":{"resource":"file","owner":{"__rl":true,"mode":"name","value":"peyhunter"},"repository":{"__rl":true,"value":"n8n-backup","mode":"name"},"filePath":"workflows.json"},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[832,0],"id":"ce52a3c9-17fa-4e68-8b5b-dbe02b3f375f","name":"Create a file","webhookId":"9698c3a1-c140-4d1c-8255-cae86a6043d7","credentials":{"githubApi":{"id":"lo08KX2OJ23Au7Dw","name":"GitHub account"}}}],"connections":{"HTTP Request":{"main":[[{"node":"Edit Fields","type":"main","index":0}]]},"Edit Fields":{"main":[[{"node":"Create a file","type":"main","index":0}]]},"Schedule Trigger":{"main":[[{"node":"HTTP Request","type":"main","index":0}]]}},"settings":{"executionOrder":"v1","availableInMCP":false,"timeSavedMode":"fixed","callerPolicy":"workflowsFromSameOwner"},"staticData":null,"meta":{"templateCredsSetupCompleted":true},"pinData":{},"versionId":"374e5e3f-a18c-4aff-aa50-e9fdc76dee99","activeVersionId":null,"triggerCount":0,"shared":[{"updatedAt":"2026-02-02T12:15:46.069Z","createdAt":"2026-02-02T12:15:46.069Z","role":"workflow:owner","workflowId":"OkhT4IadkpYzZYVL","projectId":"GgnpOEHS9agizanl"}],"activeVersion":null,"tags":[]},{"updatedAt":"2026-02-02T12:08:14.000Z","createdAt":"2026-01-26T09:42:06.893Z","id":"dEv_Xn2cQNOnFfd87g4ak","name":"My workflow","active":false,"isArchived":true,"nodes":[{"parameters":{"rule":{"interval":[{},{}]}},"type":"n8n-nodes-base.scheduleTrigger","typeVersion":1.3,"position":[0,0],"id":"72796181-bf99-4d88-b2fe-0ecc6856092d","name":"Schedule Trigger"},{"parameters":{"options":{}},"type":"@n8n/n8n-nodes-langchain.agent","typeVersion":3.1,"position":[208,0],"id":"031c987c-f644-45aa-b530-48072082eadc","name":"AI Agent"}],"connections":{"Schedule Trigger":{"main":[[{"node":"AI Agent","type":"main","index":0}]]}},"settings":{"executionOrder":"v1","availableInMCP":false},"staticData":null,"meta":null,"pinData":{},"versionId":"5f50ba33-de31-4a20-a726-039f5673a83e","activeVersionId":null,"triggerCount":0,"shared":[{"updatedAt":"2026-01-26T09:42:06.900Z","createdAt":"2026-01-26T09:42:06.900Z","role":"workflow:owner","workflowId":"dEv_Xn2cQNOnFfd87g4ak","projectId":"GgnpOEHS9agizanl"}],"activeVersion":null,"tags":[]},{"updatedAt":"2026-02-02T12:08:11.000Z","createdAt":"2026-01-26T09:58:59.579Z","id":"ibWkbwaTV1iOj8sNS3hmO","name":"My workflow 2","active":false,"isArchived":true,"nodes":[{"parameters":{"options":{}},"type":"@n8n/n8n-nodes-langchain.agent","typeVersion":3.1,"position":[208,0],"id":"38ad56ae-7399-47e3-8a71-0ab9f4de9bb2","name":"AI Agent"},{"parameters":{"model":{"__rl":true,"value":"gpt-4.1-mini","mode":"list","cachedResultName":"gpt-4.1-mini"},"builtInTools":{},"options":{}},"type":"@n8n/n8n-nodes-langchain.lmChatOpenAi","typeVersion":1.3,"position":[80,208],"id":"5e827e5c-74c0-46ad-89d0-820c1ad22204","name":"OpenAI Chat Model","credentials":{"openAiApi":{"id":"rFq5Rria3td7bsQY","name":"OpenAi account"}}},{"parameters":{"options":{}},"type":"@n8n/n8n-nodes-langchain.chatTrigger","typeVersion":1.4,"position":[0,0],"id":"09fd989b-a65b-4ff6-83ca-54def0c8f2b2","name":"When chat message received","webhookId":"a27e2df3-788d-4d3a-aa38-41213bd20ac3"}],"connections":{"OpenAI Chat Model":{"ai_languageModel":[[{"node":"AI Agent","type":"ai_languageModel","index":0}]]},"When chat message received":{"main":[[{"node":"AI Agent","type":"main","index":0}]]}},"settings":{"executionOrder":"v1","availableInMCP":false},"staticData":null,"meta":{"templateCredsSetupCompleted":true},"pinData":{},"versionId":"b6760535-ed13-4f56-9c82-c09f9dcded22","activeVersionId":null,"triggerCount":0,"shared":[{"updatedAt":"2026-01-26T09:58:59.584Z","createdAt":"2026-01-26T09:58:59.584Z","role":"workflow:owner","workflowId":"ibWkbwaTV1iOj8sNS3hmO","projectId":"GgnpOEHS9agizanl"}],"activeVersion":null,"tags":[]},{"updatedAt":"2026-02-02T12:08:13.000Z","createdAt":"2026-01-26T08:48:26.375Z","id":"mOPlHgB1cDm00T_M3dsqi","name":"01 Workflow","active":false,"isArchived":true,"nodes":[{"parameters":{},"type":"n8n-nodes-base.manualTrigger","typeVersion":1,"position":[0,0],"id":"d83fa1de-c28f-44c0-908a-02cbad97ffb2","name":"When clicking ‘Execute workflow’"},{"parameters":{"assignments":{"assignments":[{"id":"db8e0c32-e9ee-464a-981a-29cdb779311f","name":"message","value":"HEy ny besked","type":"string"},{"id":"974c0715-e093-495b-860d-5d8ebd564985","name":"Name","value":"Peyton","type":"string"},{"id":"21e95b6f-f9f1-4099-aea9-16d2318b8596","name":"Name","value":"Peyton","type":"string"},{"id":"b6786072-84b6-4d23-839d-57e82fd13c18","name":"Hello ","value":"NyVærdi","type":"string"}]},"options":{}},"type":"n8n-nodes-base.set","typeVersion":3.4,"position":[208,0],"id":"52e2f9e5-76a8-4bc2-aaac-f3725d3c5192","name":"Edit Fields"},{"parameters":{"triggerTimes":{"item":[{"mode":"everyMinute"}]}},"id":"12a19cc5-f7d5-4ffe-88d4-809433970393","name":"Cron","type":"n8n-nodes-base.cron","typeVersion":1,"position":[48,-176]},{"parameters":{"functionCode":"return [{ json: { message: 'Hello from n8n!' } }];"},"id":"5775b3bc-bb3e-4726-95b0-b2db588ddec3","name":"Function","type":"n8n-nodes-base.function","typeVersion":1,"position":[304,-176]}],"connections":{"When clicking ‘Execute workflow’":{"main":[[{"node":"Edit Fields","type":"main","index":0}]]},"Cron":{"main":[[{"node":"Function","type":"main","index":0}]]}},"settings":{"executionOrder":"v1","availableInMCP":false},"staticData":null,"meta":null,"pinData":{},"versionId":"07859218-88c6-45fe-a345-f67e85ac7a9d","activeVersionId":null,"triggerCount":0,"shared":[{"updatedAt":"2026-01-26T08:48:26.380Z","createdAt":"2026-01-26T08:48:26.380Z","role":"workflow:owner","workflowId":"mOPlHgB1cDm00T_M3dsqi","projectId":"GgnpOEHS9agizanl"}],"activeVersion":null,"tags":[]}]
+[
+  {
+    "updatedAt": "2026-02-02T12:14:52.898Z",
+    "createdAt": "2026-01-26T10:25:05.754Z",
+    "id": "FD-wAr0hEKnJbSdxLj9xM",
+    "name": "Email Weather Repport",
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "fromEmail": "Nando.goat@gmail.com",
+          "toEmail": "Nando.goat@gmail.com",
+          "subject": "Todays weather in Copenhagen",
+          "emailFormat": "text",
+          "text": "=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          832,
+          0
+        ],
+        "id": "a507acac-750b-4fca-b471-c924973c1e9f",
+        "name": "Send email",
+        "webhookId": "43a918b1-7d8c-40e5-b577-c03e4d757ac5",
+        "credentials": {
+          "smtp": {
+            "id": "nlH29n5hGnWuJhmn",
+            "name": "SMTP account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          416,
+          0
+        ],
+        "id": "ebc76887-6d7e-46eb-941a-c24709ec9fbc",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d94852b8-d813-48ec-abb6-c898a642480e",
+                "name": "city",
+                "value": "={{ $json.name }}",
+                "type": "string"
+              },
+              {
+                "id": "ead085d8-0993-4d64-8f43-1b56161f6026",
+                "name": "temp",
+                "value": "={{ $json.main.temp }}",
+                "type": "number"
+              },
+              {
+                "id": "8c8d62d6-399a-4bcc-8e98-2a3d19a4695b",
+                "name": "feels_like",
+                "value": "={{ $json.main.feels_like }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          624,
+          0
+        ],
+        "id": "9033f712-cd4c-4781-af2e-e43535bebe7d",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          208,
+          0
+        ],
+        "id": "1ce3e4fa-3572-4efd-8a28-5f1deb445b31",
+        "name": "Schedule Trigger"
+      }
+    ],
+    "connections": {
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Send email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false,
+      "timeSavedMode": "fixed",
+      "callerPolicy": "workflowsFromSameOwner"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "60b38817-7bad-4d92-a903-4e86ce86ba59",
+    "activeVersionId": "5fd26e0f-fd60-4fb5-a902-07c953dd7e53",
+    "triggerCount": 1,
+    "shared": [
+      {
+        "updatedAt": "2026-01-26T10:25:05.758Z",
+        "createdAt": "2026-01-26T10:25:05.758Z",
+        "role": "workflow:owner",
+        "workflowId": "FD-wAr0hEKnJbSdxLj9xM",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": {
+      "updatedAt": "2026-01-26T18:53:54.000Z",
+      "createdAt": "2026-01-26T14:45:44.686Z",
+      "versionId": "5fd26e0f-fd60-4fb5-a902-07c953dd7e53",
+      "workflowId": "FD-wAr0hEKnJbSdxLj9xM",
+      "nodes": [
+        {
+          "parameters": {
+            "fromEmail": "Nando.goat@gmail.com",
+            "toEmail": "Nando.goat@gmail.com",
+            "subject": "Todays weather in Copenhagen",
+            "emailFormat": "text",
+            "text": "=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.emailSend",
+          "typeVersion": 2.1,
+          "position": [
+            832,
+            0
+          ],
+          "id": "a507acac-750b-4fca-b471-c924973c1e9f",
+          "name": "Send email",
+          "webhookId": "43a918b1-7d8c-40e5-b577-c03e4d757ac5",
+          "credentials": {
+            "smtp": {
+              "id": "nlH29n5hGnWuJhmn",
+              "name": "SMTP account 2"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "url": "https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.3,
+          "position": [
+            416,
+            0
+          ],
+          "id": "ebc76887-6d7e-46eb-941a-c24709ec9fbc",
+          "name": "HTTP Request"
+        },
+        {
+          "parameters": {
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "d94852b8-d813-48ec-abb6-c898a642480e",
+                  "name": "city",
+                  "value": "={{ $json.name }}",
+                  "type": "string"
+                },
+                {
+                  "id": "ead085d8-0993-4d64-8f43-1b56161f6026",
+                  "name": "temp",
+                  "value": "={{ $json.main.temp }}",
+                  "type": "number"
+                },
+                {
+                  "id": "8c8d62d6-399a-4bcc-8e98-2a3d19a4695b",
+                  "name": "feels_like",
+                  "value": "={{ $json.main.feels_like }}",
+                  "type": "number"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.set",
+          "typeVersion": 3.4,
+          "position": [
+            624,
+            0
+          ],
+          "id": "9033f712-cd4c-4781-af2e-e43535bebe7d",
+          "name": "Edit Fields"
+        },
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "field": "hours"
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1.3,
+          "position": [
+            208,
+            0
+          ],
+          "id": "1ce3e4fa-3572-4efd-8a28-5f1deb445b31",
+          "name": "Schedule Trigger"
+        }
+      ],
+      "connections": {
+        "HTTP Request": {
+          "main": [
+            [
+              {
+                "node": "Edit Fields",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Edit Fields": {
+          "main": [
+            [
+              {
+                "node": "Send email",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Schedule Trigger": {
+          "main": [
+            [
+              {
+                "node": "HTTP Request",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "authors": "Peyton Hunter",
+      "name": "Emai CBH vejr",
+      "description": "",
+      "autosaved": true
+    },
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-02-02T12:38:31.688Z",
+    "createdAt": "2026-02-02T12:15:46.064Z",
+    "id": "OkhT4IadkpYzZYVL",
+    "name": "Backup Flow",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "url": "http://localhost:5678/api/v1/workflows",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          416,
+          0
+        ],
+        "id": "283b4d92-23a6-4e97-9409-1e7a7ad4c7c9",
+        "name": "HTTP Request",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "bcqhBliZI2HgWOjo",
+            "name": "Header Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "8875d39f-7b40-4b10-8ed7-bb0e749bdae5",
+                "name": "data",
+                "value": "={{ $json.data }}",
+                "type": "array"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          624,
+          0
+        ],
+        "id": "eaa76ac5-128d-4a1e-bd0a-027247bd5552",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          208,
+          0
+        ],
+        "id": "8d38e1ea-7b63-47bb-ae82-02631ba66924",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "resource": "file",
+          "owner": {
+            "__rl": true,
+            "mode": "name",
+            "value": "peyhunter"
+          },
+          "repository": {
+            "__rl": true,
+            "value": "n8n-backup",
+            "mode": "name"
+          },
+          "filePath": "workflows.json"
+        },
+        "type": "n8n-nodes-base.github",
+        "typeVersion": 1.1,
+        "position": [
+          832,
+          0
+        ],
+        "id": "ce52a3c9-17fa-4e68-8b5b-dbe02b3f375f",
+        "name": "Create a file",
+        "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
+        "credentials": {
+          "githubApi": {
+            "id": "lo08KX2OJ23Au7Dw",
+            "name": "GitHub account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Create a file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false,
+      "timeSavedMode": "fixed",
+      "callerPolicy": "workflowsFromSameOwner"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "374e5e3f-a18c-4aff-aa50-e9fdc76dee99",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-02-02T12:15:46.069Z",
+        "createdAt": "2026-02-02T12:15:46.069Z",
+        "role": "workflow:owner",
+        "workflowId": "OkhT4IadkpYzZYVL",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-02-02T12:08:14.000Z",
+    "createdAt": "2026-01-26T09:42:06.893Z",
+    "id": "dEv_Xn2cQNOnFfd87g4ak",
+    "name": "My workflow",
+    "active": false,
+    "isArchived": true,
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {},
+              {}
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          0
+        ],
+        "id": "72796181-bf99-4d88-b2fe-0ecc6856092d",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "031c987c-f644-45aa-b530-48072082eadc",
+        "name": "AI Agent"
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "5f50ba33-de31-4a20-a726-039f5673a83e",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-01-26T09:42:06.900Z",
+        "createdAt": "2026-01-26T09:42:06.900Z",
+        "role": "workflow:owner",
+        "workflowId": "dEv_Xn2cQNOnFfd87g4ak",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-02-02T12:08:11.000Z",
+    "createdAt": "2026-01-26T09:58:59.579Z",
+    "id": "ibWkbwaTV1iOj8sNS3hmO",
+    "name": "My workflow 2",
+    "active": false,
+    "isArchived": true,
+    "nodes": [
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "38ad56ae-7399-47e3-8a71-0ab9f4de9bb2",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4.1-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4.1-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          80,
+          208
+        ],
+        "id": "5e827e5c-74c0-46ad-89d0-820c1ad22204",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "rFq5Rria3td7bsQY",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          0,
+          0
+        ],
+        "id": "09fd989b-a65b-4ff6-83ca-54def0c8f2b2",
+        "name": "When chat message received",
+        "webhookId": "a27e2df3-788d-4d3a-aa38-41213bd20ac3"
+      }
+    ],
+    "connections": {
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "b6760535-ed13-4f56-9c82-c09f9dcded22",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-01-26T09:58:59.584Z",
+        "createdAt": "2026-01-26T09:58:59.584Z",
+        "role": "workflow:owner",
+        "workflowId": "ibWkbwaTV1iOj8sNS3hmO",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-02-02T12:08:13.000Z",
+    "createdAt": "2026-01-26T08:48:26.375Z",
+    "id": "mOPlHgB1cDm00T_M3dsqi",
+    "name": "01 Workflow",
+    "active": false,
+    "isArchived": true,
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "d83fa1de-c28f-44c0-908a-02cbad97ffb2",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "db8e0c32-e9ee-464a-981a-29cdb779311f",
+                "name": "message",
+                "value": "HEy ny besked",
+                "type": "string"
+              },
+              {
+                "id": "974c0715-e093-495b-860d-5d8ebd564985",
+                "name": "Name",
+                "value": "Peyton",
+                "type": "string"
+              },
+              {
+                "id": "21e95b6f-f9f1-4099-aea9-16d2318b8596",
+                "name": "Name",
+                "value": "Peyton",
+                "type": "string"
+              },
+              {
+                "id": "b6786072-84b6-4d23-839d-57e82fd13c18",
+                "name": "Hello ",
+                "value": "NyVærdi",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          208,
+          0
+        ],
+        "id": "52e2f9e5-76a8-4bc2-aaac-f3725d3c5192",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "triggerTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          }
+        },
+        "id": "12a19cc5-f7d5-4ffe-88d4-809433970393",
+        "name": "Cron",
+        "type": "n8n-nodes-base.cron",
+        "typeVersion": 1,
+        "position": [
+          48,
+          -176
+        ]
+      },
+      {
+        "parameters": {
+          "functionCode": "return [{ json: { message: 'Hello from n8n!' } }];"
+        },
+        "id": "5775b3bc-bb3e-4726-95b0-b2db588ddec3",
+        "name": "Function",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          304,
+          -176
+        ]
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cron": {
+        "main": [
+          [
+            {
+              "node": "Function",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "07859218-88c6-45fe-a345-f67e85ac7a9d",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-01-26T08:48:26.380Z",
+        "createdAt": "2026-01-26T08:48:26.380Z",
+        "role": "workflow:owner",
+        "workflowId": "mOPlHgB1cDm00T_M3dsqi",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  }
+]
