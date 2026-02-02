@@ -552,11 +552,11 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-02-02T14:39:32.996Z",
+    "updatedAt": "2026-02-02T16:08:41.271Z",
     "createdAt": "2026-02-02T12:15:46.064Z",
     "id": "OkhT4IadkpYzZYVL",
     "name": "Backup Flow",
-    "active": false,
+    "active": true,
     "isArchived": false,
     "nodes": [
       {
@@ -609,7 +609,7 @@
           "rule": {
             "interval": [
               {
-                "field": "hours"
+                "field": "minutes"
               }
             ]
           }
@@ -639,7 +639,7 @@
           },
           "filePath": "workflows.json",
           "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-          "commitMessage": "Third Commit"
+          "commitMessage": "Hourly Commit"
         },
         "type": "n8n-nodes-base.github",
         "typeVersion": 1.1,
@@ -699,14 +699,18 @@
       "timeSavedMode": "fixed",
       "callerPolicy": "workflowsFromSameOwner"
     },
-    "staticData": null,
+    "staticData": {
+      "node:Schedule Trigger": {
+        "recurrenceRules": []
+      }
+    },
     "meta": {
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "68e06017-c756-41c0-a980-702a557c3e6d",
-    "activeVersionId": null,
-    "triggerCount": 0,
+    "versionId": "ce13538b-c504-426d-883c-b69c3cf9ecd8",
+    "activeVersionId": "ce13538b-c504-426d-883c-b69c3cf9ecd8",
+    "triggerCount": 1,
     "shared": [
       {
         "updatedAt": "2026-02-02T12:15:46.069Z",
@@ -716,7 +720,151 @@
         "projectId": "GgnpOEHS9agizanl"
       }
     ],
-    "activeVersion": null,
+    "activeVersion": {
+      "updatedAt": "2026-02-02T16:08:45.000Z",
+      "createdAt": "2026-02-02T16:08:41.272Z",
+      "versionId": "ce13538b-c504-426d-883c-b69c3cf9ecd8",
+      "workflowId": "OkhT4IadkpYzZYVL",
+      "nodes": [
+        {
+          "parameters": {
+            "url": "http://localhost:5678/api/v1/workflows",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.3,
+          "position": [
+            416,
+            0
+          ],
+          "id": "283b4d92-23a6-4e97-9409-1e7a7ad4c7c9",
+          "name": "HTTP Request",
+          "credentials": {
+            "httpHeaderAuth": {
+              "id": "bcqhBliZI2HgWOjo",
+              "name": "Header Auth account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "8875d39f-7b40-4b10-8ed7-bb0e749bdae5",
+                  "name": "data",
+                  "value": "={{ $json.data }}",
+                  "type": "array"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.set",
+          "typeVersion": 3.4,
+          "position": [
+            624,
+            0
+          ],
+          "id": "eaa76ac5-128d-4a1e-bd0a-027247bd5552",
+          "name": "Edit Fields"
+        },
+        {
+          "parameters": {
+            "rule": {
+              "interval": [
+                {
+                  "field": "minutes"
+                }
+              ]
+            }
+          },
+          "type": "n8n-nodes-base.scheduleTrigger",
+          "typeVersion": 1.3,
+          "position": [
+            208,
+            0
+          ],
+          "id": "8d38e1ea-7b63-47bb-ae82-02631ba66924",
+          "name": "Schedule Trigger"
+        },
+        {
+          "parameters": {
+            "resource": "file",
+            "operation": "edit",
+            "owner": {
+              "__rl": true,
+              "mode": "name",
+              "value": "peyhunter"
+            },
+            "repository": {
+              "__rl": true,
+              "value": "n8n-backup",
+              "mode": "name"
+            },
+            "filePath": "workflows.json",
+            "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
+            "commitMessage": "Hourly Commit"
+          },
+          "type": "n8n-nodes-base.github",
+          "typeVersion": 1.1,
+          "position": [
+            832,
+            0
+          ],
+          "id": "ce52a3c9-17fa-4e68-8b5b-dbe02b3f375f",
+          "name": "Edit a file",
+          "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
+          "credentials": {
+            "githubApi": {
+              "id": "lo08KX2OJ23Au7Dw",
+              "name": "GitHub account"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "HTTP Request": {
+          "main": [
+            [
+              {
+                "node": "Edit Fields",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Edit Fields": {
+          "main": [
+            [
+              {
+                "node": "Edit a file",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Schedule Trigger": {
+          "main": [
+            [
+              {
+                "node": "HTTP Request",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "authors": "Peyton Hunter",
+      "name": "Version ce13538b",
+      "description": "",
+      "autosaved": true
+    },
     "tags": []
   },
   {
