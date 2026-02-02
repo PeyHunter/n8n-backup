@@ -1,5 +1,255 @@
 [
   {
+    "updatedAt": "2026-02-02T14:46:09.168Z",
+    "createdAt": "2026-02-02T13:00:30.824Z",
+    "id": "896ZZblnAIoEbMAWLk2XX",
+    "name": "Current News Workflow",
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4.1-mini",
+            "mode": "list",
+            "cachedResultName": "GPT-4.1-MINI"
+          },
+          "responses": {
+            "values": [
+              {
+                "content": "={{ $json.chatInput }}"
+              },
+              {
+                "role": "system",
+                "content": "You are a professional news anchor. Always use the 'get_nyt_news' tool to fetch data. Your goal is to provide a concise summary of the TOP 3 most important news stories from the data provided. Present them in a clear, journalistic style in English.\nYou are a news anchor. NEVER output JSON or technical symbols like { } [ ] or \\n. Only use plain English text and bullet points."
+              }
+            ]
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 2.1,
+        "position": [
+          256,
+          0
+        ],
+        "id": "a96bd8de-6939-49a0-9905-8f2acbc8ed9a",
+        "name": "Message a model",
+        "credentials": {
+          "openAiApi": {
+            "id": "rFq5Rria3td7bsQY",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          32,
+          0
+        ],
+        "id": "4322b5ec-9e5d-4953-9303-7fb99b2d3b4c",
+        "name": "When chat message received",
+        "webhookId": "716b35a2-976f-461e-9215-3e487cd98f61"
+      },
+      {
+        "parameters": {
+          "description": "Use this tool to get the latest world news from the New York Times. Use it whenever the user asks about news or current events.",
+          "workflowId": {
+            "__rl": true,
+            "value": "sTchKqFj3OSjKMrK",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/sTchKqFj3OSjKMrK",
+            "cachedResultName": "[SUB] Current News (Get NYTimes Top Stories)"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          336,
+          224
+        ],
+        "id": "cd544cb7-f5b5-4f50-8338-40ef50e95738",
+        "name": "Call n8n Workflow Tool"
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "Message a model",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call n8n Workflow Tool": {
+        "ai_tool": [
+          [
+            {
+              "node": "Message a model",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "e026dee0-9adf-43fc-84e7-2ec7e7e01b17",
+    "activeVersionId": "f1cb9a30-4e29-4c0a-9eb6-2e13379f6cc9",
+    "triggerCount": 1,
+    "shared": [
+      {
+        "updatedAt": "2026-02-02T13:00:30.830Z",
+        "createdAt": "2026-02-02T13:00:30.830Z",
+        "role": "workflow:owner",
+        "workflowId": "896ZZblnAIoEbMAWLk2XX",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": {
+      "updatedAt": "2026-02-02T14:44:13.000Z",
+      "createdAt": "2026-02-02T14:44:10.381Z",
+      "versionId": "f1cb9a30-4e29-4c0a-9eb6-2e13379f6cc9",
+      "workflowId": "896ZZblnAIoEbMAWLk2XX",
+      "nodes": [
+        {
+          "parameters": {
+            "modelId": {
+              "__rl": true,
+              "value": "gpt-4.1-mini",
+              "mode": "list",
+              "cachedResultName": "GPT-4.1-MINI"
+            },
+            "responses": {
+              "values": [
+                {
+                  "content": "={{ $json.chatInput }}"
+                },
+                {
+                  "role": "system",
+                  "content": "You are a news anchor. NEVER output JSON or technical symbols like { } [ ] or \\n. Only use plain English text and bullet points."
+                }
+              ]
+            },
+            "builtInTools": {},
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.openAi",
+          "typeVersion": 2.1,
+          "position": [
+            256,
+            0
+          ],
+          "id": "a96bd8de-6939-49a0-9905-8f2acbc8ed9a",
+          "name": "Message a model",
+          "credentials": {
+            "openAiApi": {
+              "id": "rFq5Rria3td7bsQY",
+              "name": "OpenAi account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+          "typeVersion": 1.4,
+          "position": [
+            32,
+            0
+          ],
+          "id": "4322b5ec-9e5d-4953-9303-7fb99b2d3b4c",
+          "name": "When chat message received",
+          "webhookId": "716b35a2-976f-461e-9215-3e487cd98f61"
+        },
+        {
+          "parameters": {
+            "description": "Use this tool to get the latest world news from the New York Times. Use it whenever the user asks about news or current events.",
+            "workflowId": {
+              "__rl": true,
+              "value": "sTchKqFj3OSjKMrK",
+              "mode": "list",
+              "cachedResultUrl": "/workflow/sTchKqFj3OSjKMrK",
+              "cachedResultName": "[SUB] Current News (Get NYTimes Top Stories)"
+            },
+            "workflowInputs": {
+              "mappingMode": "defineBelow",
+              "value": {},
+              "matchingColumns": [],
+              "schema": [],
+              "attemptToConvertTypes": false,
+              "convertFieldsToString": false
+            }
+          },
+          "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+          "typeVersion": 2.2,
+          "position": [
+            336,
+            224
+          ],
+          "id": "cd544cb7-f5b5-4f50-8338-40ef50e95738",
+          "name": "Call n8n Workflow Tool"
+        }
+      ],
+      "connections": {
+        "When chat message received": {
+          "main": [
+            [
+              {
+                "node": "Message a model",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Call n8n Workflow Tool": {
+          "ai_tool": [
+            [
+              {
+                "node": "Message a model",
+                "type": "ai_tool",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "authors": "Peyton Hunter",
+      "name": "Version f1cb9a30",
+      "description": "",
+      "autosaved": true
+    },
+    "tags": []
+  },
+  {
     "updatedAt": "2026-02-02T12:14:52.898Z",
     "createdAt": "2026-01-26T10:25:05.754Z",
     "id": "FD-wAr0hEKnJbSdxLj9xM",
@@ -302,7 +552,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-02-02T12:38:31.688Z",
+    "updatedAt": "2026-02-02T14:39:32.996Z",
     "createdAt": "2026-02-02T12:15:46.064Z",
     "id": "OkhT4IadkpYzZYVL",
     "name": "Backup Flow",
@@ -376,6 +626,7 @@
       {
         "parameters": {
           "resource": "file",
+          "operation": "edit",
           "owner": {
             "__rl": true,
             "mode": "name",
@@ -386,7 +637,9 @@
             "value": "n8n-backup",
             "mode": "name"
           },
-          "filePath": "workflows.json"
+          "filePath": "workflows.json",
+          "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
+          "commitMessage": "Third Commit"
         },
         "type": "n8n-nodes-base.github",
         "typeVersion": 1.1,
@@ -395,7 +648,7 @@
           0
         ],
         "id": "ce52a3c9-17fa-4e68-8b5b-dbe02b3f375f",
-        "name": "Create a file",
+        "name": "Edit a file",
         "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
         "credentials": {
           "githubApi": {
@@ -421,7 +674,7 @@
         "main": [
           [
             {
-              "node": "Create a file",
+              "node": "Edit a file",
               "type": "main",
               "index": 0
             }
@@ -451,7 +704,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "374e5e3f-a18c-4aff-aa50-e9fdc76dee99",
+    "versionId": "68e06017-c756-41c0-a980-702a557c3e6d",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -788,6 +1041,196 @@
       }
     ],
     "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-02-02T14:13:48.386Z",
+    "createdAt": "2026-02-02T13:13:53.796Z",
+    "id": "sTchKqFj3OSjKMrK",
+    "name": "[SUB] Current News (Get NYTimes Top Stories)",
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "id": "c055762a-8fe7-4141-a639-df2372f30060",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          272,
+          352
+        ]
+      },
+      {
+        "parameters": {
+          "url": "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=dWHzjmtSMFcaIFGFW4xkn5V0jwMwJNraalUuKLz0ceznFm7d",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          480,
+          352
+        ],
+        "id": "8beabf73-1708-4d75-bac6-8b1da41ce492",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "ba5f2b4b-c805-414f-a281-2e9692a22a69",
+                "name": "all news",
+                "value": "={{ $json.results.slice(0, 5) }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          688,
+          352
+        ],
+        "id": "d8b7c7a5-1b90-4806-bc3f-a26915323afc",
+        "name": "Edit Fields"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
+    "activeVersionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-02-02T13:13:53.801Z",
+        "createdAt": "2026-02-02T13:13:53.801Z",
+        "role": "workflow:owner",
+        "workflowId": "sTchKqFj3OSjKMrK",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": {
+      "updatedAt": "2026-02-02T14:17:50.000Z",
+      "createdAt": "2026-02-02T14:13:48.387Z",
+      "versionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
+      "workflowId": "sTchKqFj3OSjKMrK",
+      "nodes": [
+        {
+          "parameters": {
+            "inputSource": "passthrough"
+          },
+          "id": "c055762a-8fe7-4141-a639-df2372f30060",
+          "typeVersion": 1.1,
+          "name": "When Executed by Another Workflow",
+          "type": "n8n-nodes-base.executeWorkflowTrigger",
+          "position": [
+            272,
+            352
+          ]
+        },
+        {
+          "parameters": {
+            "url": "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=dWHzjmtSMFcaIFGFW4xkn5V0jwMwJNraalUuKLz0ceznFm7d",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4.3,
+          "position": [
+            480,
+            352
+          ],
+          "id": "8beabf73-1708-4d75-bac6-8b1da41ce492",
+          "name": "HTTP Request"
+        },
+        {
+          "parameters": {
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "ba5f2b4b-c805-414f-a281-2e9692a22a69",
+                  "name": "all news",
+                  "value": "={{ $json.results.slice(0, 5) }}",
+                  "type": "string"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.set",
+          "typeVersion": 3.4,
+          "position": [
+            688,
+            352
+          ],
+          "id": "d8b7c7a5-1b90-4806-bc3f-a26915323afc",
+          "name": "Edit Fields"
+        }
+      ],
+      "connections": {
+        "When Executed by Another Workflow": {
+          "main": [
+            [
+              {
+                "node": "HTTP Request",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "HTTP Request": {
+          "main": [
+            [
+              {
+                "node": "Edit Fields",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "authors": "Peyton Hunter",
+      "name": "Version e257e910",
+      "description": "",
+      "autosaved": true
+    },
     "tags": []
   }
 ]
