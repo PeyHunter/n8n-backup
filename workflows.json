@@ -552,7 +552,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-02-02T16:08:41.271Z",
+    "updatedAt": "2026-02-03T07:50:15.301Z",
     "createdAt": "2026-02-02T12:15:46.064Z",
     "id": "OkhT4IadkpYzZYVL",
     "name": "Backup Flow",
@@ -609,7 +609,7 @@
           "rule": {
             "interval": [
               {
-                "field": "minutes"
+                "triggerAtHour": 9
               }
             ]
           }
@@ -639,7 +639,7 @@
           },
           "filePath": "workflows.json",
           "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-          "commitMessage": "Hourly Commit"
+          "commitMessage": "Daily Commit"
         },
         "type": "n8n-nodes-base.github",
         "typeVersion": 1.1,
@@ -708,8 +708,8 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "ce13538b-c504-426d-883c-b69c3cf9ecd8",
-    "activeVersionId": "ce13538b-c504-426d-883c-b69c3cf9ecd8",
+    "versionId": "0c61fb85-e5f3-48ec-bc79-1772a92b18ea",
+    "activeVersionId": "0c61fb85-e5f3-48ec-bc79-1772a92b18ea",
     "triggerCount": 1,
     "shared": [
       {
@@ -721,9 +721,9 @@
       }
     ],
     "activeVersion": {
-      "updatedAt": "2026-02-02T16:08:45.000Z",
-      "createdAt": "2026-02-02T16:08:41.272Z",
-      "versionId": "ce13538b-c504-426d-883c-b69c3cf9ecd8",
+      "updatedAt": "2026-02-03T07:50:21.000Z",
+      "createdAt": "2026-02-03T07:50:15.302Z",
+      "versionId": "0c61fb85-e5f3-48ec-bc79-1772a92b18ea",
       "workflowId": "OkhT4IadkpYzZYVL",
       "nodes": [
         {
@@ -776,7 +776,7 @@
             "rule": {
               "interval": [
                 {
-                  "field": "minutes"
+                  "triggerAtHour": 9
                 }
               ]
             }
@@ -806,7 +806,7 @@
             },
             "filePath": "workflows.json",
             "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-            "commitMessage": "Hourly Commit"
+            "commitMessage": "Daily Commit"
           },
           "type": "n8n-nodes-base.github",
           "typeVersion": 1.1,
@@ -861,7 +861,7 @@
         }
       },
       "authors": "Peyton Hunter",
-      "name": "Version ce13538b",
+      "name": "Version 0c61fb85",
       "description": "",
       "autosaved": true
     },
