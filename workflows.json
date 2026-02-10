@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-02-02T14:46:09.168Z",
+    "updatedAt": "2026-02-09T16:00:28.696Z",
     "createdAt": "2026-02-02T13:00:30.824Z",
     "id": "896ZZblnAIoEbMAWLk2XX",
     "name": "Current News Workflow",
@@ -85,6 +85,30 @@
         ],
         "id": "cd544cb7-f5b5-4f50-8338-40ef50e95738",
         "name": "Call n8n Workflow Tool"
+      },
+      {
+        "parameters": {
+          "fromEmail": "Nando.goat@gmail.com",
+          "toEmail": "Nando.goat@gmail.com",
+          "subject": "Dagens nyheder",
+          "html": "={{ $json.output[0].content[0].text }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          560,
+          0
+        ],
+        "id": "2b4fcb4a-ecda-4674-b0eb-56da7674df01",
+        "name": "Send email",
+        "webhookId": "0e4ea8fb-bd07-44cd-8e02-bacb84f4aee2",
+        "credentials": {
+          "smtp": {
+            "id": "nlH29n5hGnWuJhmn",
+            "name": "SMTP account 2"
+          }
+        }
       }
     ],
     "connections": {
@@ -109,6 +133,17 @@
             }
           ]
         ]
+      },
+      "Message a model": {
+        "main": [
+          [
+            {
+              "node": "Send email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -120,7 +155,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "e026dee0-9adf-43fc-84e7-2ec7e7e01b17",
+    "versionId": "518a7a98-ab18-453a-ab4c-9113bfdfcd86",
     "activeVersionId": "f1cb9a30-4e29-4c0a-9eb6-2e13379f6cc9",
     "triggerCount": 1,
     "shared": [
@@ -1192,7 +1227,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-02-02T14:13:48.386Z",
+    "updatedAt": "2026-02-09T15:57:40.712Z",
     "createdAt": "2026-02-02T13:13:53.796Z",
     "id": "sTchKqFj3OSjKMrK",
     "name": "[SUB] Current News (Get NYTimes Top Stories)",
@@ -1248,6 +1283,57 @@
         ],
         "id": "d8b7c7a5-1b90-4806-bc3f-a26915323afc",
         "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Her er de seneste 5 nyheder fra New York Times. Lav dem om til et kort og spændende nyhedsbrev på dansk: {{ $json[\"all news\"] }}\"",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          896,
+          352
+        ],
+        "id": "ebf14d02-6bc7-4c10-b8b2-3680c076859e",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          768,
+          560
+        ],
+        "id": "4c0a7efc-1d02-497f-9472-bc424dcd9c9b",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "rFq5Rria3td7bsQY",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+        "typeVersion": 1,
+        "position": [
+          1056,
+          560
+        ],
+        "id": "93caaca1-98fe-4ff5-9e64-a65a8bab3a0a",
+        "name": "Wikipedia"
       }
     ],
     "connections": {
@@ -1272,6 +1358,44 @@
             }
           ]
         ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wikipedia": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          []
+        ]
       }
     },
     "settings": {
@@ -1279,9 +1403,11 @@
       "availableInMCP": false
     },
     "staticData": null,
-    "meta": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
     "pinData": {},
-    "versionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
+    "versionId": "3dd06f10-3a25-4c87-b1a1-ce414534a7a4",
     "activeVersionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
     "triggerCount": 0,
     "shared": [
@@ -1376,6 +1502,394 @@
       },
       "authors": "Peyton Hunter",
       "name": "Version e257e910",
+      "description": "",
+      "autosaved": true
+    },
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-02-10T10:22:27.316Z",
+    "createdAt": "2026-02-09T16:03:06.138Z",
+    "id": "x4RjJTT2vVjeDHh_qr5a3",
+    "name": "Email /Support Ticket Classifier",
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "filters": {}
+        },
+        "type": "n8n-nodes-base.gmailTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          0
+        ],
+        "id": "ad16937c-bf8c-4733-8c2c-6008afae538f",
+        "name": "Gmail Trigger",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "y074I2cxfQAgBpfz",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=\"Classify this email. If it is from a family member or relates to family matters, output exactly the word 'Family'. Otherwise, output 'Other'.\" {{ $json.snippet }}",
+          "batching": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.9,
+        "position": [
+          256,
+          0
+        ],
+        "id": "bb2d7a56-3342-41ba-86bc-23c458c795c3",
+        "name": "Basic LLM Chain"
+      },
+      {
+        "parameters": {
+          "model": "llama3:latest",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmOllama",
+        "typeVersion": 1,
+        "position": [
+          208,
+          240
+        ],
+        "id": "730559b8-20e3-412a-9049-2bdd43dbacb0",
+        "name": "Ollama Model",
+        "credentials": {
+          "ollamaApi": {
+            "id": "azGE12qSSgOz6Z5j",
+            "name": "Ollama account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "abe8d50f-8a48-4107-a699-6fa1efcc2f5b",
+                      "leftValue": "={{ $json.text }}",
+                      "rightValue": "Family",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          608,
+          0
+        ],
+        "id": "73977eea-c559-4d20-927f-b80e2b919715",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "operation": "addLabels",
+          "messageId": "={{ $node[\"Gmail Trigger\"].json[\"id\"] }}",
+          "labelIds": [
+            "Label_19"
+          ]
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          848,
+          0
+        ],
+        "id": "1e71748e-eacc-4abb-8fa3-56abddd4970d",
+        "name": "Add label to message",
+        "webhookId": "0242dfed-503f-4089-860c-e1e639f29412",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "y074I2cxfQAgBpfz",
+            "name": "Gmail account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Ollama Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Basic LLM Chain",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Gmail Trigger": {
+        "main": [
+          [
+            {
+              "node": "Basic LLM Chain",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Basic LLM Chain": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Add label to message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false,
+      "timeSavedMode": "fixed",
+      "callerPolicy": "workflowsFromSameOwner"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "7f4ec260-6f92-403f-b326-874df0410df4",
+    "activeVersionId": "7f4ec260-6f92-403f-b326-874df0410df4",
+    "triggerCount": 1,
+    "shared": [
+      {
+        "updatedAt": "2026-02-09T16:03:06.143Z",
+        "createdAt": "2026-02-09T16:03:06.143Z",
+        "role": "workflow:owner",
+        "workflowId": "x4RjJTT2vVjeDHh_qr5a3",
+        "projectId": "GgnpOEHS9agizanl"
+      }
+    ],
+    "activeVersion": {
+      "updatedAt": "2026-02-10T10:23:47.000Z",
+      "createdAt": "2026-02-10T10:22:27.316Z",
+      "versionId": "7f4ec260-6f92-403f-b326-874df0410df4",
+      "workflowId": "x4RjJTT2vVjeDHh_qr5a3",
+      "nodes": [
+        {
+          "parameters": {
+            "pollTimes": {
+              "item": [
+                {
+                  "mode": "everyMinute"
+                }
+              ]
+            },
+            "filters": {}
+          },
+          "type": "n8n-nodes-base.gmailTrigger",
+          "typeVersion": 1.3,
+          "position": [
+            0,
+            0
+          ],
+          "id": "ad16937c-bf8c-4733-8c2c-6008afae538f",
+          "name": "Gmail Trigger",
+          "credentials": {
+            "gmailOAuth2": {
+              "id": "y074I2cxfQAgBpfz",
+              "name": "Gmail account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "promptType": "define",
+            "text": "=\"Classify this email. If it is from a family member or relates to family matters, output exactly the word 'Family'. Otherwise, output 'Other'.\" {{ $json.snippet }}",
+            "batching": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.chainLlm",
+          "typeVersion": 1.9,
+          "position": [
+            256,
+            0
+          ],
+          "id": "bb2d7a56-3342-41ba-86bc-23c458c795c3",
+          "name": "Basic LLM Chain"
+        },
+        {
+          "parameters": {
+            "model": "llama3:latest",
+            "options": {}
+          },
+          "type": "@n8n/n8n-nodes-langchain.lmOllama",
+          "typeVersion": 1,
+          "position": [
+            208,
+            240
+          ],
+          "id": "730559b8-20e3-412a-9049-2bdd43dbacb0",
+          "name": "Ollama Model",
+          "credentials": {
+            "ollamaApi": {
+              "id": "azGE12qSSgOz6Z5j",
+              "name": "Ollama account"
+            }
+          }
+        },
+        {
+          "parameters": {
+            "rules": {
+              "values": [
+                {
+                  "conditions": {
+                    "options": {
+                      "caseSensitive": true,
+                      "leftValue": "",
+                      "typeValidation": "strict",
+                      "version": 3
+                    },
+                    "conditions": [
+                      {
+                        "id": "abe8d50f-8a48-4107-a699-6fa1efcc2f5b",
+                        "leftValue": "={{ $json.text }}",
+                        "rightValue": "Family",
+                        "operator": {
+                          "type": "string",
+                          "operation": "equals",
+                          "name": "filter.operator.equals"
+                        }
+                      }
+                    ],
+                    "combinator": "and"
+                  }
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.switch",
+          "typeVersion": 3.4,
+          "position": [
+            608,
+            0
+          ],
+          "id": "73977eea-c559-4d20-927f-b80e2b919715",
+          "name": "Switch"
+        },
+        {
+          "parameters": {
+            "operation": "addLabels",
+            "messageId": "={{ $node[\"Gmail Trigger\"].json[\"id\"] }}",
+            "labelIds": [
+              "Label_19"
+            ]
+          },
+          "type": "n8n-nodes-base.gmail",
+          "typeVersion": 2.2,
+          "position": [
+            848,
+            0
+          ],
+          "id": "1e71748e-eacc-4abb-8fa3-56abddd4970d",
+          "name": "Add label to message",
+          "webhookId": "0242dfed-503f-4089-860c-e1e639f29412",
+          "credentials": {
+            "gmailOAuth2": {
+              "id": "y074I2cxfQAgBpfz",
+              "name": "Gmail account"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "Ollama Model": {
+          "ai_languageModel": [
+            [
+              {
+                "node": "Basic LLM Chain",
+                "type": "ai_languageModel",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Gmail Trigger": {
+          "main": [
+            [
+              {
+                "node": "Basic LLM Chain",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Basic LLM Chain": {
+          "main": [
+            [
+              {
+                "node": "Switch",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Switch": {
+          "main": [
+            [
+              {
+                "node": "Add label to message",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "authors": "Peyton Hunter",
+      "name": "Version 7f4ec260",
       "description": "",
       "autosaved": true
     },
