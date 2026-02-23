@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-02-09T16:00:28.696Z",
+    "updatedAt": "2026-02-23T09:53:41.132Z",
     "createdAt": "2026-02-02T13:00:30.824Z",
     "id": "896ZZblnAIoEbMAWLk2XX",
     "name": "Current News Workflow",
@@ -91,13 +91,13 @@
           "fromEmail": "Nando.goat@gmail.com",
           "toEmail": "Nando.goat@gmail.com",
           "subject": "Dagens nyheder",
-          "html": "={{ $json.output[0].content[0].text }}",
+          "html": "={{ $json.data }}",
           "options": {}
         },
         "type": "n8n-nodes-base.emailSend",
         "typeVersion": 2.1,
         "position": [
-          560,
+          816,
           0
         ],
         "id": "2b4fcb4a-ecda-4674-b0eb-56da7674df01",
@@ -109,6 +109,21 @@
             "name": "SMTP account 2"
           }
         }
+      },
+      {
+        "parameters": {
+          "mode": "markdownToHtml",
+          "markdown": "={{ $json.output[0].content[0].text }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.markdown",
+        "typeVersion": 1,
+        "position": [
+          608,
+          0
+        ],
+        "id": "cfbc42e9-55dc-4200-9e15-c7360b8b309c",
+        "name": "Markdown"
       }
     ],
     "connections": {
@@ -138,6 +153,17 @@
         "main": [
           [
             {
+              "node": "Markdown",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Markdown": {
+        "main": [
+          [
+            {
               "node": "Send email",
               "type": "main",
               "index": 0
@@ -155,7 +181,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "518a7a98-ab18-453a-ab4c-9113bfdfcd86",
+    "versionId": "d2243678-1d3b-4127-ae5f-7c150f3086ec",
     "activeVersionId": "f1cb9a30-4e29-4c0a-9eb6-2e13379f6cc9",
     "triggerCount": 1,
     "shared": [
@@ -1227,7 +1253,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-02-09T15:57:40.712Z",
+    "updatedAt": "2026-02-23T09:57:41.688Z",
     "createdAt": "2026-02-02T13:13:53.796Z",
     "id": "sTchKqFj3OSjKMrK",
     "name": "[SUB] Current News (Get NYTimes Top Stories)",
@@ -1287,8 +1313,10 @@
       {
         "parameters": {
           "promptType": "define",
-          "text": "=Her er de seneste 5 nyheder fra New York Times. Lav dem om til et kort og spændende nyhedsbrev på dansk: {{ $json[\"all news\"] }}\"",
-          "options": {}
+          "text": "=I have received this news data:\n{{ $json[\"all news\"] }}\n\nWrite a detailed news report. DO NOT USE BULLETS. \n\nFor each of the top 3 stories, use this exact format:\n\n**[INSERT ALL-CAPS HEADLINE HERE]**\n\n[Insert a very long, detailed paragraph here with at least 100 words of analysis and description. Focus on flow and professional journalism style.]\n\n---\n\nAvoid short summaries. I want deep, long-form paragraphs for each topic.",
+          "options": {
+            "systemMessage": "You are a professional News Editor. You are prohibited from using bullet points or lists of any kind. \n\nStrict Layout Rules:\n1. Each news story MUST be a long, detailed paragraph of 5-8 sentences.\n2. Headlines MUST be written in ALL CAPS and wrapped in double asterisks like this: **TITLE HERE**.\n3. Use triple line breaks between stories to ensure they are physically separated.\n4. Total prohibition of symbols like \"-\", \"*\", or \"•\" at the start of lines."
+          }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 3.1,
@@ -1407,7 +1435,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "3dd06f10-3a25-4c87-b1a1-ce414534a7a4",
+    "versionId": "c495acb1-2f68-4ea7-ae0a-e3e731503d6b",
     "activeVersionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
     "triggerCount": 0,
     "shared": [
