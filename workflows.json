@@ -637,7 +637,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T11:52:44.887Z",
+    "updatedAt": "2026-03-17T13:54:56.490Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach",
@@ -645,19 +645,15 @@
     "isArchived": false,
     "nodes": [
       {
-        "parameters": {
-          "path": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2.1,
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
         "position": [
-          0,
+          208,
           0
         ],
-        "id": "775aad77-d55e-4ac7-95aa-a27df6cf7878",
-        "name": "Webhook",
-        "webhookId": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2"
+        "id": "d8953853-604d-4787-a6b9-7abaccd95385",
+        "name": "Trigger Node"
       },
       {
         "parameters": {
@@ -668,16 +664,16 @@
           "sendBody": true,
           "contentType": "raw",
           "rawContentType": "application/json",
-          "body": "={ \"statements\": [ { \"statement\": \"MATCH (d:Document) RETURN d.title, substring(d.content,0,200) AS preview LIMIT 5\", \"parameters\": {} } ] }",
+          "body": "=={\n  \"statements\": [\n    {\n      \"statement\": \"MATCH (d:Document)-[:LINKS_TO]->(related) WHERE toLower(d.content) CONTAINS toLower($query) RETURN d.title AS title, related.title AS related\",\n      \"parameters\": {\n        \"query\": \"={{$json.query}}\"\n      }\n    }\n  ]\n}",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
-          256,
+          672,
           0
         ],
-        "name": "Query Neo4j",
+        "name": "Graph Search – Neo4j",
         "id": "ddadad9b-4aa8-4055-94f6-8ae94ff4bb06",
         "credentials": {
           "httpBasicAuth": {
@@ -685,14 +681,72 @@
             "name": "Unnamed credential 3"
           }
         }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "33f301c0-753a-42ae-92d3-6d3c536b858a",
+                "name": "query",
+                "value": "=ai agents",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          416,
+          0
+        ],
+        "id": "77540220-7f51-417e-8127-3c55f8dcefb4",
+        "name": "Input – User Query"
+      },
+      {
+        "parameters": {
+          "jsCode": "const results = $json.results;\n\nif (!results || results.length === 0) {\n  return [{ json: { message: \"No graph results\" } }];\n}\n\nconst rows = results[0].data;\n\nif (!rows || rows.length === 0) {\n  return [{ json: { message: \"No matches found\" } }];\n}\n\nreturn rows.map(r => ({\n  json: {\n    title: r.row[0],\n    related: r.row[1]\n  }\n}));"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          0
+        ],
+        "id": "f634fda6-4719-41b5-b312-f801bfa2b68b",
+        "name": "Parse Graph Results"
       }
     ],
     "connections": {
-      "Webhook": {
+      "Trigger Node": {
         "main": [
           [
             {
-              "node": "Query Neo4j",
+              "node": "Input – User Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Input – User Query": {
+        "main": [
+          [
+            {
+              "node": "Graph Search – Neo4j",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Graph Search – Neo4j": {
+        "main": [
+          [
+            {
+              "node": "Parse Graph Results",
               "type": "main",
               "index": 0
             }
@@ -707,7 +761,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
+    "versionId": "ac3720e3-41c2-4fd6-84b2-429b772cdb28",
     "activeVersionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
     "triggerCount": 1,
     "shared": [
