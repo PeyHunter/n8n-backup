@@ -637,7 +637,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T10:25:37.511Z",
+    "updatedAt": "2026-03-17T11:15:40.909Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach",
@@ -658,9 +658,36 @@
         "id": "775aad77-d55e-4ac7-95aa-a27df6cf7878",
         "name": "Webhook",
         "webhookId": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2"
+      },
+      {
+        "parameters": {
+          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
+          "authentication": "predefinedCredentialType",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          208,
+          0
+        ],
+        "id": "618d34d5-7a4b-43cb-83f8-a92609cfdac8",
+        "name": "HTTP Request"
       }
     ],
-    "connections": {},
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
     "settings": {
       "executionOrder": "v1",
       "availableInMCP": false
@@ -668,7 +695,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "b2166490-0bef-45b1-9265-1fbbf1652302",
+    "versionId": "a18260af-798d-477c-8253-7fcecb3d5870",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
