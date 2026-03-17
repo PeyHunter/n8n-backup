@@ -817,7 +817,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-16T15:54:20.896Z",
+    "updatedAt": "2026-03-17T07:39:37.437Z",
     "createdAt": "2026-03-16T12:20:12.534Z",
     "id": "hdIUjPmIFSudP5V4GQ7fK",
     "name": "Backup Flow",
@@ -896,8 +896,8 @@
         "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
         "credentials": {
           "githubApi": {
-            "id": "rypyzrEVmLTQj2Mr",
-            "name": "GitHub account 2"
+            "id": "Peeyx3SyyPL9AtUs",
+            "name": "GitHub account 3"
           }
         }
       },
@@ -969,7 +969,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "10b70252-40c1-4c5a-ab8d-b15971a80b59",
+    "versionId": "6565801b-2c89-49e2-b978-dee0ed4f90e3",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
