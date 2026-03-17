@@ -1,101 +1,107 @@
 [
   {
-    "updatedAt": "2026-03-16T12:07:53.694Z",
-    "createdAt": "2026-03-16T12:07:53.694Z",
-    "id": "4oBZAGalPziTBL2b6nXBg",
-    "name": "Email Weather Repport",
+    "updatedAt": "2026-03-17T09:37:20.920Z",
+    "createdAt": "2026-03-17T09:35:30.380Z",
+    "id": "1JDxkz6iohY4ry06UZ4tg",
+    "name": "Backup Flow",
     "active": false,
     "isArchived": false,
     "nodes": [
       {
         "parameters": {
-          "fromEmail": "Nando.goat@gmail.com",
-          "toEmail": "Nando.goat@gmail.com",
-          "subject": "Todays weather in Copenhagen",
-          "emailFormat": "text",
-          "text": "=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.emailSend",
-        "typeVersion": 2.1,
-        "position": [
-          368,
-          -96
-        ],
-        "id": "d091074b-5a44-4ccd-9ea2-028e0d0de940",
-        "name": "Send email",
-        "webhookId": "43a918b1-7d8c-40e5-b577-c03e4d757ac5"
-      },
-      {
-        "parameters": {
-          "url": "https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
-        "position": [
-          -48,
-          -96
-        ],
-        "id": "a17a3c3f-0175-4efe-8e63-51b599f9cfcf",
-        "name": "HTTP Request"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "d94852b8-d813-48ec-abb6-c898a642480e",
-                "name": "city",
-                "value": "={{ $json.name }}",
-                "type": "string"
-              },
-              {
-                "id": "ead085d8-0993-4d64-8f43-1b56161f6026",
-                "name": "temp",
-                "value": "={{ $json.main.temp }}",
-                "type": "number"
-              },
-              {
-                "id": "8c8d62d6-399a-4bcc-8e98-2a3d19a4695b",
-                "name": "feels_like",
-                "value": "={{ $json.main.feels_like }}",
-                "type": "number"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          160,
-          -96
-        ],
-        "id": "1b5b2f56-4d78-4acd-97a5-1e3191a5289c",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
           "rule": {
             "interval": [
               {
-                "field": "weeks"
+                "field": "minutes",
+                "minutesInterval": 30
               }
             ]
           }
         },
         "type": "n8n-nodes-base.scheduleTrigger",
-        "typeVersion": 1.3,
+        "typeVersion": 1,
         "position": [
-          -256,
-          -96
+          -432,
+          -128
         ],
-        "id": "43d9d9af-d19b-4edd-bf59-91659d550f89",
-        "name": "Schedule Trigger"
+        "name": "Schedule Trigger",
+        "id": "3208cb53-2c03-43e2-864d-70ab0d7199a5"
+      },
+      {
+        "parameters": {
+          "url": "http://host.docker.internal:5678/api/v1/workflows",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-N8N-API-KEY",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3NWRiNzUyNS1kNWJkLTRkNTUtOGE3Ny02MGU5NTMwYThmMzAiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzczNzQwMTUyLCJleHAiOjE3Nzg5MDQwMDB9.dRurgqTaAV6QLSbqj7ZkZS3KQ646rOph7Pi77foDris"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          -208,
+          -128
+        ],
+        "name": "HTTP Request",
+        "id": "3957c1ca-47e9-4aeb-bcd2-a2a2ba163b76"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3,
+        "position": [
+          0,
+          -128
+        ],
+        "name": "Edit Fields",
+        "id": "ad3aee6a-0a68-4c23-9710-ecf475db35a0"
+      },
+      {
+        "parameters": {
+          "resource": "file",
+          "operation": "edit",
+          "owner": {
+            "mode": "name",
+            "value": "peyhunter"
+          },
+          "repository": {
+            "mode": "name",
+            "value": "n8n-backup"
+          },
+          "filePath": "workflows.json",
+          "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
+          "commitMessage": "Hourly Commit"
+        },
+        "type": "n8n-nodes-base.github",
+        "typeVersion": 1,
+        "position": [
+          208,
+          -128
+        ],
+        "name": "Edit a file",
+        "id": "420a2d38-c278-424a-8d4b-43eea862c7a2",
+        "webhookId": "061abb0f-d289-4025-a03b-2c8c1aeccae0"
       }
     ],
     "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
       "HTTP Request": {
         "main": [
           [
@@ -111,18 +117,7 @@
         "main": [
           [
             {
-              "node": "Send email",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Schedule Trigger": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request",
+              "node": "Edit a file",
               "type": "main",
               "index": 0
             }
@@ -137,415 +132,120 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "f55c3b3f-b44f-4101-8628-e79d3584db35",
+    "versionId": "4ad86bf6-6692-438a-892b-b460677c3f9e",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-03-16T12:07:53.697Z",
-        "createdAt": "2026-03-16T12:07:53.697Z",
+        "updatedAt": "2026-03-17T09:35:30.383Z",
+        "createdAt": "2026-03-17T09:35:30.383Z",
         "role": "workflow:owner",
-        "workflowId": "4oBZAGalPziTBL2b6nXBg",
-        "projectId": "02PFphAbImfXlxF1"
+        "workflowId": "1JDxkz6iohY4ry06UZ4tg",
+        "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
     "activeVersion": null,
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T08:34:34.449Z",
-    "createdAt": "2026-03-16T12:18:58.189Z",
-    "id": "ARtmfKgvVeCoAk0TopemV",
-    "name": "RAG-Embed",
+    "updatedAt": "2026-03-17T09:31:58.502Z",
+    "createdAt": "2026-03-17T09:31:58.502Z",
+    "id": "BvivyG9x6oUQWIM1Qt-uL",
+    "name": "Daily NYTimes Top News",
     "active": false,
     "isArchived": false,
     "nodes": [
       {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {
+          "rule": {
+            "interval": [
+              {}
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1,
         "position": [
-          -448,
-          -112
+          0,
+          0
         ],
-        "id": "b9efdaae-8e30-4bd3-8183-7c0c3a87821f",
-        "name": "When clicking ‘Execute workflow’"
+        "name": "Daily Trigger",
+        "id": "f2fb94ae-c5a5-4cf5-b240-85462ad3c442"
       },
       {
         "parameters": {
-          "jsCode": "return [\n  {\n    json: {\n      question: \"How do vector databases work?\"\n    }\n  }\n];"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -240,
-          -112
-        ],
-        "id": "e1a2878c-f45f-49f5-8b67-48eb3f53b1fc",
-        "name": "Set Question"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://api.openai.com/v1/embeddings",
-          "authentication": "predefinedCredentialType",
-          "nodeCredentialType": "openAiApi",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "Content-Type",
-                "value": "application/json"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "model",
-                "value": "=text-embedding-3-small"
-              },
-              {
-                "name": "input",
-                "value": "={{$json.question}}"
-              }
-            ]
-          },
+          "url": "https://api.nytimes.com/svc/topstories/v2/home.json?api-key={{ $credentials.nytimes.key }}",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
+        "typeVersion": 4,
         "position": [
-          -32,
-          -112
+          208,
+          0
         ],
-        "id": "d0987911-4b2a-4eb0-967a-878af922ba38",
-        "name": "HTTP Request",
-        "credentials": {
-          "openAiApi": {
-            "id": "oyywDawCSf6utBP0",
-            "name": "OpenAi account"
-          }
-        }
+        "name": "Get Top Stories",
+        "id": "98c18ca5-300d-4d5e-9f1a-601d3f961d1b"
       },
       {
         "parameters": {
-          "jsCode": "return items.map((item, index) => {\n  const original = $items(\"Set Question\")[index].json;\n\n  return {\n    json: {\n      question: original.question,\n      embedding: item.json.data[0].embedding\n    }\n  };\n});"
+          "jsCode": "return items.map(item => {\n  const top5 = item.json.results.slice(0,5).map((story, idx) => `${idx+1}. ${story.title} - ${story.url}`).join('\\n\\n');\n  return { json: { emailBody: `Top 5 NYTimes stories today:\\n\\n${top5}` } };\n});"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          176,
-          -112
+          400,
+          0
         ],
-        "id": "dc5d7b4e-3754-4ac9-ada8-d92e3124cda1",
-        "name": "Code in JavaScript"
-      },
-      {
-        "parameters": {
-          "jsCode": "// Access the first input item\nconst input = items[0].json;\n\n// Construct the Neo4j body\nconst body = {\n  statements: [\n    {\n      statement: `\nCALL db.index.vector.queryNodes('course_chunks', 3, $embedding)\nYIELD node, score\nRETURN node.id AS id, node.text AS text, node.source AS source, score\nORDER BY score DESC\n      `,\n      parameters: {\n        embedding: input.embedding\n      }\n    }\n  ]\n};\n\n// Return the JSON with the question and Neo4j body\nreturn [\n  {\n    json: {\n      question: input.question,\n      neo4jBody: JSON.stringify(body)\n    }\n  }\n];"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          384,
-          -112
-        ],
-        "id": "b3d23b7f-3a7b-4024-b4f1-751f008c3356",
-        "name": "Code in JavaScript1"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "http://neo4j:7474/db/opgave/tx/commit",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpBasicAuth",
-          "sendBody": true,
-          "contentType": "raw",
-          "rawContentType": "application/json",
-          "body": "={{$json.neo4jBody}}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
-        "position": [
-          592,
-          -112
-        ],
-        "id": "9f2f988e-5e0b-4065-87ae-78465bfedc16",
-        "name": "HTTP Request1",
-        "credentials": {
-          "httpBasicAuth": {
-            "id": "q8oz8BDlooBWvkx1",
-            "name": "Unnamed credential 3"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "return items.map(item => {\n  const rows = item.json.results?.[0]?.data ?? [];\n\n  return {\n    json: {\n      matches: rows.map(row => ({\n        id: row.row[0],\n        text: row.row[1],\n        source: row.row[2],\n        score: row.row[3]\n      }))\n    }\n  };\n});"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          800,
-          -112
-        ],
-        "id": "4b4a2ac8-3fc9-4a9b-b7d9-b03e2fc53eb0",
-        "name": "Code in JavaScript2"
-      }
-    ],
-    "connections": {
-      "When clicking ‘Execute workflow’": {
-        "main": [
-          [
-            {
-              "node": "Set Question",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Set Question": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request": {
-        "main": [
-          [
-            {
-              "node": "Code in JavaScript",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Code in JavaScript": {
-        "main": [
-          [
-            {
-              "node": "Code in JavaScript1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Code in JavaScript1": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request1": {
-        "main": [
-          [
-            {
-              "node": "Code in JavaScript2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false
-    },
-    "staticData": null,
-    "meta": null,
-    "pinData": {},
-    "versionId": "acde2c89-206f-480b-8429-c49743e531f3",
-    "activeVersionId": null,
-    "triggerCount": 0,
-    "shared": [
-      {
-        "updatedAt": "2026-03-16T12:18:58.194Z",
-        "createdAt": "2026-03-16T12:18:58.194Z",
-        "role": "workflow:owner",
-        "workflowId": "ARtmfKgvVeCoAk0TopemV",
-        "projectId": "02PFphAbImfXlxF1"
-      }
-    ],
-    "activeVersion": null,
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-03-16T12:12:52.000Z",
-    "createdAt": "2026-03-16T12:04:04.469Z",
-    "id": "I7oxxE52NM6GvzAUDEWys",
-    "name": "Current News Workflow",
-    "active": false,
-    "isArchived": true,
-    "nodes": [
-      {
-        "parameters": {
-          "modelId": {
-            "__rl": true,
-            "value": "gpt-4.1-mini",
-            "mode": "list",
-            "cachedResultName": "GPT-4.1-MINI"
-          },
-          "responses": {
-            "values": [
-              {
-                "content": "={{ $json.chatInput }}"
-              },
-              {
-                "role": "system",
-                "content": "You are a professional news anchor. Always use the 'get_nyt_news' tool to fetch data. Your goal is to provide a concise summary of the TOP 3 most important news stories from the data provided. Present them in a clear, journalistic style in English.\nYou are a news anchor. NEVER output JSON or technical symbols like { } [ ] or \\n. Only use plain English text and bullet points."
-              }
-            ]
-          },
-          "builtInTools": {},
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.openAi",
-        "typeVersion": 2.1,
-        "position": [
-          48,
-          -208
-        ],
-        "id": "c2271a50-de68-4f99-b290-fee9d07243ae",
-        "name": "Message a model",
-        "credentials": {
-          "openAiApi": {
-            "id": "oyywDawCSf6utBP0",
-            "name": "OpenAi account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-        "typeVersion": 1.4,
-        "position": [
-          -176,
-          -208
-        ],
-        "id": "94071780-de9b-49b3-9bde-7c9c4463b45c",
-        "name": "When chat message received",
-        "webhookId": "716b35a2-976f-461e-9215-3e487cd98f61"
-      },
-      {
-        "parameters": {
-          "description": "Use this tool to get the latest world news from the New York Times. Use it whenever the user asks about news or current events.",
-          "workflowId": {
-            "__rl": true,
-            "value": "sTchKqFj3OSjKMrK",
-            "mode": "list",
-            "cachedResultUrl": "/workflow/sTchKqFj3OSjKMrK",
-            "cachedResultName": "[SUB] Current News (Get NYTimes Top Stories)"
-          },
-          "workflowInputs": {
-            "mappingMode": "defineBelow",
-            "value": {},
-            "matchingColumns": [],
-            "schema": [],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-        "typeVersion": 2.2,
-        "position": [
-          128,
-          16
-        ],
-        "id": "461f54f9-5c1a-48aa-8bcc-b7618360afda",
-        "name": "Call n8n Workflow Tool"
+        "name": "Format Email Body",
+        "id": "a7cd65e4-704f-46a8-b655-110130c64589"
       },
       {
         "parameters": {
           "fromEmail": "Nando.goat@gmail.com",
           "toEmail": "Nando.goat@gmail.com",
-          "subject": "Dagens nyheder",
-          "html": "={{ $json.data }}",
+          "subject": "Today's Top 5 NYTimes Stories",
+          "text": "={{ $json.emailBody }}",
           "options": {}
         },
         "type": "n8n-nodes-base.emailSend",
-        "typeVersion": 2.1,
+        "typeVersion": 2,
         "position": [
           608,
-          -208
+          0
         ],
-        "id": "5428c7e5-5863-4c03-a994-6cb799d12f32",
-        "name": "Send email",
-        "webhookId": "0e4ea8fb-bd07-44cd-8e02-bacb84f4aee2"
-      },
-      {
-        "parameters": {
-          "mode": "markdownToHtml",
-          "markdown": "={{ $json.output[0].content[0].text }}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.markdown",
-        "typeVersion": 1,
-        "position": [
-          400,
-          -208
-        ],
-        "id": "9acceaad-7c4f-4bc8-b292-57f4a40e3f6f",
-        "name": "Markdown"
+        "name": "Send Email",
+        "id": "b0702308-3196-4203-a2ba-cc7aeb307901",
+        "webhookId": "78d3648c-41ae-493e-bff5-7a8886b06eef"
       }
     ],
     "connections": {
-      "When chat message received": {
+      "Daily Trigger": {
         "main": [
           [
             {
-              "node": "Message a model",
+              "node": "Get Top Stories",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Call n8n Workflow Tool": {
-        "ai_tool": [
-          [
-            {
-              "node": "Message a model",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Message a model": {
+      "Get Top Stories": {
         "main": [
           [
             {
-              "node": "Markdown",
+              "node": "Format Email Body",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Markdown": {
+      "Format Email Body": {
         "main": [
           [
             {
-              "node": "Send email",
+              "node": "Send Email",
               "type": "main",
               "index": 0
             }
@@ -560,26 +260,26 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "2031eed4-d980-4eef-a259-29d8cc139766",
+    "versionId": "25e04638-095b-4c19-ae2f-a5abc8c2ff75",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-03-16T12:04:04.477Z",
-        "createdAt": "2026-03-16T12:04:04.477Z",
+        "updatedAt": "2026-03-17T09:31:58.508Z",
+        "createdAt": "2026-03-17T09:31:58.508Z",
         "role": "workflow:owner",
-        "workflowId": "I7oxxE52NM6GvzAUDEWys",
-        "projectId": "02PFphAbImfXlxF1"
+        "workflowId": "BvivyG9x6oUQWIM1Qt-uL",
+        "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
     "activeVersion": null,
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T08:28:11.971Z",
-    "createdAt": "2026-03-16T12:18:17.534Z",
-    "id": "YYEojkcCAz8xV8QhdKDKM",
-    "name": "RAG-Recieve",
+    "updatedAt": "2026-03-17T09:34:48.637Z",
+    "createdAt": "2026-03-17T09:34:37.716Z",
+    "id": "Xgd2flbp4fPcMlLNzwAZV",
+    "name": "RAG-Receive",
     "active": false,
     "isArchived": false,
     "nodes": [
@@ -588,24 +288,24 @@
         "type": "n8n-nodes-base.manualTrigger",
         "typeVersion": 1,
         "position": [
-          -224,
-          -32
+          -384,
+          -144
         ],
-        "id": "c0dea9d6-f4a2-4f0a-ae00-71b3779baf54",
-        "name": "When clicking ‘Execute workflow’"
+        "name": "Manual Trigger",
+        "id": "02127cb9-e055-466e-92f6-62b1095d7ae4"
       },
       {
         "parameters": {
-          "jsCode": "return [\n  {\n    json: {\n      id: \"chunk1\",\n      text: \"Retrieval Augmented Generation combines search and LLM generation.\",\n      source: \"week7\"\n    }\n  },\n  {\n    json: {\n      id: \"chunk2\",\n      text: \"Embeddings convert text into vectors so meaning can be compared mathematically.\",\n      source: \"week7\"\n    }\n  },\n  {\n    json: {\n      id: \"chunk3\",\n      text: \"Vector databases store embeddings and allow semantic similarity search.\",\n      source: \"week7\"\n    }\n  }\n];"
+          "jsCode": "return [{ json: { id:'chunk1', text:'Retrieval Augmented Generation combines search and LLM generation.', source:'week7' } }, { json: { id:'chunk2', text:'Embeddings convert text into vectors so meaning can be compared mathematically.', source:'week7' } }, { json: { id:'chunk3', text:'Vector databases store embeddings and allow semantic similarity search.', source:'week7' } }];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -16,
-          -32
+          -192,
+          -144
         ],
-        "id": "c6dd183a-b0c9-44e0-87ce-9e16b861ee1f",
-        "name": "Sample Chunks"
+        "name": "Sample Chunks",
+        "id": "05a61eaf-2b71-4da0-bccb-93a1963b3e0d"
       },
       {
         "parameters": {
@@ -616,67 +316,57 @@
           "sendHeaders": true,
           "headerParameters": {
             "parameters": [
-              {
-                "name": "Content-Type",
-                "value": "=application/json"
-              }
+              {}
             ]
           },
           "sendBody": true,
           "bodyParameters": {
             "parameters": [
-              {
-                "name": "model",
-                "value": "=text-embedding-3-small"
-              },
-              {
-                "name": "input",
-                "value": "={{$json.text}}"
-              }
+              {}
             ]
           },
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
+        "typeVersion": 4,
         "position": [
-          192,
-          -32
+          16,
+          -144
         ],
-        "id": "0836619b-8aa3-4390-ba8c-d11cb43b52b2",
         "name": "OpenAi Embedding",
+        "id": "56ff353a-3b1c-4fee-95eb-525421a26da5",
         "credentials": {
           "openAiApi": {
-            "id": "oyywDawCSf6utBP0",
+            "id": "ixmI9i4jIDxysSAl",
             "name": "OpenAi account"
           }
         }
       },
       {
         "parameters": {
-          "jsCode": "return items.map((item, index) => {\n  const original = $items(\"Sample Chunks\")[index].json;\n\n  return {\n    json: {\n      id: original.id,\n      text: original.text,\n      source: original.source,\n      embedding: item.json.data[0].embedding\n    }\n  };\n});"
+          "jsCode": "return items.map((item,index)=>{const original=$items('Sample Chunks')[index].json;return { json:{ id:original.id, text:original.text, source:original.source, embedding:item.json.data[0].embedding } };});"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          400,
-          -32
+          224,
+          -144
         ],
-        "id": "e166f4bb-e00a-41fa-a300-fa378d85916a",
-        "name": "Merge Data"
+        "name": "Merge Data",
+        "id": "88cbc344-6dca-42d4-8300-c3b6d84188e2"
       },
       {
         "parameters": {
-          "jsCode": "return items.map(item => {\n  const body = {\n    statements: [\n      {\n        statement: \"MERGE (c:Chunk {id:$id}) SET c.text=$text, c.source=$source, c.embedding=$embedding\",\n        parameters: {\n          id: item.json.id,\n          text: item.json.text,\n          source: item.json.source,\n          embedding: item.json.embedding,\n        },\n      },\n    ],\n  };\n\n  return {\n    json: {\n      neo4jBody: JSON.stringify(body),\n    },\n  };\n});"
+          "jsCode": "return items.map(item=>{const body={ statements:[ { statement:'MERGE (c:Chunk {id:$id}) SET c.text=$text, c.source=$source, c.embedding=$embedding', parameters:{ id:item.json.id, text:item.json.text, source:item.json.source, embedding:item.json.embedding } } ] }; return { json:{ neo4jBody:JSON.stringify(body) } };});"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          608,
-          -32
+          416,
+          -144
         ],
-        "id": "0a39ab3c-e7d0-438b-bc75-a7dd071c289f",
-        "name": "Prepare Neo4j Body"
+        "name": "Prepare Neo4j Body",
+        "id": "de214cb7-8d5c-4604-ae6d-7788dba62989"
       },
       {
         "parameters": {
@@ -685,14 +375,6 @@
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBasicAuth",
           "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "Content-Type",
-                "value": "application/json"
-              }
-            ]
-          },
           "sendBody": true,
           "contentType": "raw",
           "rawContentType": "application/json",
@@ -700,23 +382,17 @@
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
+        "typeVersion": 4,
         "position": [
-          784,
-          -32
+          624,
+          -144
         ],
-        "id": "a4978f56-7566-4dcb-8371-0b19bf411dbe",
         "name": "HTTP Request",
-        "credentials": {
-          "httpBasicAuth": {
-            "id": "q8oz8BDlooBWvkx1",
-            "name": "Unnamed credential 3"
-          }
-        }
+        "id": "ebf454e0-5339-4471-af54-beb92ef24453"
       }
     ],
     "connections": {
-      "When clicking ‘Execute workflow’": {
+      "Manual Trigger": {
         "main": [
           [
             {
@@ -779,204 +455,120 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "73b4af8c-7a5c-4220-a0eb-dbc95e2ff2c8",
+    "versionId": "e95f01dd-6364-4f90-a59c-a5ad532d979b",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-03-16T12:18:17.538Z",
-        "createdAt": "2026-03-16T12:18:17.538Z",
+        "updatedAt": "2026-03-17T09:34:37.720Z",
+        "createdAt": "2026-03-17T09:34:37.720Z",
         "role": "workflow:owner",
-        "workflowId": "YYEojkcCAz8xV8QhdKDKM",
-        "projectId": "02PFphAbImfXlxF1"
+        "workflowId": "Xgd2flbp4fPcMlLNzwAZV",
+        "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
     "activeVersion": null,
     "tags": []
   },
   {
-    "updatedAt": "2026-03-16T12:14:21.167Z",
-    "createdAt": "2026-03-16T12:14:03.792Z",
-    "id": "ftHgu9aRVUTihiDXZzmtN",
-    "name": "[SUB] Current News (Get NYTimes Top Stories)",
+    "updatedAt": "2026-03-17T09:31:02.061Z",
+    "createdAt": "2026-03-17T09:31:02.061Z",
+    "id": "yAyV8DNoEYARceU0Yku_i",
+    "name": "Email Weather Report",
     "active": false,
     "isArchived": false,
     "nodes": [
-      {
-        "parameters": {
-          "url": "https://api.nytimes.com/svc/topstories/v2/world.json?api-key={{ $credentials.nytApi.key }}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 2,
-        "position": [
-          -448,
-          -16
-        ],
-        "id": "173cbb08-a5a8-4591-9bc6-92aef441ca25",
-        "name": "Get NYT Top Stories"
-      }
-    ],
-    "connections": {},
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false
-    },
-    "staticData": null,
-    "meta": null,
-    "pinData": {},
-    "versionId": "b47cf88f-cf91-498d-bc19-758c4d2d4eee",
-    "activeVersionId": null,
-    "triggerCount": 0,
-    "shared": [
-      {
-        "updatedAt": "2026-03-16T12:14:03.795Z",
-        "createdAt": "2026-03-16T12:14:03.795Z",
-        "role": "workflow:owner",
-        "workflowId": "ftHgu9aRVUTihiDXZzmtN",
-        "projectId": "02PFphAbImfXlxF1"
-      }
-    ],
-    "activeVersion": null,
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-03-17T08:26:40.339Z",
-    "createdAt": "2026-03-16T12:20:12.534Z",
-    "id": "hdIUjPmIFSudP5V4GQ7fK",
-    "name": "Backup Flow",
-    "active": true,
-    "isArchived": false,
-    "nodes": [
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "8875d39f-7b40-4b10-8ed7-bb0e749bdae5",
-                "name": "data",
-                "value": "={{ $json.data }}",
-                "type": "array"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          128,
-          -160
-        ],
-        "id": "261c7b60-f622-485a-a808-1182d815d929",
-        "name": "Edit Fields"
-      },
       {
         "parameters": {
           "rule": {
             "interval": [
-              {
-                "field": "minutes",
-                "minutesInterval": 30
-              }
+              {}
             ]
           }
         },
         "type": "n8n-nodes-base.scheduleTrigger",
-        "typeVersion": 1.3,
+        "typeVersion": 1,
         "position": [
           -288,
-          -160
+          -48
         ],
-        "id": "ddd3be77-9fd5-4e71-a131-b37157ad4c61",
-        "name": "Schedule Trigger"
+        "name": "Daily Trigger",
+        "id": "f42e285a-a066-4006-9631-367368249622"
       },
       {
         "parameters": {
-          "resource": "file",
-          "operation": "edit",
-          "owner": {
-            "__rl": true,
-            "mode": "name",
-            "value": "peyhunter"
-          },
-          "repository": {
-            "__rl": true,
-            "value": "n8n-backup",
-            "mode": "name"
-          },
-          "filePath": "workflows.json",
-          "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-          "commitMessage": "Hourly Commit"
-        },
-        "type": "n8n-nodes-base.github",
-        "typeVersion": 1.1,
-        "position": [
-          336,
-          -160
-        ],
-        "id": "c2853b4a-8ad5-44e2-bdc1-fa31390d9ad1",
-        "name": "Edit a file",
-        "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
-        "credentials": {
-          "githubApi": {
-            "id": "Peeyx3SyyPL9AtUs",
-            "name": "GitHub account 3"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "url": "http://host.docker.internal:5678/api/v1/workflows",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "X-N8N-API-KEY",
-                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDBkZjY5YS03ODkwLTQyNWUtOWI2YS0wMzVkY2EyNzQ0NTciLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzczNjc1Mjk0LCJleHAiOjE3Nzg4MTc2MDB9.F2WwLDVypAGMmyoQYrL8CggcrTJwSV4zuuUs_t_BTB8"
-              }
-            ]
-          },
+          "url": "https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid={{ $credentials.openWeather.key }}&units=metric",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
+        "typeVersion": 4,
         "position": [
-          -80,
-          -160
+          -96,
+          -48
         ],
-        "id": "cf5fb3f8-6db3-4e33-bbbc-24c9df12a779",
-        "name": "HTTP Request"
+        "name": "Get Weather",
+        "id": "7116d666-1a68-4eab-bdcc-c33b4fecbdbd"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3,
+        "position": [
+          112,
+          -48
+        ],
+        "name": "Extract Data",
+        "id": "c064ad79-c9e0-4093-8b31-da51866c0a84"
+      },
+      {
+        "parameters": {
+          "fromEmail": "Nando.goat@gmail.com",
+          "toEmail": "Nando.goat@gmail.com",
+          "subject": "Today's weather in Copenhagen",
+          "text": "=Vejret i {{ $json.city }}\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2,
+        "position": [
+          320,
+          -48
+        ],
+        "name": "Send Email",
+        "id": "4e90612f-70e1-4bc0-b0d6-274afd948f51",
+        "webhookId": "dd0dd9ee-f903-4630-bbb8-cf9de84d2aa4"
       }
     ],
     "connections": {
-      "Edit Fields": {
+      "Daily Trigger": {
         "main": [
           [
             {
-              "node": "Edit a file",
+              "node": "Get Weather",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Schedule Trigger": {
+      "Get Weather": {
         "main": [
           [
             {
-              "node": "HTTP Request",
+              "node": "Extract Data",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "HTTP Request": {
+      "Extract Data": {
         "main": [
           [
             {
-              "node": "Edit Fields",
+              "node": "Send Email",
               "type": "main",
               "index": 0
             }
@@ -984,202 +576,6 @@
         ]
       }
     },
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false,
-      "timeSavedMode": "fixed",
-      "callerPolicy": "workflowsFromSameOwner"
-    },
-    "staticData": null,
-    "meta": {
-      "templateCredsSetupCompleted": true
-    },
-    "pinData": {},
-    "versionId": "70118dc7-a693-4e4d-9621-2d47e4a5c941",
-    "activeVersionId": "70118dc7-a693-4e4d-9621-2d47e4a5c941",
-    "triggerCount": 1,
-    "shared": [
-      {
-        "updatedAt": "2026-03-16T12:20:12.537Z",
-        "createdAt": "2026-03-16T12:20:12.537Z",
-        "role": "workflow:owner",
-        "workflowId": "hdIUjPmIFSudP5V4GQ7fK",
-        "projectId": "02PFphAbImfXlxF1"
-      }
-    ],
-    "activeVersion": {
-      "updatedAt": "2026-03-17T08:26:30.000Z",
-      "createdAt": "2026-03-17T07:40:44.857Z",
-      "versionId": "70118dc7-a693-4e4d-9621-2d47e4a5c941",
-      "workflowId": "hdIUjPmIFSudP5V4GQ7fK",
-      "nodes": [
-        {
-          "parameters": {
-            "assignments": {
-              "assignments": [
-                {
-                  "id": "8875d39f-7b40-4b10-8ed7-bb0e749bdae5",
-                  "name": "data",
-                  "value": "={{ $json.data }}",
-                  "type": "array"
-                }
-              ]
-            },
-            "options": {}
-          },
-          "type": "n8n-nodes-base.set",
-          "typeVersion": 3.4,
-          "position": [
-            128,
-            -160
-          ],
-          "id": "261c7b60-f622-485a-a808-1182d815d929",
-          "name": "Edit Fields"
-        },
-        {
-          "parameters": {
-            "rule": {
-              "interval": [
-                {
-                  "field": "minutes",
-                  "minutesInterval": 30
-                }
-              ]
-            }
-          },
-          "type": "n8n-nodes-base.scheduleTrigger",
-          "typeVersion": 1.3,
-          "position": [
-            -288,
-            -160
-          ],
-          "id": "ddd3be77-9fd5-4e71-a131-b37157ad4c61",
-          "name": "Schedule Trigger"
-        },
-        {
-          "parameters": {
-            "resource": "file",
-            "operation": "edit",
-            "owner": {
-              "__rl": true,
-              "mode": "name",
-              "value": "peyhunter"
-            },
-            "repository": {
-              "__rl": true,
-              "value": "n8n-backup",
-              "mode": "name"
-            },
-            "filePath": "workflows.json",
-            "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-            "commitMessage": "Hourly Commit"
-          },
-          "type": "n8n-nodes-base.github",
-          "typeVersion": 1.1,
-          "position": [
-            336,
-            -160
-          ],
-          "id": "c2853b4a-8ad5-44e2-bdc1-fa31390d9ad1",
-          "name": "Edit a file",
-          "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
-          "credentials": {
-            "githubApi": {
-              "id": "Peeyx3SyyPL9AtUs",
-              "name": "GitHub account 3"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "url": "http://host.docker.internal:5678/api/v1/workflows",
-            "sendHeaders": true,
-            "headerParameters": {
-              "parameters": [
-                {
-                  "name": "X-N8N-API-KEY",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDBkZjY5YS03ODkwLTQyNWUtOWI2YS0wMzVkY2EyNzQ0NTciLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzczNjc1Mjk0LCJleHAiOjE3Nzg4MTc2MDB9.F2WwLDVypAGMmyoQYrL8CggcrTJwSV4zuuUs_t_BTB8"
-                }
-              ]
-            },
-            "options": {}
-          },
-          "type": "n8n-nodes-base.httpRequest",
-          "typeVersion": 4.3,
-          "position": [
-            -80,
-            -160
-          ],
-          "id": "cf5fb3f8-6db3-4e33-bbbc-24c9df12a779",
-          "name": "HTTP Request"
-        }
-      ],
-      "connections": {
-        "Edit Fields": {
-          "main": [
-            [
-              {
-                "node": "Edit a file",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Schedule Trigger": {
-          "main": [
-            [
-              {
-                "node": "HTTP Request",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "HTTP Request": {
-          "main": [
-            [
-              {
-                "node": "Edit Fields",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        }
-      },
-      "authors": "Peyton Hunter",
-      "name": "Version 70118dc7",
-      "description": "",
-      "autosaved": true
-    },
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-03-16T12:15:10.461Z",
-    "createdAt": "2026-03-16T12:15:10.461Z",
-    "id": "qbM677BpBleC26FdQYDGF",
-    "name": "[SUB] Weather Forecast (Get OpenWeather Data)",
-    "active": false,
-    "isArchived": false,
-    "nodes": [
-      {
-        "parameters": {
-          "url": "https://api.openweathermap.org/data/2.5/weather?q=London&appid={{ $credentials.openWeather.key }}&units=metric",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 2,
-        "position": [
-          -400,
-          96
-        ],
-        "id": "6c7a50e1-dc6c-4818-80e2-668e1355e2e4",
-        "name": "Get London Weather"
-      }
-    ],
-    "connections": {},
     "settings": {
       "executionOrder": "v1",
       "availableInMCP": false
@@ -1187,254 +583,208 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "3663243b-2f06-4010-b1ae-c2fbf431f4a9",
+    "versionId": "4f74fe58-df00-403c-9455-aab6832b2775",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-03-16T12:15:10.464Z",
-        "createdAt": "2026-03-16T12:15:10.464Z",
+        "updatedAt": "2026-03-17T09:31:02.069Z",
+        "createdAt": "2026-03-17T09:31:02.069Z",
         "role": "workflow:owner",
-        "workflowId": "qbM677BpBleC26FdQYDGF",
-        "projectId": "02PFphAbImfXlxF1"
+        "workflowId": "yAyV8DNoEYARceU0Yku_i",
+        "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
     "activeVersion": null,
     "tags": []
   },
   {
-    "updatedAt": "2026-03-16T12:13:06.341Z",
-    "createdAt": "2026-03-16T12:12:17.809Z",
-    "id": "tRGMxpqwkkvMGOoUDSSbz",
-    "name": "Current News Workflow",
+    "updatedAt": "2026-03-17T09:33:29.556Z",
+    "createdAt": "2026-03-17T09:31:20.489Z",
+    "id": "yJHBAB5JLN1rHJi3xjLhM",
+    "name": "RAG-Embed",
     "active": false,
     "isArchived": false,
     "nodes": [
       {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "name": "Manual Trigger",
+        "id": "dfc577bd-0476-4b83-b6cf-efb38ba4ce82"
+      },
+      {
         "parameters": {
-          "modelId": {
-            "__rl": true,
-            "value": "gpt-4.1-mini",
-            "mode": "list",
-            "cachedResultName": "GPT-4.1-MINI"
-          },
-          "responses": {
-            "values": [
+          "jsCode": "return [{ json: { question: 'How do vector databases work?' } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          208,
+          0
+        ],
+        "name": "Set Question",
+        "id": "14bf0413-69cb-4581-8228-94f89c28f44c"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/embeddings",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
               {
-                "content": "={{ $json.chatInput }}"
+                "name": "model",
+                "value": "text-embedding-3-small"
               },
               {
-                "role": "system",
-                "content": "You are a professional news anchor. Always use the 'get_nyt_news' tool to fetch data. Your goal is to provide a concise summary of the TOP 3 most important news stories from the data provided. Present them in a clear, journalistic style in English.\nYou are a news anchor. NEVER output JSON or technical symbols like { } [ ] or \\n. Only use plain English text and bullet points."
+                "name": "input",
+                "value": "={{ $json.question }}"
               }
             ]
           },
-          "builtInTools": {},
           "options": {}
         },
-        "type": "@n8n/n8n-nodes-langchain.openAi",
-        "typeVersion": 2.1,
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
         "position": [
-          -16,
-          80
+          400,
+          0
         ],
-        "id": "7ea571cf-a864-4309-8d00-ced36b7eab9e",
-        "name": "Message a model",
+        "name": "Get Embedding",
+        "id": "c1960812-3836-48a5-8156-cbbce0b4591c",
         "credentials": {
           "openAiApi": {
-            "id": "oyywDawCSf6utBP0",
+            "id": "ixmI9i4jIDxysSAl",
             "name": "OpenAi account"
           }
         }
       },
       {
         "parameters": {
-          "options": {}
+          "jsCode": "return items.map((item, index) => ({ json: { question: $items('Set Question')[index].json.question, embedding: item.json.data[0].embedding } }));"
         },
-        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-        "typeVersion": 1.4,
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
         "position": [
-          -240,
-          80
+          608,
+          0
         ],
-        "id": "8c1256ac-bc0d-4d25-bb17-a97ebee7c201",
-        "name": "When chat message received",
-        "webhookId": "716b35a2-976f-461e-9215-3e487cd98f61"
+        "name": "Format Embedding",
+        "id": "cdf72373-960a-48aa-8538-90bb8937be0a"
       },
       {
         "parameters": {
-          "description": "Use this tool to get the latest world news from the New York Times. Use it whenever the user asks about news or current events.",
-          "workflowId": {
-            "__rl": true,
-            "value": "sTchKqFj3OSjKMrK",
-            "mode": "list",
-            "cachedResultUrl": "/workflow/sTchKqFj3OSjKMrK",
-            "cachedResultName": "[SUB] Current News (Get NYTimes Top Stories)"
-          },
-          "workflowInputs": {
-            "mappingMode": "defineBelow",
-            "value": {},
-            "matchingColumns": [],
-            "schema": [],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          }
+          "jsCode": "const body = { statements: [{ statement: `CALL db.index.vector.queryNodes('course_chunks', 3, $embedding) YIELD node, score RETURN node.id AS id, node.text AS text, node.source AS source, score ORDER BY score DESC`, parameters: { embedding: items[0].json.embedding } }] }; return [{ json: { question: items[0].json.question, neo4jBody: JSON.stringify(body) } }];"
         },
-        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-        "typeVersion": 2.2,
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
         "position": [
-          64,
-          304
+          800,
+          0
         ],
-        "id": "631f04b0-3c85-4b62-80c9-dd84a0df1aaf",
-        "name": "Call n8n Workflow Tool"
+        "name": "Prepare Neo4j Query",
+        "id": "1c393ec5-0ca5-4fa8-b85c-e491b07fa05f"
       },
       {
         "parameters": {
-          "fromEmail": "Nando.goat@gmail.com",
-          "toEmail": "Nando.goat@gmail.com",
-          "subject": "Dagens nyheder",
-          "html": "={{ $json.data }}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.emailSend",
-        "typeVersion": 2.1,
-        "position": [
-          544,
-          80
-        ],
-        "id": "0c98f0d5-35c8-460d-a1d8-a6430cb6503e",
-        "name": "Send email",
-        "webhookId": "0e4ea8fb-bd07-44cd-8e02-bacb84f4aee2"
-      },
-      {
-        "parameters": {
-          "mode": "markdownToHtml",
-          "markdown": "={{ $json.output[0].content[0].text }}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.markdown",
-        "typeVersion": 1,
-        "position": [
-          336,
-          80
-        ],
-        "id": "1b0ec2ac-6f84-4976-8216-f6d18bff40b2",
-        "name": "Markdown"
-      }
-    ],
-    "connections": {
-      "When chat message received": {
-        "main": [
-          [
-            {
-              "node": "Message a model",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Call n8n Workflow Tool": {
-        "ai_tool": [
-          [
-            {
-              "node": "Message a model",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Message a model": {
-        "main": [
-          [
-            {
-              "node": "Markdown",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Markdown": {
-        "main": [
-          [
-            {
-              "node": "Send email",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false
-    },
-    "staticData": null,
-    "meta": null,
-    "pinData": {},
-    "versionId": "0d927fee-4ae0-4480-841c-3f34e9f363db",
-    "activeVersionId": null,
-    "triggerCount": 0,
-    "shared": [
-      {
-        "updatedAt": "2026-03-16T12:12:17.817Z",
-        "createdAt": "2026-03-16T12:12:17.817Z",
-        "role": "workflow:owner",
-        "workflowId": "tRGMxpqwkkvMGOoUDSSbz",
-        "projectId": "02PFphAbImfXlxF1"
-      }
-    ],
-    "activeVersion": null,
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-03-17T07:37:40.000Z",
-    "createdAt": "2026-03-16T12:16:07.791Z",
-    "id": "zEeFa2U1HN5WjmeAoAKrJ",
-    "name": "[SUB] Daily Motivational Quote",
-    "active": false,
-    "isArchived": true,
-    "nodes": [
-      {
-        "parameters": {
-          "url": "https://api.quotable.io/random?tags=motivational",
+          "method": "POST",
+          "url": "http://neo4j:7474/db/opgave/tx/commit",
+          "authentication": "genericCredentialType",
+          "sendBody": true,
+          "contentType": "raw",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 2,
+        "typeVersion": 4,
         "position": [
-          0,
+          1008,
           0
         ],
-        "id": "be209000-8435-451a-b35f-8a491ed822c6",
-        "name": "Get Quote"
+        "name": "Query Neo4j",
+        "id": "e3e5faf5-a48e-470a-b3aa-f8c8b1eef79f"
       },
       {
         "parameters": {
-          "chatId": "1234567890",
-          "additionalFields": {}
+          "jsCode": "return items.map(item => { const rows = item.json.results?.[0]?.data ?? []; return { json: { matches: rows.map(r => ({ id: r.row[0], text: r.row[1], source: r.row[2], score: r.row[3] })) } }; });"
         },
-        "type": "n8n-nodes-base.telegram",
-        "typeVersion": 1,
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
         "position": [
-          224,
+          1200,
           0
         ],
-        "id": "415aa3d1-a8d3-4ea7-8896-3182450dc531",
-        "name": "Send Quote via Telegram",
-        "webhookId": "bb018fd1-46cc-4f00-b5ee-e3b363084081"
+        "name": "Format Results",
+        "id": "8382f613-2343-4f45-8411-42c97f3fbeda"
       }
     ],
     "connections": {
-      "Get Quote": {
+      "Manual Trigger": {
         "main": [
           [
             {
-              "node": "Send Quote via Telegram",
+              "node": "Set Question",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set Question": {
+        "main": [
+          [
+            {
+              "node": "Get Embedding",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Embedding": {
+        "main": [
+          [
+            {
+              "node": "Format Embedding",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format Embedding": {
+        "main": [
+          [
+            {
+              "node": "Prepare Neo4j Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Prepare Neo4j Query": {
+        "main": [
+          [
+            {
+              "node": "Query Neo4j",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Query Neo4j": {
+        "main": [
+          [
+            {
+              "node": "Format Results",
               "type": "main",
               "index": 0
             }
@@ -1449,16 +799,16 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "3807a886-50f5-4a9a-9b66-edf4a331b489",
+    "versionId": "bab94087-d8d6-43e8-843c-50f388db5c00",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-03-16T12:16:07.794Z",
-        "createdAt": "2026-03-16T12:16:07.794Z",
+        "updatedAt": "2026-03-17T09:31:20.497Z",
+        "createdAt": "2026-03-17T09:31:20.497Z",
         "role": "workflow:owner",
-        "workflowId": "zEeFa2U1HN5WjmeAoAKrJ",
-        "projectId": "02PFphAbImfXlxF1"
+        "workflowId": "yJHBAB5JLN1rHJi3xjLhM",
+        "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
     "activeVersion": null,
