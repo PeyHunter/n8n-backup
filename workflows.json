@@ -637,13 +637,39 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T11:15:40.909Z",
+    "updatedAt": "2026-03-17T11:40:06.565Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach",
     "active": false,
     "isArchived": false,
     "nodes": [
+      {
+        "parameters": {
+          "url": "http://neo4j:7474/db/neo4j/tx/commit",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "{   \"statements\": [     {       \"statement\": \"MATCH (d:Document) RETURN d.title, substring(d.content,0,200) AS preview LIMIT 5\",       \"parameters\": {}     }   ] }",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          208,
+          0
+        ],
+        "id": "618d34d5-7a4b-43cb-83f8-a92609cfdac8",
+        "name": "HTTP Request",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "yJRR80som9xIIRfv",
+            "name": "Unnamed credential 3"
+          }
+        }
+      },
       {
         "parameters": {
           "path": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2",
@@ -658,21 +684,6 @@
         "id": "775aad77-d55e-4ac7-95aa-a27df6cf7878",
         "name": "Webhook",
         "webhookId": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2"
-      },
-      {
-        "parameters": {
-          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
-          "authentication": "predefinedCredentialType",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
-        "position": [
-          208,
-          0
-        ],
-        "id": "618d34d5-7a4b-43cb-83f8-a92609cfdac8",
-        "name": "HTTP Request"
       }
     ],
     "connections": {
@@ -695,7 +706,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "a18260af-798d-477c-8253-7fcecb3d5870",
+    "versionId": "2b146ac6-b1de-498a-bd3b-158d056383ac",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
