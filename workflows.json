@@ -153,7 +153,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T08:30:23.186Z",
+    "updatedAt": "2026-03-17T08:34:34.449Z",
     "createdAt": "2026-03-16T12:18:58.189Z",
     "id": "ARtmfKgvVeCoAk0TopemV",
     "name": "RAG-Embed",
@@ -244,7 +244,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const body = {\n  statements: [\n    {\n      statement: `\nCALL db.index.vector.queryNodes('course_chunks', 3, $embedding)\nYIELD node, score\nRETURN node.id AS id, node.text AS text, node.source AS source, score\nORDER BY score DESC\n    `,\n      parameters: {\n        embedding: item.json.embedding\n      }\n    }\n  ]\n};\n\nreturn {\n  json: {\n    question: item.json.question,\n    neo4jBody: JSON.stringify(body)\n  }\n};"
+          "jsCode": "// Access the first input item\nconst input = items[0].json;\n\n// Construct the Neo4j body\nconst body = {\n  statements: [\n    {\n      statement: `\nCALL db.index.vector.queryNodes('course_chunks', 3, $embedding)\nYIELD node, score\nRETURN node.id AS id, node.text AS text, node.source AS source, score\nORDER BY score DESC\n      `,\n      parameters: {\n        embedding: input.embedding\n      }\n    }\n  ]\n};\n\n// Return the JSON with the question and Neo4j body\nreturn [\n  {\n    json: {\n      question: input.question,\n      neo4jBody: JSON.stringify(body)\n    }\n  }\n];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -258,7 +258,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "http://host.docker.internal:7474/db/opgave/tx/commit",
+          "url": "http://neo4j:7474/db/opgave/tx/commit",
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBasicAuth",
           "sendBody": true,
@@ -274,7 +274,13 @@
           -112
         ],
         "id": "9f2f988e-5e0b-4065-87ae-78465bfedc16",
-        "name": "HTTP Request1"
+        "name": "HTTP Request1",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "q8oz8BDlooBWvkx1",
+            "name": "Unnamed credential 3"
+          }
+        }
       },
       {
         "parameters": {
@@ -365,7 +371,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "5ce0673c-a939-4a4d-869f-06a5628a42f3",
+    "versionId": "acde2c89-206f-480b-8429-c49743e531f3",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
