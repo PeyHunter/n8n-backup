@@ -641,7 +641,7 @@
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach",
-    "active": false,
+    "active": true,
     "isArchived": false,
     "nodes": [
       {
@@ -708,8 +708,8 @@
     "meta": null,
     "pinData": {},
     "versionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
-    "activeVersionId": null,
-    "triggerCount": 0,
+    "activeVersionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
+    "triggerCount": 1,
     "shared": [
       {
         "updatedAt": "2026-03-17T10:24:56.520Z",
@@ -719,7 +719,73 @@
         "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
-    "activeVersion": null,
+    "activeVersion": {
+      "updatedAt": "2026-03-17T12:10:50.000Z",
+      "createdAt": "2026-03-17T11:52:44.888Z",
+      "versionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
+      "workflowId": "iKKDB5fKT2DJsYqRdIqwl",
+      "nodes": [
+        {
+          "parameters": {
+            "path": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 2.1,
+          "position": [
+            0,
+            0
+          ],
+          "id": "775aad77-d55e-4ac7-95aa-a27df6cf7878",
+          "name": "Webhook",
+          "webhookId": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2"
+        },
+        {
+          "parameters": {
+            "method": "POST",
+            "url": "http://neo4j:7474/db/neo4j/tx/commit",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpBasicAuth",
+            "sendBody": true,
+            "contentType": "raw",
+            "rawContentType": "application/json",
+            "body": "={ \"statements\": [ { \"statement\": \"MATCH (d:Document) RETURN d.title, substring(d.content,0,200) AS preview LIMIT 5\", \"parameters\": {} } ] }",
+            "options": {}
+          },
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 4,
+          "position": [
+            256,
+            0
+          ],
+          "name": "Query Neo4j",
+          "id": "ddadad9b-4aa8-4055-94f6-8ae94ff4bb06",
+          "credentials": {
+            "httpBasicAuth": {
+              "id": "yJRR80som9xIIRfv",
+              "name": "Unnamed credential 3"
+            }
+          }
+        }
+      ],
+      "connections": {
+        "Webhook": {
+          "main": [
+            [
+              {
+                "node": "Query Neo4j",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        }
+      },
+      "authors": "Peyton Hunter",
+      "name": "Version de5ce7cd",
+      "description": "",
+      "autosaved": true
+    },
     "tags": []
   },
   {
