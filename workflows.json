@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-03-17T09:37:20.920Z",
+    "updatedAt": "2026-03-17T09:39:34.525Z",
     "createdAt": "2026-03-17T09:35:30.380Z",
     "id": "1JDxkz6iohY4ry06UZ4tg",
     "name": "Backup Flow",
@@ -87,7 +87,13 @@
         ],
         "name": "Edit a file",
         "id": "420a2d38-c278-424a-8d4b-43eea862c7a2",
-        "webhookId": "061abb0f-d289-4025-a03b-2c8c1aeccae0"
+        "webhookId": "061abb0f-d289-4025-a03b-2c8c1aeccae0",
+        "credentials": {
+          "githubApi": {
+            "id": "s1sHrgGas8ZeHIQR",
+            "name": "GitHub account"
+          }
+        }
       }
     ],
     "connections": {
@@ -130,9 +136,11 @@
       "availableInMCP": false
     },
     "staticData": null,
-    "meta": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
     "pinData": {},
-    "versionId": "4ad86bf6-6692-438a-892b-b460677c3f9e",
+    "versionId": "cc96e220-d8e4-4eb3-bd86-fd3deac5713e",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
