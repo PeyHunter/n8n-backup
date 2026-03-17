@@ -637,7 +637,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T13:54:56.490Z",
+    "updatedAt": "2026-03-17T14:09:09.613Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach",
@@ -662,9 +662,13 @@
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBasicAuth",
           "sendBody": true,
-          "contentType": "raw",
-          "rawContentType": "application/json",
-          "body": "=={\n  \"statements\": [\n    {\n      \"statement\": \"MATCH (d:Document)-[:LINKS_TO]->(related) WHERE toLower(d.content) CONTAINS toLower($query) RETURN d.title AS title, related.title AS related\",\n      \"parameters\": {\n        \"query\": \"={{$json.query}}\"\n      }\n    }\n  ]\n}",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "value": "={   \"statements\": [     {       \"statement\": \"MATCH (d:Document) RETURN d LIMIT 5\",       \"parameters\": {         \"query\": \"={{$json.query}}\"       }     }   ] }"
+              }
+            ]
+          },
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
@@ -761,7 +765,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "ac3720e3-41c2-4fd6-84b2-429b772cdb28",
+    "versionId": "5ef50d3d-8ca1-48f7-95dd-609a88b684ea",
     "activeVersionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
     "triggerCount": 1,
     "shared": [
