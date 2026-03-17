@@ -1,11 +1,386 @@
 [
   {
-    "updatedAt": "2026-02-23T09:53:41.132Z",
-    "createdAt": "2026-02-02T13:00:30.824Z",
-    "id": "896ZZblnAIoEbMAWLk2XX",
-    "name": "Current News Workflow",
-    "active": true,
+    "updatedAt": "2026-03-16T12:07:53.694Z",
+    "createdAt": "2026-03-16T12:07:53.694Z",
+    "id": "4oBZAGalPziTBL2b6nXBg",
+    "name": "Email Weather Repport",
+    "active": false,
     "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "fromEmail": "Nando.goat@gmail.com",
+          "toEmail": "Nando.goat@gmail.com",
+          "subject": "Todays weather in Copenhagen",
+          "emailFormat": "text",
+          "text": "=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          368,
+          -96
+        ],
+        "id": "d091074b-5a44-4ccd-9ea2-028e0d0de940",
+        "name": "Send email",
+        "webhookId": "43a918b1-7d8c-40e5-b577-c03e4d757ac5"
+      },
+      {
+        "parameters": {
+          "url": "https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -48,
+          -96
+        ],
+        "id": "a17a3c3f-0175-4efe-8e63-51b599f9cfcf",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d94852b8-d813-48ec-abb6-c898a642480e",
+                "name": "city",
+                "value": "={{ $json.name }}",
+                "type": "string"
+              },
+              {
+                "id": "ead085d8-0993-4d64-8f43-1b56161f6026",
+                "name": "temp",
+                "value": "={{ $json.main.temp }}",
+                "type": "number"
+              },
+              {
+                "id": "8c8d62d6-399a-4bcc-8e98-2a3d19a4695b",
+                "name": "feels_like",
+                "value": "={{ $json.main.feels_like }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          160,
+          -96
+        ],
+        "id": "1b5b2f56-4d78-4acd-97a5-1e3191a5289c",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -256,
+          -96
+        ],
+        "id": "43d9d9af-d19b-4edd-bf59-91659d550f89",
+        "name": "Schedule Trigger"
+      }
+    ],
+    "connections": {
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Send email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "f55c3b3f-b44f-4101-8628-e79d3584db35",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-16T12:07:53.697Z",
+        "createdAt": "2026-03-16T12:07:53.697Z",
+        "role": "workflow:owner",
+        "workflowId": "4oBZAGalPziTBL2b6nXBg",
+        "projectId": "02PFphAbImfXlxF1"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-16T12:19:10.525Z",
+    "createdAt": "2026-03-16T12:18:58.189Z",
+    "id": "ARtmfKgvVeCoAk0TopemV",
+    "name": "Recive",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -448,
+          -112
+        ],
+        "id": "b9efdaae-8e30-4bd3-8183-7c0c3a87821f",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "jsCode": "return [\n  {\n    json: {\n      question: \"How do vector databases work?\"\n    }\n  }\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -240,
+          -112
+        ],
+        "id": "e1a2878c-f45f-49f5-8b67-48eb3f53b1fc",
+        "name": "Set Question"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/embeddings",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "=text-embedding-3-small"
+              },
+              {
+                "name": "input",
+                "value": "={{$json.question}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -32,
+          -112
+        ],
+        "id": "d0987911-4b2a-4eb0-967a-878af922ba38",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map((item, index) => {\n  const original = $items(\"Set Question\")[index].json;\n\n  return {\n    json: {\n      question: original.question,\n      embedding: item.json.data[0].embedding\n    }\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          176,
+          -112
+        ],
+        "id": "dc5d7b4e-3754-4ac9-ada8-d92e3124cda1",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const body = {\n    statements: [\n      {\n        statement: \nCALL db.index.vector.queryNodes('course_chunks', 3, $embedding)\nYIELD node, score\nRETURN node.id AS id, node.text AS text, node.source AS source, score\nORDER BY score DESC\n        ,\n        parameters: {\n          embedding: item.json.embedding\n        }\n      }\n    ]\n  };\n\n  return {\n    json: {\n      question: item.json.question,\n      neo4jBody: JSON.stringify(body)\n    }\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          384,
+          -112
+        ],
+        "id": "b3d23b7f-3a7b-4024-b4f1-751f008c3356",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://host.docker.internal:7474/db/opgave/tx/commit",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{$json.neo4jBody}}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          592,
+          -112
+        ],
+        "id": "9f2f988e-5e0b-4065-87ae-78465bfedc16",
+        "name": "HTTP Request1"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const rows = item.json.results?.[0]?.data ?? [];\n\n  return {\n    json: {\n      matches: rows.map(row => ({\n        id: row.row[0],\n        text: row.row[1],\n        source: row.row[2],\n        score: row.row[3]\n      }))\n    }\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          800,
+          -112
+        ],
+        "id": "4b4a2ac8-3fc9-4a9b-b7d9-b03e2fc53eb0",
+        "name": "Code in JavaScript2"
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Set Question",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set Question": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request1": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "e54f1efb-4a80-4850-89d8-b0fb9b0a1d25",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-16T12:18:58.194Z",
+        "createdAt": "2026-03-16T12:18:58.194Z",
+        "role": "workflow:owner",
+        "workflowId": "ARtmfKgvVeCoAk0TopemV",
+        "projectId": "02PFphAbImfXlxF1"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-16T12:12:52.000Z",
+    "createdAt": "2026-03-16T12:04:04.469Z",
+    "id": "I7oxxE52NM6GvzAUDEWys",
+    "name": "Current News Workflow",
+    "active": false,
+    "isArchived": true,
     "nodes": [
       {
         "parameters": {
@@ -32,14 +407,14 @@
         "type": "@n8n/n8n-nodes-langchain.openAi",
         "typeVersion": 2.1,
         "position": [
-          256,
-          0
+          48,
+          -208
         ],
-        "id": "a96bd8de-6939-49a0-9905-8f2acbc8ed9a",
+        "id": "c2271a50-de68-4f99-b290-fee9d07243ae",
         "name": "Message a model",
         "credentials": {
           "openAiApi": {
-            "id": "rFq5Rria3td7bsQY",
+            "id": "oyywDawCSf6utBP0",
             "name": "OpenAi account"
           }
         }
@@ -51,10 +426,10 @@
         "type": "@n8n/n8n-nodes-langchain.chatTrigger",
         "typeVersion": 1.4,
         "position": [
-          32,
-          0
+          -176,
+          -208
         ],
-        "id": "4322b5ec-9e5d-4953-9303-7fb99b2d3b4c",
+        "id": "94071780-de9b-49b3-9bde-7c9c4463b45c",
         "name": "When chat message received",
         "webhookId": "716b35a2-976f-461e-9215-3e487cd98f61"
       },
@@ -80,10 +455,10 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          336,
-          224
+          128,
+          16
         ],
-        "id": "cd544cb7-f5b5-4f50-8338-40ef50e95738",
+        "id": "461f54f9-5c1a-48aa-8bcc-b7618360afda",
         "name": "Call n8n Workflow Tool"
       },
       {
@@ -97,18 +472,12 @@
         "type": "n8n-nodes-base.emailSend",
         "typeVersion": 2.1,
         "position": [
-          816,
-          0
+          608,
+          -208
         ],
-        "id": "2b4fcb4a-ecda-4674-b0eb-56da7674df01",
+        "id": "5428c7e5-5863-4c03-a994-6cb799d12f32",
         "name": "Send email",
-        "webhookId": "0e4ea8fb-bd07-44cd-8e02-bacb84f4aee2",
-        "credentials": {
-          "smtp": {
-            "id": "nlH29n5hGnWuJhmn",
-            "name": "SMTP account 2"
-          }
-        }
+        "webhookId": "0e4ea8fb-bd07-44cd-8e02-bacb84f4aee2"
       },
       {
         "parameters": {
@@ -119,10 +488,10 @@
         "type": "n8n-nodes-base.markdown",
         "typeVersion": 1,
         "position": [
-          608,
-          0
+          400,
+          -208
         ],
-        "id": "cfbc42e9-55dc-4200-9e15-c7360b8b309c",
+        "id": "9acceaad-7c4f-4bc8-b292-57f4a40e3f6f",
         "name": "Markdown"
       }
     ],
@@ -177,265 +546,197 @@
       "availableInMCP": false
     },
     "staticData": null,
-    "meta": {
-      "templateCredsSetupCompleted": true
-    },
+    "meta": null,
     "pinData": {},
-    "versionId": "d2243678-1d3b-4127-ae5f-7c150f3086ec",
-    "activeVersionId": "f1cb9a30-4e29-4c0a-9eb6-2e13379f6cc9",
-    "triggerCount": 1,
+    "versionId": "2031eed4-d980-4eef-a259-29d8cc139766",
+    "activeVersionId": null,
+    "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-02-02T13:00:30.830Z",
-        "createdAt": "2026-02-02T13:00:30.830Z",
+        "updatedAt": "2026-03-16T12:04:04.477Z",
+        "createdAt": "2026-03-16T12:04:04.477Z",
         "role": "workflow:owner",
-        "workflowId": "896ZZblnAIoEbMAWLk2XX",
-        "projectId": "GgnpOEHS9agizanl"
+        "workflowId": "I7oxxE52NM6GvzAUDEWys",
+        "projectId": "02PFphAbImfXlxF1"
       }
     ],
-    "activeVersion": {
-      "updatedAt": "2026-02-02T14:44:13.000Z",
-      "createdAt": "2026-02-02T14:44:10.381Z",
-      "versionId": "f1cb9a30-4e29-4c0a-9eb6-2e13379f6cc9",
-      "workflowId": "896ZZblnAIoEbMAWLk2XX",
-      "nodes": [
-        {
-          "parameters": {
-            "modelId": {
-              "__rl": true,
-              "value": "gpt-4.1-mini",
-              "mode": "list",
-              "cachedResultName": "GPT-4.1-MINI"
-            },
-            "responses": {
-              "values": [
-                {
-                  "content": "={{ $json.chatInput }}"
-                },
-                {
-                  "role": "system",
-                  "content": "You are a news anchor. NEVER output JSON or technical symbols like { } [ ] or \\n. Only use plain English text and bullet points."
-                }
-              ]
-            },
-            "builtInTools": {},
-            "options": {}
-          },
-          "type": "@n8n/n8n-nodes-langchain.openAi",
-          "typeVersion": 2.1,
-          "position": [
-            256,
-            0
-          ],
-          "id": "a96bd8de-6939-49a0-9905-8f2acbc8ed9a",
-          "name": "Message a model",
-          "credentials": {
-            "openAiApi": {
-              "id": "rFq5Rria3td7bsQY",
-              "name": "OpenAi account"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "options": {}
-          },
-          "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-          "typeVersion": 1.4,
-          "position": [
-            32,
-            0
-          ],
-          "id": "4322b5ec-9e5d-4953-9303-7fb99b2d3b4c",
-          "name": "When chat message received",
-          "webhookId": "716b35a2-976f-461e-9215-3e487cd98f61"
-        },
-        {
-          "parameters": {
-            "description": "Use this tool to get the latest world news from the New York Times. Use it whenever the user asks about news or current events.",
-            "workflowId": {
-              "__rl": true,
-              "value": "sTchKqFj3OSjKMrK",
-              "mode": "list",
-              "cachedResultUrl": "/workflow/sTchKqFj3OSjKMrK",
-              "cachedResultName": "[SUB] Current News (Get NYTimes Top Stories)"
-            },
-            "workflowInputs": {
-              "mappingMode": "defineBelow",
-              "value": {},
-              "matchingColumns": [],
-              "schema": [],
-              "attemptToConvertTypes": false,
-              "convertFieldsToString": false
-            }
-          },
-          "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-          "typeVersion": 2.2,
-          "position": [
-            336,
-            224
-          ],
-          "id": "cd544cb7-f5b5-4f50-8338-40ef50e95738",
-          "name": "Call n8n Workflow Tool"
-        }
-      ],
-      "connections": {
-        "When chat message received": {
-          "main": [
-            [
-              {
-                "node": "Message a model",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Call n8n Workflow Tool": {
-          "ai_tool": [
-            [
-              {
-                "node": "Message a model",
-                "type": "ai_tool",
-                "index": 0
-              }
-            ]
-          ]
-        }
-      },
-      "authors": "Peyton Hunter",
-      "name": "Version f1cb9a30",
-      "description": "",
-      "autosaved": true
-    },
+    "activeVersion": null,
     "tags": []
   },
   {
-    "updatedAt": "2026-02-02T12:14:52.898Z",
-    "createdAt": "2026-01-26T10:25:05.754Z",
-    "id": "FD-wAr0hEKnJbSdxLj9xM",
-    "name": "Email Weather Repport",
-    "active": true,
+    "updatedAt": "2026-03-16T12:18:35.010Z",
+    "createdAt": "2026-03-16T12:18:17.534Z",
+    "id": "YYEojkcCAz8xV8QhdKDKM",
+    "name": "embed",
+    "active": false,
     "isArchived": false,
     "nodes": [
       {
-        "parameters": {
-          "fromEmail": "Nando.goat@gmail.com",
-          "toEmail": "Nando.goat@gmail.com",
-          "subject": "Todays weather in Copenhagen",
-          "emailFormat": "text",
-          "text": "=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.emailSend",
-        "typeVersion": 2.1,
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
         "position": [
-          832,
-          0
+          -224,
+          -32
         ],
-        "id": "a507acac-750b-4fca-b471-c924973c1e9f",
-        "name": "Send email",
-        "webhookId": "43a918b1-7d8c-40e5-b577-c03e4d757ac5",
-        "credentials": {
-          "smtp": {
-            "id": "nlH29n5hGnWuJhmn",
-            "name": "SMTP account 2"
-          }
-        }
+        "id": "c0dea9d6-f4a2-4f0a-ae00-71b3779baf54",
+        "name": "When clicking ‘Execute workflow’"
       },
       {
         "parameters": {
-          "url": "https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric",
+          "jsCode": "return [\n  {\n    json: {\n      id: \"chunk1\",\n      text: \"Retrieval Augmented Generation combines search and LLM generation.\",\n      source: \"week7\"\n    }\n  },\n  {\n    json: {\n      id: \"chunk2\",\n      text: \"Embeddings convert text into vectors so meaning can be compared mathematically.\",\n      source: \"week7\"\n    }\n  },\n  {\n    json: {\n      id: \"chunk3\",\n      text: \"Vector databases store embeddings and allow semantic similarity search.\",\n      source: \"week7\"\n    }\n  }\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -16,
+          -32
+        ],
+        "id": "c6dd183a-b0c9-44e0-87ce-9e16b861ee1f",
+        "name": "Sample Chunks"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/embeddings",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "openAiApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "=application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "model",
+                "value": "=text-embedding-3-small"
+              },
+              {
+                "name": "input",
+                "value": "={{$json.text}}"
+              }
+            ]
+          },
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.3,
         "position": [
-          416,
-          0
+          192,
+          -32
         ],
-        "id": "ebc76887-6d7e-46eb-941a-c24709ec9fbc",
-        "name": "HTTP Request"
+        "id": "0836619b-8aa3-4390-ba8c-d11cb43b52b2",
+        "name": "OpenAi Embedding"
       },
       {
         "parameters": {
-          "assignments": {
-            "assignments": [
+          "jsCode": "return items.map((item, index) => {\n  const original = $items(\"Sample Chunks\")[index].json;\n\n  return {\n    json: {\n      id: original.id,\n      text: original.text,\n      source: original.source,\n      embedding: item.json.data[0].embedding\n    }\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          400,
+          -32
+        ],
+        "id": "e166f4bb-e00a-41fa-a300-fa378d85916a",
+        "name": "Merge Data"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const body = {\n    statements: [\n      {\n        statement: \"MERGE (c:Chunk {id:$id}) SET c.text=$text, c.source=$source, c.embedding=$embedding\",\n        parameters: {\n          id: item.json.id,\n          text: item.json.text,\n          source: item.json.source,\n          embedding: item.json.embedding,\n        },\n      },\n    ],\n  };\n\n  return {\n    json: {\n      neo4jBody: JSON.stringify(body),\n    },\n  };\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          608,
+          -32
+        ],
+        "id": "0a39ab3c-e7d0-438b-bc75-a7dd071c289f",
+        "name": "Prepare Neo4j Body"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://host.docker.internal:7474/db/opgave/tx/commit",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
               {
-                "id": "d94852b8-d813-48ec-abb6-c898a642480e",
-                "name": "city",
-                "value": "={{ $json.name }}",
-                "type": "string"
-              },
-              {
-                "id": "ead085d8-0993-4d64-8f43-1b56161f6026",
-                "name": "temp",
-                "value": "={{ $json.main.temp }}",
-                "type": "number"
-              },
-              {
-                "id": "8c8d62d6-399a-4bcc-8e98-2a3d19a4695b",
-                "name": "feels_like",
-                "value": "={{ $json.main.feels_like }}",
-                "type": "number"
+                "name": "Content-Type",
+                "value": "application/json"
               }
             ]
           },
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{$json.neo4jBody}}",
           "options": {}
         },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
         "position": [
-          624,
-          0
+          784,
+          -32
         ],
-        "id": "9033f712-cd4c-4781-af2e-e43535bebe7d",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "rule": {
-            "interval": [
-              {
-                "field": "weeks"
-              }
-            ]
-          }
-        },
-        "type": "n8n-nodes-base.scheduleTrigger",
-        "typeVersion": 1.3,
-        "position": [
-          208,
-          0
-        ],
-        "id": "1ce3e4fa-3572-4efd-8a28-5f1deb445b31",
-        "name": "Schedule Trigger"
+        "id": "a4978f56-7566-4dcb-8371-0b19bf411dbe",
+        "name": "HTTP Request"
       }
     ],
     "connections": {
-      "HTTP Request": {
+      "When clicking ‘Execute workflow’": {
         "main": [
           [
             {
-              "node": "Edit Fields",
+              "node": "Sample Chunks",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Edit Fields": {
+      "Sample Chunks": {
         "main": [
           [
             {
-              "node": "Send email",
+              "node": "OpenAi Embedding",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Schedule Trigger": {
+      "OpenAi Embedding": {
+        "main": [
+          [
+            {
+              "node": "Merge Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge Data": {
+        "main": [
+          [
+            {
+              "node": "Prepare Neo4j Body",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Prepare Neo4j Body": {
         "main": [
           [
             {
@@ -449,199 +750,80 @@
     },
     "settings": {
       "executionOrder": "v1",
-      "availableInMCP": false,
-      "timeSavedMode": "fixed",
-      "callerPolicy": "workflowsFromSameOwner"
+      "availableInMCP": false
     },
     "staticData": null,
-    "meta": {
-      "templateCredsSetupCompleted": true
-    },
+    "meta": null,
     "pinData": {},
-    "versionId": "60b38817-7bad-4d92-a903-4e86ce86ba59",
-    "activeVersionId": "60b38817-7bad-4d92-a903-4e86ce86ba59",
-    "triggerCount": 1,
+    "versionId": "027149e7-0165-4ba8-a97e-1f65c159be49",
+    "activeVersionId": null,
+    "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-01-26T10:25:05.758Z",
-        "createdAt": "2026-01-26T10:25:05.758Z",
+        "updatedAt": "2026-03-16T12:18:17.538Z",
+        "createdAt": "2026-03-16T12:18:17.538Z",
         "role": "workflow:owner",
-        "workflowId": "FD-wAr0hEKnJbSdxLj9xM",
-        "projectId": "GgnpOEHS9agizanl"
+        "workflowId": "YYEojkcCAz8xV8QhdKDKM",
+        "projectId": "02PFphAbImfXlxF1"
       }
     ],
-    "activeVersion": {
-      "updatedAt": "2026-02-02T16:11:14.000Z",
-      "createdAt": "2026-02-02T12:14:52.899Z",
-      "versionId": "60b38817-7bad-4d92-a903-4e86ce86ba59",
-      "workflowId": "FD-wAr0hEKnJbSdxLj9xM",
-      "nodes": [
-        {
-          "parameters": {
-            "fromEmail": "Nando.goat@gmail.com",
-            "toEmail": "Nando.goat@gmail.com",
-            "subject": "Todays weather in Copenhagen",
-            "emailFormat": "text",
-            "text": "=Vejret i {{ $json.city }}\n\nTemperatur: {{ $json.temp }} °C\nFøles som: {{ $json.feels_like }} °C",
-            "options": {}
-          },
-          "type": "n8n-nodes-base.emailSend",
-          "typeVersion": 2.1,
-          "position": [
-            832,
-            0
-          ],
-          "id": "a507acac-750b-4fca-b471-c924973c1e9f",
-          "name": "Send email",
-          "webhookId": "43a918b1-7d8c-40e5-b577-c03e4d757ac5",
-          "credentials": {
-            "smtp": {
-              "id": "nlH29n5hGnWuJhmn",
-              "name": "SMTP account 2"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "url": "https://api.openweathermap.org/data/2.5/weather?q=Copenhagen,DK&appid=819d0ad7e7f4d1dce3db434d98cb2095&units=metric",
-            "options": {}
-          },
-          "type": "n8n-nodes-base.httpRequest",
-          "typeVersion": 4.3,
-          "position": [
-            416,
-            0
-          ],
-          "id": "ebc76887-6d7e-46eb-941a-c24709ec9fbc",
-          "name": "HTTP Request"
-        },
-        {
-          "parameters": {
-            "assignments": {
-              "assignments": [
-                {
-                  "id": "d94852b8-d813-48ec-abb6-c898a642480e",
-                  "name": "city",
-                  "value": "={{ $json.name }}",
-                  "type": "string"
-                },
-                {
-                  "id": "ead085d8-0993-4d64-8f43-1b56161f6026",
-                  "name": "temp",
-                  "value": "={{ $json.main.temp }}",
-                  "type": "number"
-                },
-                {
-                  "id": "8c8d62d6-399a-4bcc-8e98-2a3d19a4695b",
-                  "name": "feels_like",
-                  "value": "={{ $json.main.feels_like }}",
-                  "type": "number"
-                }
-              ]
-            },
-            "options": {}
-          },
-          "type": "n8n-nodes-base.set",
-          "typeVersion": 3.4,
-          "position": [
-            624,
-            0
-          ],
-          "id": "9033f712-cd4c-4781-af2e-e43535bebe7d",
-          "name": "Edit Fields"
-        },
-        {
-          "parameters": {
-            "rule": {
-              "interval": [
-                {
-                  "field": "weeks"
-                }
-              ]
-            }
-          },
-          "type": "n8n-nodes-base.scheduleTrigger",
-          "typeVersion": 1.3,
-          "position": [
-            208,
-            0
-          ],
-          "id": "1ce3e4fa-3572-4efd-8a28-5f1deb445b31",
-          "name": "Schedule Trigger"
-        }
-      ],
-      "connections": {
-        "HTTP Request": {
-          "main": [
-            [
-              {
-                "node": "Edit Fields",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Edit Fields": {
-          "main": [
-            [
-              {
-                "node": "Send email",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Schedule Trigger": {
-          "main": [
-            [
-              {
-                "node": "HTTP Request",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        }
-      },
-      "authors": "Peyton Hunter",
-      "name": "Version 60b38817",
-      "description": "",
-      "autosaved": true
-    },
+    "activeVersion": null,
     "tags": []
   },
   {
-    "updatedAt": "2026-02-03T07:50:15.301Z",
-    "createdAt": "2026-02-02T12:15:46.064Z",
-    "id": "OkhT4IadkpYzZYVL",
-    "name": "Backup Flow",
-    "active": true,
+    "updatedAt": "2026-03-16T12:14:21.167Z",
+    "createdAt": "2026-03-16T12:14:03.792Z",
+    "id": "ftHgu9aRVUTihiDXZzmtN",
+    "name": "[SUB] Current News (Get NYTimes Top Stories)",
+    "active": false,
     "isArchived": false,
     "nodes": [
       {
         "parameters": {
-          "url": "http://localhost:5678/api/v1/workflows",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth",
+          "url": "https://api.nytimes.com/svc/topstories/v2/world.json?api-key={{ $credentials.nytApi.key }}",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
+        "typeVersion": 2,
         "position": [
-          416,
-          0
+          -448,
+          -16
         ],
-        "id": "283b4d92-23a6-4e97-9409-1e7a7ad4c7c9",
-        "name": "HTTP Request",
-        "credentials": {
-          "httpHeaderAuth": {
-            "id": "bcqhBliZI2HgWOjo",
-            "name": "Header Auth account"
-          }
-        }
-      },
+        "id": "173cbb08-a5a8-4591-9bc6-92aef441ca25",
+        "name": "Get NYT Top Stories"
+      }
+    ],
+    "connections": {},
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "b47cf88f-cf91-498d-bc19-758c4d2d4eee",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-16T12:14:03.795Z",
+        "createdAt": "2026-03-16T12:14:03.795Z",
+        "role": "workflow:owner",
+        "workflowId": "ftHgu9aRVUTihiDXZzmtN",
+        "projectId": "02PFphAbImfXlxF1"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-16T15:54:20.896Z",
+    "createdAt": "2026-03-16T12:20:12.534Z",
+    "id": "hdIUjPmIFSudP5V4GQ7fK",
+    "name": "Backup Flow",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
       {
         "parameters": {
           "assignments": {
@@ -659,10 +841,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          624,
-          0
+          128,
+          -160
         ],
-        "id": "eaa76ac5-128d-4a1e-bd0a-027247bd5552",
+        "id": "261c7b60-f622-485a-a808-1182d815d929",
         "name": "Edit Fields"
       },
       {
@@ -670,7 +852,8 @@
           "rule": {
             "interval": [
               {
-                "triggerAtHour": 9
+                "field": "hours",
+                "hoursInterval": 10
               }
             ]
           }
@@ -678,10 +861,10 @@
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.3,
         "position": [
-          208,
-          0
+          -288,
+          -160
         ],
-        "id": "8d38e1ea-7b63-47bb-ae82-02631ba66924",
+        "id": "ddd3be77-9fd5-4e71-a131-b37157ad4c61",
         "name": "Schedule Trigger"
       },
       {
@@ -705,32 +888,44 @@
         "type": "n8n-nodes-base.github",
         "typeVersion": 1.1,
         "position": [
-          832,
-          0
+          336,
+          -160
         ],
-        "id": "ce52a3c9-17fa-4e68-8b5b-dbe02b3f375f",
+        "id": "c2853b4a-8ad5-44e2-bdc1-fa31390d9ad1",
         "name": "Edit a file",
         "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
         "credentials": {
           "githubApi": {
-            "id": "lo08KX2OJ23Au7Dw",
-            "name": "GitHub account"
+            "id": "rypyzrEVmLTQj2Mr",
+            "name": "GitHub account 2"
           }
         }
+      },
+      {
+        "parameters": {
+          "url": "http://host.docker.internal:5678/api/v1/workflows",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "X-N8N-API-KEY",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDBkZjY5YS03ODkwLTQyNWUtOWI2YS0wMzVkY2EyNzQ0NTciLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzczNjc1Mjk0LCJleHAiOjE3Nzg4MTc2MDB9.F2WwLDVypAGMmyoQYrL8CggcrTJwSV4zuuUs_t_BTB8"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -80,
+          -160
+        ],
+        "id": "cf5fb3f8-6db3-4e33-bbbc-24c9df12a779",
+        "name": "HTTP Request"
       }
     ],
     "connections": {
-      "HTTP Request": {
-        "main": [
-          [
-            {
-              "node": "Edit Fields",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Edit Fields": {
         "main": [
           [
@@ -752,629 +947,6 @@
             }
           ]
         ]
-      }
-    },
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false,
-      "timeSavedMode": "fixed",
-      "callerPolicy": "workflowsFromSameOwner"
-    },
-    "staticData": {
-      "node:Schedule Trigger": {
-        "recurrenceRules": []
-      }
-    },
-    "meta": {
-      "templateCredsSetupCompleted": true
-    },
-    "pinData": {},
-    "versionId": "0c61fb85-e5f3-48ec-bc79-1772a92b18ea",
-    "activeVersionId": "0c61fb85-e5f3-48ec-bc79-1772a92b18ea",
-    "triggerCount": 1,
-    "shared": [
-      {
-        "updatedAt": "2026-02-02T12:15:46.069Z",
-        "createdAt": "2026-02-02T12:15:46.069Z",
-        "role": "workflow:owner",
-        "workflowId": "OkhT4IadkpYzZYVL",
-        "projectId": "GgnpOEHS9agizanl"
-      }
-    ],
-    "activeVersion": {
-      "updatedAt": "2026-02-03T07:50:21.000Z",
-      "createdAt": "2026-02-03T07:50:15.302Z",
-      "versionId": "0c61fb85-e5f3-48ec-bc79-1772a92b18ea",
-      "workflowId": "OkhT4IadkpYzZYVL",
-      "nodes": [
-        {
-          "parameters": {
-            "url": "http://localhost:5678/api/v1/workflows",
-            "authentication": "genericCredentialType",
-            "genericAuthType": "httpHeaderAuth",
-            "options": {}
-          },
-          "type": "n8n-nodes-base.httpRequest",
-          "typeVersion": 4.3,
-          "position": [
-            416,
-            0
-          ],
-          "id": "283b4d92-23a6-4e97-9409-1e7a7ad4c7c9",
-          "name": "HTTP Request",
-          "credentials": {
-            "httpHeaderAuth": {
-              "id": "bcqhBliZI2HgWOjo",
-              "name": "Header Auth account"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "assignments": {
-              "assignments": [
-                {
-                  "id": "8875d39f-7b40-4b10-8ed7-bb0e749bdae5",
-                  "name": "data",
-                  "value": "={{ $json.data }}",
-                  "type": "array"
-                }
-              ]
-            },
-            "options": {}
-          },
-          "type": "n8n-nodes-base.set",
-          "typeVersion": 3.4,
-          "position": [
-            624,
-            0
-          ],
-          "id": "eaa76ac5-128d-4a1e-bd0a-027247bd5552",
-          "name": "Edit Fields"
-        },
-        {
-          "parameters": {
-            "rule": {
-              "interval": [
-                {
-                  "triggerAtHour": 9
-                }
-              ]
-            }
-          },
-          "type": "n8n-nodes-base.scheduleTrigger",
-          "typeVersion": 1.3,
-          "position": [
-            208,
-            0
-          ],
-          "id": "8d38e1ea-7b63-47bb-ae82-02631ba66924",
-          "name": "Schedule Trigger"
-        },
-        {
-          "parameters": {
-            "resource": "file",
-            "operation": "edit",
-            "owner": {
-              "__rl": true,
-              "mode": "name",
-              "value": "peyhunter"
-            },
-            "repository": {
-              "__rl": true,
-              "value": "n8n-backup",
-              "mode": "name"
-            },
-            "filePath": "workflows.json",
-            "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-            "commitMessage": "Daily Commit"
-          },
-          "type": "n8n-nodes-base.github",
-          "typeVersion": 1.1,
-          "position": [
-            832,
-            0
-          ],
-          "id": "ce52a3c9-17fa-4e68-8b5b-dbe02b3f375f",
-          "name": "Edit a file",
-          "webhookId": "9698c3a1-c140-4d1c-8255-cae86a6043d7",
-          "credentials": {
-            "githubApi": {
-              "id": "lo08KX2OJ23Au7Dw",
-              "name": "GitHub account"
-            }
-          }
-        }
-      ],
-      "connections": {
-        "HTTP Request": {
-          "main": [
-            [
-              {
-                "node": "Edit Fields",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Edit Fields": {
-          "main": [
-            [
-              {
-                "node": "Edit a file",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Schedule Trigger": {
-          "main": [
-            [
-              {
-                "node": "HTTP Request",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        }
-      },
-      "authors": "Peyton Hunter",
-      "name": "Version 0c61fb85",
-      "description": "",
-      "autosaved": true
-    },
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-02-02T12:08:14.000Z",
-    "createdAt": "2026-01-26T09:42:06.893Z",
-    "id": "dEv_Xn2cQNOnFfd87g4ak",
-    "name": "My workflow",
-    "active": false,
-    "isArchived": true,
-    "nodes": [
-      {
-        "parameters": {
-          "rule": {
-            "interval": [
-              {},
-              {}
-            ]
-          }
-        },
-        "type": "n8n-nodes-base.scheduleTrigger",
-        "typeVersion": 1.3,
-        "position": [
-          0,
-          0
-        ],
-        "id": "72796181-bf99-4d88-b2fe-0ecc6856092d",
-        "name": "Schedule Trigger"
-      },
-      {
-        "parameters": {
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 3.1,
-        "position": [
-          208,
-          0
-        ],
-        "id": "031c987c-f644-45aa-b530-48072082eadc",
-        "name": "AI Agent"
-      }
-    ],
-    "connections": {
-      "Schedule Trigger": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false
-    },
-    "staticData": null,
-    "meta": null,
-    "pinData": {},
-    "versionId": "5f50ba33-de31-4a20-a726-039f5673a83e",
-    "activeVersionId": null,
-    "triggerCount": 0,
-    "shared": [
-      {
-        "updatedAt": "2026-01-26T09:42:06.900Z",
-        "createdAt": "2026-01-26T09:42:06.900Z",
-        "role": "workflow:owner",
-        "workflowId": "dEv_Xn2cQNOnFfd87g4ak",
-        "projectId": "GgnpOEHS9agizanl"
-      }
-    ],
-    "activeVersion": null,
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-02-02T12:08:11.000Z",
-    "createdAt": "2026-01-26T09:58:59.579Z",
-    "id": "ibWkbwaTV1iOj8sNS3hmO",
-    "name": "My workflow 2",
-    "active": false,
-    "isArchived": true,
-    "nodes": [
-      {
-        "parameters": {
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 3.1,
-        "position": [
-          208,
-          0
-        ],
-        "id": "38ad56ae-7399-47e3-8a71-0ab9f4de9bb2",
-        "name": "AI Agent"
-      },
-      {
-        "parameters": {
-          "model": {
-            "__rl": true,
-            "value": "gpt-4.1-mini",
-            "mode": "list",
-            "cachedResultName": "gpt-4.1-mini"
-          },
-          "builtInTools": {},
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-        "typeVersion": 1.3,
-        "position": [
-          80,
-          208
-        ],
-        "id": "5e827e5c-74c0-46ad-89d0-820c1ad22204",
-        "name": "OpenAI Chat Model",
-        "credentials": {
-          "openAiApi": {
-            "id": "rFq5Rria3td7bsQY",
-            "name": "OpenAi account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-        "typeVersion": 1.4,
-        "position": [
-          0,
-          0
-        ],
-        "id": "09fd989b-a65b-4ff6-83ca-54def0c8f2b2",
-        "name": "When chat message received",
-        "webhookId": "a27e2df3-788d-4d3a-aa38-41213bd20ac3"
-      }
-    ],
-    "connections": {
-      "OpenAI Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "When chat message received": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false
-    },
-    "staticData": null,
-    "meta": {
-      "templateCredsSetupCompleted": true
-    },
-    "pinData": {},
-    "versionId": "b6760535-ed13-4f56-9c82-c09f9dcded22",
-    "activeVersionId": null,
-    "triggerCount": 0,
-    "shared": [
-      {
-        "updatedAt": "2026-01-26T09:58:59.584Z",
-        "createdAt": "2026-01-26T09:58:59.584Z",
-        "role": "workflow:owner",
-        "workflowId": "ibWkbwaTV1iOj8sNS3hmO",
-        "projectId": "GgnpOEHS9agizanl"
-      }
-    ],
-    "activeVersion": null,
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-02-02T12:08:13.000Z",
-    "createdAt": "2026-01-26T08:48:26.375Z",
-    "id": "mOPlHgB1cDm00T_M3dsqi",
-    "name": "01 Workflow",
-    "active": false,
-    "isArchived": true,
-    "nodes": [
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
-        "typeVersion": 1,
-        "position": [
-          0,
-          0
-        ],
-        "id": "d83fa1de-c28f-44c0-908a-02cbad97ffb2",
-        "name": "When clicking ‘Execute workflow’"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "db8e0c32-e9ee-464a-981a-29cdb779311f",
-                "name": "message",
-                "value": "HEy ny besked",
-                "type": "string"
-              },
-              {
-                "id": "974c0715-e093-495b-860d-5d8ebd564985",
-                "name": "Name",
-                "value": "Peyton",
-                "type": "string"
-              },
-              {
-                "id": "21e95b6f-f9f1-4099-aea9-16d2318b8596",
-                "name": "Name",
-                "value": "Peyton",
-                "type": "string"
-              },
-              {
-                "id": "b6786072-84b6-4d23-839d-57e82fd13c18",
-                "name": "Hello ",
-                "value": "NyVærdi",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          208,
-          0
-        ],
-        "id": "52e2f9e5-76a8-4bc2-aaac-f3725d3c5192",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "triggerTimes": {
-            "item": [
-              {
-                "mode": "everyMinute"
-              }
-            ]
-          }
-        },
-        "id": "12a19cc5-f7d5-4ffe-88d4-809433970393",
-        "name": "Cron",
-        "type": "n8n-nodes-base.cron",
-        "typeVersion": 1,
-        "position": [
-          48,
-          -176
-        ]
-      },
-      {
-        "parameters": {
-          "functionCode": "return [{ json: { message: 'Hello from n8n!' } }];"
-        },
-        "id": "5775b3bc-bb3e-4726-95b0-b2db588ddec3",
-        "name": "Function",
-        "type": "n8n-nodes-base.function",
-        "typeVersion": 1,
-        "position": [
-          304,
-          -176
-        ]
-      }
-    ],
-    "connections": {
-      "When clicking ‘Execute workflow’": {
-        "main": [
-          [
-            {
-              "node": "Edit Fields",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Cron": {
-        "main": [
-          [
-            {
-              "node": "Function",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "settings": {
-      "executionOrder": "v1",
-      "availableInMCP": false
-    },
-    "staticData": null,
-    "meta": null,
-    "pinData": {},
-    "versionId": "07859218-88c6-45fe-a345-f67e85ac7a9d",
-    "activeVersionId": null,
-    "triggerCount": 0,
-    "shared": [
-      {
-        "updatedAt": "2026-01-26T08:48:26.380Z",
-        "createdAt": "2026-01-26T08:48:26.380Z",
-        "role": "workflow:owner",
-        "workflowId": "mOPlHgB1cDm00T_M3dsqi",
-        "projectId": "GgnpOEHS9agizanl"
-      }
-    ],
-    "activeVersion": null,
-    "tags": []
-  },
-  {
-    "updatedAt": "2026-02-23T09:57:41.688Z",
-    "createdAt": "2026-02-02T13:13:53.796Z",
-    "id": "sTchKqFj3OSjKMrK",
-    "name": "[SUB] Current News (Get NYTimes Top Stories)",
-    "active": true,
-    "isArchived": false,
-    "nodes": [
-      {
-        "parameters": {
-          "inputSource": "passthrough"
-        },
-        "id": "c055762a-8fe7-4141-a639-df2372f30060",
-        "typeVersion": 1.1,
-        "name": "When Executed by Another Workflow",
-        "type": "n8n-nodes-base.executeWorkflowTrigger",
-        "position": [
-          272,
-          352
-        ]
-      },
-      {
-        "parameters": {
-          "url": "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=dWHzjmtSMFcaIFGFW4xkn5V0jwMwJNraalUuKLz0ceznFm7d",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
-        "position": [
-          480,
-          352
-        ],
-        "id": "8beabf73-1708-4d75-bac6-8b1da41ce492",
-        "name": "HTTP Request"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "ba5f2b4b-c805-414f-a281-2e9692a22a69",
-                "name": "all news",
-                "value": "={{ $json.results.slice(0, 5) }}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          688,
-          352
-        ],
-        "id": "d8b7c7a5-1b90-4806-bc3f-a26915323afc",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "=I have received this news data:\n{{ $json[\"all news\"] }}\n\nWrite a detailed news report. DO NOT USE BULLETS. \n\nFor each of the top 3 stories, use this exact format:\n\n**[INSERT ALL-CAPS HEADLINE HERE]**\n\n[Insert a very long, detailed paragraph here with at least 100 words of analysis and description. Focus on flow and professional journalism style.]\n\n---\n\nAvoid short summaries. I want deep, long-form paragraphs for each topic.",
-          "options": {
-            "systemMessage": "You are a professional News Editor. You are prohibited from using bullet points or lists of any kind. \n\nStrict Layout Rules:\n1. Each news story MUST be a long, detailed paragraph of 5-8 sentences.\n2. Headlines MUST be written in ALL CAPS and wrapped in double asterisks like this: **TITLE HERE**.\n3. Use triple line breaks between stories to ensure they are physically separated.\n4. Total prohibition of symbols like \"-\", \"*\", or \"•\" at the start of lines."
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 3.1,
-        "position": [
-          896,
-          352
-        ],
-        "id": "ebf14d02-6bc7-4c10-b8b2-3680c076859e",
-        "name": "AI Agent"
-      },
-      {
-        "parameters": {
-          "model": {
-            "__rl": true,
-            "mode": "list",
-            "value": "gpt-4.1-mini"
-          },
-          "builtInTools": {},
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-        "typeVersion": 1.3,
-        "position": [
-          768,
-          560
-        ],
-        "id": "4c0a7efc-1d02-497f-9472-bc424dcd9c9b",
-        "name": "OpenAI Chat Model",
-        "credentials": {
-          "openAiApi": {
-            "id": "rFq5Rria3td7bsQY",
-            "name": "OpenAi account"
-          }
-        }
-      },
-      {
-        "parameters": {},
-        "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
-        "typeVersion": 1,
-        "position": [
-          1056,
-          560
-        ],
-        "id": "93caaca1-98fe-4ff5-9e64-a65a8bab3a0a",
-        "name": "Wikipedia"
-      }
-    ],
-    "connections": {
-      "When Executed by Another Workflow": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
       },
       "HTTP Request": {
         "main": [
@@ -1386,44 +958,6 @@
             }
           ]
         ]
-      },
-      "Edit Fields": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "OpenAI Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Wikipedia": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "AI Agent": {
-        "main": [
-          []
-        ]
       }
     },
     "settings": {
@@ -1435,279 +969,227 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "c495acb1-2f68-4ea7-ae0a-e3e731503d6b",
-    "activeVersionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
+    "versionId": "10b70252-40c1-4c5a-ab8d-b15971a80b59",
+    "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-02-02T13:13:53.801Z",
-        "createdAt": "2026-02-02T13:13:53.801Z",
+        "updatedAt": "2026-03-16T12:20:12.537Z",
+        "createdAt": "2026-03-16T12:20:12.537Z",
         "role": "workflow:owner",
-        "workflowId": "sTchKqFj3OSjKMrK",
-        "projectId": "GgnpOEHS9agizanl"
+        "workflowId": "hdIUjPmIFSudP5V4GQ7fK",
+        "projectId": "02PFphAbImfXlxF1"
       }
     ],
-    "activeVersion": {
-      "updatedAt": "2026-02-02T14:17:50.000Z",
-      "createdAt": "2026-02-02T14:13:48.387Z",
-      "versionId": "e257e910-6e64-4a1a-ac09-139eb0e2edd1",
-      "workflowId": "sTchKqFj3OSjKMrK",
-      "nodes": [
-        {
-          "parameters": {
-            "inputSource": "passthrough"
-          },
-          "id": "c055762a-8fe7-4141-a639-df2372f30060",
-          "typeVersion": 1.1,
-          "name": "When Executed by Another Workflow",
-          "type": "n8n-nodes-base.executeWorkflowTrigger",
-          "position": [
-            272,
-            352
-          ]
-        },
-        {
-          "parameters": {
-            "url": "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=dWHzjmtSMFcaIFGFW4xkn5V0jwMwJNraalUuKLz0ceznFm7d",
-            "options": {}
-          },
-          "type": "n8n-nodes-base.httpRequest",
-          "typeVersion": 4.3,
-          "position": [
-            480,
-            352
-          ],
-          "id": "8beabf73-1708-4d75-bac6-8b1da41ce492",
-          "name": "HTTP Request"
-        },
-        {
-          "parameters": {
-            "assignments": {
-              "assignments": [
-                {
-                  "id": "ba5f2b4b-c805-414f-a281-2e9692a22a69",
-                  "name": "all news",
-                  "value": "={{ $json.results.slice(0, 5) }}",
-                  "type": "string"
-                }
-              ]
-            },
-            "options": {}
-          },
-          "type": "n8n-nodes-base.set",
-          "typeVersion": 3.4,
-          "position": [
-            688,
-            352
-          ],
-          "id": "d8b7c7a5-1b90-4806-bc3f-a26915323afc",
-          "name": "Edit Fields"
-        }
-      ],
-      "connections": {
-        "When Executed by Another Workflow": {
-          "main": [
-            [
-              {
-                "node": "HTTP Request",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "HTTP Request": {
-          "main": [
-            [
-              {
-                "node": "Edit Fields",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        }
-      },
-      "authors": "Peyton Hunter",
-      "name": "Version e257e910",
-      "description": "",
-      "autosaved": true
-    },
+    "activeVersion": null,
     "tags": []
   },
   {
-    "updatedAt": "2026-02-10T10:22:27.316Z",
-    "createdAt": "2026-02-09T16:03:06.138Z",
-    "id": "x4RjJTT2vVjeDHh_qr5a3",
-    "name": "Email /Support Ticket Classifier",
-    "active": true,
+    "updatedAt": "2026-03-16T12:15:10.461Z",
+    "createdAt": "2026-03-16T12:15:10.461Z",
+    "id": "qbM677BpBleC26FdQYDGF",
+    "name": "[SUB] Weather Forecast (Get OpenWeather Data)",
+    "active": false,
     "isArchived": false,
     "nodes": [
       {
         "parameters": {
-          "pollTimes": {
-            "item": [
-              {
-                "mode": "everyMinute"
-              }
-            ]
-          },
-          "filters": {}
-        },
-        "type": "n8n-nodes-base.gmailTrigger",
-        "typeVersion": 1.3,
-        "position": [
-          0,
-          0
-        ],
-        "id": "ad16937c-bf8c-4733-8c2c-6008afae538f",
-        "name": "Gmail Trigger",
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "y074I2cxfQAgBpfz",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "=\"Classify this email. If it is from a family member or relates to family matters, output exactly the word 'Family'. Otherwise, output 'Other'.\" {{ $json.snippet }}",
-          "batching": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.chainLlm",
-        "typeVersion": 1.9,
-        "position": [
-          256,
-          0
-        ],
-        "id": "bb2d7a56-3342-41ba-86bc-23c458c795c3",
-        "name": "Basic LLM Chain"
-      },
-      {
-        "parameters": {
-          "model": "llama3:latest",
+          "url": "https://api.openweathermap.org/data/2.5/weather?q=London&appid={{ $credentials.openWeather.key }}&units=metric",
           "options": {}
         },
-        "type": "@n8n/n8n-nodes-langchain.lmOllama",
-        "typeVersion": 1,
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 2,
         "position": [
-          208,
-          240
+          -400,
+          96
         ],
-        "id": "730559b8-20e3-412a-9049-2bdd43dbacb0",
-        "name": "Ollama Model",
-        "credentials": {
-          "ollamaApi": {
-            "id": "azGE12qSSgOz6Z5j",
-            "name": "Ollama account"
-          }
-        }
-      },
+        "id": "6c7a50e1-dc6c-4818-80e2-668e1355e2e4",
+        "name": "Get London Weather"
+      }
+    ],
+    "connections": {},
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "3663243b-2f06-4010-b1ae-c2fbf431f4a9",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-16T12:15:10.464Z",
+        "createdAt": "2026-03-16T12:15:10.464Z",
+        "role": "workflow:owner",
+        "workflowId": "qbM677BpBleC26FdQYDGF",
+        "projectId": "02PFphAbImfXlxF1"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-16T12:13:06.341Z",
+    "createdAt": "2026-03-16T12:12:17.809Z",
+    "id": "tRGMxpqwkkvMGOoUDSSbz",
+    "name": "Current News Workflow",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
       {
         "parameters": {
-          "rules": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4.1-mini",
+            "mode": "list",
+            "cachedResultName": "GPT-4.1-MINI"
+          },
+          "responses": {
             "values": [
               {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 3
-                  },
-                  "conditions": [
-                    {
-                      "id": "abe8d50f-8a48-4107-a699-6fa1efcc2f5b",
-                      "leftValue": "={{ $json.text }}",
-                      "rightValue": "Family",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                }
+                "content": "={{ $json.chatInput }}"
+              },
+              {
+                "role": "system",
+                "content": "You are a professional news anchor. Always use the 'get_nyt_news' tool to fetch data. Your goal is to provide a concise summary of the TOP 3 most important news stories from the data provided. Present them in a clear, journalistic style in English.\nYou are a news anchor. NEVER output JSON or technical symbols like { } [ ] or \\n. Only use plain English text and bullet points."
               }
             ]
           },
+          "builtInTools": {},
           "options": {}
         },
-        "type": "n8n-nodes-base.switch",
-        "typeVersion": 3.4,
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 2.1,
         "position": [
-          608,
-          0
+          -16,
+          80
         ],
-        "id": "73977eea-c559-4d20-927f-b80e2b919715",
-        "name": "Switch"
+        "id": "7ea571cf-a864-4309-8d00-ced36b7eab9e",
+        "name": "Message a model",
+        "credentials": {
+          "openAiApi": {
+            "id": "oyywDawCSf6utBP0",
+            "name": "OpenAi account"
+          }
+        }
       },
       {
         "parameters": {
-          "operation": "addLabels",
-          "messageId": "={{ $node[\"Gmail Trigger\"].json[\"id\"] }}",
-          "labelIds": [
-            "Label_19"
-          ]
+          "options": {}
         },
-        "type": "n8n-nodes-base.gmail",
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          -240,
+          80
+        ],
+        "id": "8c1256ac-bc0d-4d25-bb17-a97ebee7c201",
+        "name": "When chat message received",
+        "webhookId": "716b35a2-976f-461e-9215-3e487cd98f61"
+      },
+      {
+        "parameters": {
+          "description": "Use this tool to get the latest world news from the New York Times. Use it whenever the user asks about news or current events.",
+          "workflowId": {
+            "__rl": true,
+            "value": "sTchKqFj3OSjKMrK",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/sTchKqFj3OSjKMrK",
+            "cachedResultName": "[SUB] Current News (Get NYTimes Top Stories)"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          848,
-          0
+          64,
+          304
         ],
-        "id": "1e71748e-eacc-4abb-8fa3-56abddd4970d",
-        "name": "Add label to message",
-        "webhookId": "0242dfed-503f-4089-860c-e1e639f29412",
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "y074I2cxfQAgBpfz",
-            "name": "Gmail account"
-          }
-        }
+        "id": "631f04b0-3c85-4b62-80c9-dd84a0df1aaf",
+        "name": "Call n8n Workflow Tool"
+      },
+      {
+        "parameters": {
+          "fromEmail": "Nando.goat@gmail.com",
+          "toEmail": "Nando.goat@gmail.com",
+          "subject": "Dagens nyheder",
+          "html": "={{ $json.data }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          544,
+          80
+        ],
+        "id": "0c98f0d5-35c8-460d-a1d8-a6430cb6503e",
+        "name": "Send email",
+        "webhookId": "0e4ea8fb-bd07-44cd-8e02-bacb84f4aee2"
+      },
+      {
+        "parameters": {
+          "mode": "markdownToHtml",
+          "markdown": "={{ $json.output[0].content[0].text }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.markdown",
+        "typeVersion": 1,
+        "position": [
+          336,
+          80
+        ],
+        "id": "1b0ec2ac-6f84-4976-8216-f6d18bff40b2",
+        "name": "Markdown"
       }
     ],
     "connections": {
-      "Ollama Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "Basic LLM Chain",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Gmail Trigger": {
+      "When chat message received": {
         "main": [
           [
             {
-              "node": "Basic LLM Chain",
+              "node": "Message a model",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Basic LLM Chain": {
+      "Call n8n Workflow Tool": {
+        "ai_tool": [
+          [
+            {
+              "node": "Message a model",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Message a model": {
         "main": [
           [
             {
-              "node": "Switch",
+              "node": "Markdown",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Switch": {
+      "Markdown": {
         "main": [
           [
             {
-              "node": "Add label to message",
+              "node": "Send email",
               "type": "main",
               "index": 0
             }
@@ -1717,210 +1199,97 @@
     },
     "settings": {
       "executionOrder": "v1",
-      "availableInMCP": false,
-      "timeSavedMode": "fixed",
-      "callerPolicy": "workflowsFromSameOwner"
+      "availableInMCP": false
     },
     "staticData": null,
-    "meta": {
-      "templateCredsSetupCompleted": true
-    },
+    "meta": null,
     "pinData": {},
-    "versionId": "7f4ec260-6f92-403f-b326-874df0410df4",
-    "activeVersionId": "7f4ec260-6f92-403f-b326-874df0410df4",
-    "triggerCount": 1,
+    "versionId": "0d927fee-4ae0-4480-841c-3f34e9f363db",
+    "activeVersionId": null,
+    "triggerCount": 0,
     "shared": [
       {
-        "updatedAt": "2026-02-09T16:03:06.143Z",
-        "createdAt": "2026-02-09T16:03:06.143Z",
+        "updatedAt": "2026-03-16T12:12:17.817Z",
+        "createdAt": "2026-03-16T12:12:17.817Z",
         "role": "workflow:owner",
-        "workflowId": "x4RjJTT2vVjeDHh_qr5a3",
-        "projectId": "GgnpOEHS9agizanl"
+        "workflowId": "tRGMxpqwkkvMGOoUDSSbz",
+        "projectId": "02PFphAbImfXlxF1"
       }
     ],
-    "activeVersion": {
-      "updatedAt": "2026-02-10T10:23:47.000Z",
-      "createdAt": "2026-02-10T10:22:27.316Z",
-      "versionId": "7f4ec260-6f92-403f-b326-874df0410df4",
-      "workflowId": "x4RjJTT2vVjeDHh_qr5a3",
-      "nodes": [
-        {
-          "parameters": {
-            "pollTimes": {
-              "item": [
-                {
-                  "mode": "everyMinute"
-                }
-              ]
-            },
-            "filters": {}
-          },
-          "type": "n8n-nodes-base.gmailTrigger",
-          "typeVersion": 1.3,
-          "position": [
-            0,
-            0
-          ],
-          "id": "ad16937c-bf8c-4733-8c2c-6008afae538f",
-          "name": "Gmail Trigger",
-          "credentials": {
-            "gmailOAuth2": {
-              "id": "y074I2cxfQAgBpfz",
-              "name": "Gmail account"
-            }
-          }
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-17T07:37:40.000Z",
+    "createdAt": "2026-03-16T12:16:07.791Z",
+    "id": "zEeFa2U1HN5WjmeAoAKrJ",
+    "name": "[SUB] Daily Motivational Quote",
+    "active": false,
+    "isArchived": true,
+    "nodes": [
+      {
+        "parameters": {
+          "url": "https://api.quotable.io/random?tags=motivational",
+          "options": {}
         },
-        {
-          "parameters": {
-            "promptType": "define",
-            "text": "=\"Classify this email. If it is from a family member or relates to family matters, output exactly the word 'Family'. Otherwise, output 'Other'.\" {{ $json.snippet }}",
-            "batching": {}
-          },
-          "type": "@n8n/n8n-nodes-langchain.chainLlm",
-          "typeVersion": 1.9,
-          "position": [
-            256,
-            0
-          ],
-          "id": "bb2d7a56-3342-41ba-86bc-23c458c795c3",
-          "name": "Basic LLM Chain"
-        },
-        {
-          "parameters": {
-            "model": "llama3:latest",
-            "options": {}
-          },
-          "type": "@n8n/n8n-nodes-langchain.lmOllama",
-          "typeVersion": 1,
-          "position": [
-            208,
-            240
-          ],
-          "id": "730559b8-20e3-412a-9049-2bdd43dbacb0",
-          "name": "Ollama Model",
-          "credentials": {
-            "ollamaApi": {
-              "id": "azGE12qSSgOz6Z5j",
-              "name": "Ollama account"
-            }
-          }
-        },
-        {
-          "parameters": {
-            "rules": {
-              "values": [
-                {
-                  "conditions": {
-                    "options": {
-                      "caseSensitive": true,
-                      "leftValue": "",
-                      "typeValidation": "strict",
-                      "version": 3
-                    },
-                    "conditions": [
-                      {
-                        "id": "abe8d50f-8a48-4107-a699-6fa1efcc2f5b",
-                        "leftValue": "={{ $json.text }}",
-                        "rightValue": "Family",
-                        "operator": {
-                          "type": "string",
-                          "operation": "equals",
-                          "name": "filter.operator.equals"
-                        }
-                      }
-                    ],
-                    "combinator": "and"
-                  }
-                }
-              ]
-            },
-            "options": {}
-          },
-          "type": "n8n-nodes-base.switch",
-          "typeVersion": 3.4,
-          "position": [
-            608,
-            0
-          ],
-          "id": "73977eea-c559-4d20-927f-b80e2b919715",
-          "name": "Switch"
-        },
-        {
-          "parameters": {
-            "operation": "addLabels",
-            "messageId": "={{ $node[\"Gmail Trigger\"].json[\"id\"] }}",
-            "labelIds": [
-              "Label_19"
-            ]
-          },
-          "type": "n8n-nodes-base.gmail",
-          "typeVersion": 2.2,
-          "position": [
-            848,
-            0
-          ],
-          "id": "1e71748e-eacc-4abb-8fa3-56abddd4970d",
-          "name": "Add label to message",
-          "webhookId": "0242dfed-503f-4089-860c-e1e639f29412",
-          "credentials": {
-            "gmailOAuth2": {
-              "id": "y074I2cxfQAgBpfz",
-              "name": "Gmail account"
-            }
-          }
-        }
-      ],
-      "connections": {
-        "Ollama Model": {
-          "ai_languageModel": [
-            [
-              {
-                "node": "Basic LLM Chain",
-                "type": "ai_languageModel",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Gmail Trigger": {
-          "main": [
-            [
-              {
-                "node": "Basic LLM Chain",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Basic LLM Chain": {
-          "main": [
-            [
-              {
-                "node": "Switch",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        },
-        "Switch": {
-          "main": [
-            [
-              {
-                "node": "Add label to message",
-                "type": "main",
-                "index": 0
-              }
-            ]
-          ]
-        }
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "id": "be209000-8435-451a-b35f-8a491ed822c6",
+        "name": "Get Quote"
       },
-      "authors": "Peyton Hunter",
-      "name": "Version 7f4ec260",
-      "description": "",
-      "autosaved": true
+      {
+        "parameters": {
+          "chatId": "1234567890",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1,
+        "position": [
+          224,
+          0
+        ],
+        "id": "415aa3d1-a8d3-4ea7-8896-3182450dc531",
+        "name": "Send Quote via Telegram",
+        "webhookId": "bb018fd1-46cc-4f00-b5ee-e3b363084081"
+      }
+    ],
+    "connections": {
+      "Get Quote": {
+        "main": [
+          [
+            {
+              "node": "Send Quote via Telegram",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
     },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "3807a886-50f5-4a9a-9b66-edf4a331b489",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-16T12:16:07.794Z",
+        "createdAt": "2026-03-16T12:16:07.794Z",
+        "role": "workflow:owner",
+        "workflowId": "zEeFa2U1HN5WjmeAoAKrJ",
+        "projectId": "02PFphAbImfXlxF1"
+      }
+    ],
+    "activeVersion": null,
     "tags": []
   }
 ]
