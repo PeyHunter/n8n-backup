@@ -637,6 +637,53 @@
     "tags": []
   },
   {
+    "updatedAt": "2026-03-17T10:25:37.511Z",
+    "createdAt": "2026-03-17T10:24:56.515Z",
+    "id": "iKKDB5fKT2DJsYqRdIqwl",
+    "name": "RAG-Hybrid Seach",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "path": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "775aad77-d55e-4ac7-95aa-a27df6cf7878",
+        "name": "Webhook",
+        "webhookId": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2"
+      }
+    ],
+    "connections": {},
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "b2166490-0bef-45b1-9265-1fbbf1652302",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-17T10:24:56.520Z",
+        "createdAt": "2026-03-17T10:24:56.520Z",
+        "role": "workflow:owner",
+        "workflowId": "iKKDB5fKT2DJsYqRdIqwl",
+        "projectId": "U6s8CwDPyCKnn9l7"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
     "updatedAt": "2026-03-17T09:31:02.061Z",
     "createdAt": "2026-03-17T09:31:02.061Z",
     "id": "yAyV8DNoEYARceU0Yku_i",
