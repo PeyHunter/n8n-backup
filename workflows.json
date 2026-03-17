@@ -564,7 +564,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-16T12:18:35.010Z",
+    "updatedAt": "2026-03-17T08:25:55.504Z",
     "createdAt": "2026-03-16T12:18:17.534Z",
     "id": "YYEojkcCAz8xV8QhdKDKM",
     "name": "embed",
@@ -632,7 +632,13 @@
           -32
         ],
         "id": "0836619b-8aa3-4390-ba8c-d11cb43b52b2",
-        "name": "OpenAi Embedding"
+        "name": "OpenAi Embedding",
+        "credentials": {
+          "openAiApi": {
+            "id": "oyywDawCSf6utBP0",
+            "name": "OpenAi account"
+          }
+        }
       },
       {
         "parameters": {
@@ -663,7 +669,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "http://host.docker.internal:7474/db/opgave/tx/commit",
+          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBasicAuth",
           "sendHeaders": true,
@@ -688,7 +694,13 @@
           -32
         ],
         "id": "a4978f56-7566-4dcb-8371-0b19bf411dbe",
-        "name": "HTTP Request"
+        "name": "HTTP Request",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "q8oz8BDlooBWvkx1",
+            "name": "Unnamed credential 3"
+          }
+        }
       }
     ],
     "connections": {
@@ -755,7 +767,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "027149e7-0165-4ba8-a97e-1f65c159be49",
+    "versionId": "73b4af8c-7a5c-4220-a0eb-dbc95e2ff2c8",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -817,7 +829,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T07:39:37.437Z",
+    "updatedAt": "2026-03-17T07:40:44.856Z",
     "createdAt": "2026-03-16T12:20:12.534Z",
     "id": "hdIUjPmIFSudP5V4GQ7fK",
     "name": "Backup Flow",
@@ -852,8 +864,8 @@
           "rule": {
             "interval": [
               {
-                "field": "hours",
-                "hoursInterval": 10
+                "field": "minutes",
+                "minutesInterval": 30
               }
             ]
           }
@@ -883,7 +895,7 @@
           },
           "filePath": "workflows.json",
           "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-          "commitMessage": "Daily Commit"
+          "commitMessage": "Hourly Commit"
         },
         "type": "n8n-nodes-base.github",
         "typeVersion": 1.1,
@@ -969,7 +981,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "6565801b-2c89-49e2-b978-dee0ed4f90e3",
+    "versionId": "70118dc7-a693-4e4d-9621-2d47e4a5c941",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
