@@ -637,7 +637,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-17T14:09:09.613Z",
+    "updatedAt": "2026-03-18T08:23:15.853Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach",
@@ -662,19 +662,15 @@
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBasicAuth",
           "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "value": "={   \"statements\": [     {       \"statement\": \"MATCH (d:Document) RETURN d LIMIT 5\",       \"parameters\": {         \"query\": \"={{$json.query}}\"       }     }   ] }"
-              }
-            ]
-          },
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={\n  \"statements\": [\n    {\n      \"statement\": \"MATCH (d:Document) WHERE toLower(d.content) CONTAINS toLower($query) OPTIONAL MATCH (d)-[:LINKS_TO]->(related) RETURN d.title AS title, collect(related.title) AS related\",\n      \"parameters\": {\n        \"query\": \"{{$json.query}}\"\n      }\n    }\n  ]\n}",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
-          672,
+          880,
           0
         ],
         "name": "Graph Search – Neo4j",
@@ -693,7 +689,7 @@
               {
                 "id": "33f301c0-753a-42ae-92d3-6d3c536b858a",
                 "name": "query",
-                "value": "=ai agents",
+                "value": "=llm",
                 "type": "string"
               }
             ]
@@ -716,11 +712,24 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          880,
+          1088,
           0
         ],
         "id": "f634fda6-4719-41b5-b312-f801bfa2b68b",
         "name": "Parse Graph Results"
+      },
+      {
+        "parameters": {
+          "jsCode": "const q = $json.query\n  .toLowerCase()\n  .replace(/\\s+/g, \"_\");\n\nreturn [{\n  json: {\n    query: q\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          624,
+          0
+        ],
+        "id": "6f520d41-c9aa-409e-92fd-cc00393d9b63",
+        "name": "Normalisering af tekst"
       }
     ],
     "connections": {
@@ -739,7 +748,7 @@
         "main": [
           [
             {
-              "node": "Graph Search – Neo4j",
+              "node": "Normalisering af tekst",
               "type": "main",
               "index": 0
             }
@@ -756,6 +765,17 @@
             }
           ]
         ]
+      },
+      "Normalisering af tekst": {
+        "main": [
+          [
+            {
+              "node": "Graph Search – Neo4j",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -765,7 +785,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "5ef50d3d-8ca1-48f7-95dd-609a88b684ea",
+    "versionId": "0639f8d1-de7c-4fc7-8e43-cb501fcf6017",
     "activeVersionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
     "triggerCount": 1,
     "shared": [
