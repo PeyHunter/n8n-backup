@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-03-18T09:01:36.123Z",
+    "updatedAt": "2026-03-18T09:14:31.855Z",
     "createdAt": "2026-03-18T08:49:55.509Z",
     "id": "0pMZsPZDHEc5vjXMw0mKE",
     "name": "RAG-Hybrid Seach-Vector Retrieval workflow",
@@ -25,7 +25,7 @@
               {
                 "id": "52bd61e6-26ef-456c-9218-dc080635ded8",
                 "name": "query",
-                "value": "llm",
+                "value": "{{$json.query}}",
                 "type": "string"
               }
             ]
@@ -196,7 +196,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "f2fb99ff-ee07-4084-bab1-7a800e615aba",
+    "versionId": "a5df9fed-e7e8-4711-889b-7626b36c1b49",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -353,7 +353,7 @@
     },
     "pinData": {},
     "versionId": "65564fd1-98b8-4fc1-8da4-96386b576e14",
-    "activeVersionId": "cc96e220-d8e4-4eb3-bd86-fd3deac5713e",
+    "activeVersionId": "65564fd1-98b8-4fc1-8da4-96386b576e14",
     "triggerCount": 1,
     "shared": [
       {
@@ -365,9 +365,9 @@
       }
     ],
     "activeVersion": {
-      "updatedAt": "2026-03-17T09:40:07.000Z",
-      "createdAt": "2026-03-17T09:39:34.526Z",
-      "versionId": "cc96e220-d8e4-4eb3-bd86-fd3deac5713e",
+      "updatedAt": "2026-03-18T09:13:03.000Z",
+      "createdAt": "2026-03-18T08:26:18.389Z",
+      "versionId": "65564fd1-98b8-4fc1-8da4-96386b576e14",
       "workflowId": "1JDxkz6iohY4ry06UZ4tg",
       "nodes": [
         {
@@ -440,7 +440,7 @@
             },
             "filePath": "workflows.json",
             "fileContent": "={{ JSON.stringify($json.data, null, 2) }}",
-            "commitMessage": "Hourly Commit"
+            "commitMessage": "Backup Commit"
           },
           "type": "n8n-nodes-base.github",
           "typeVersion": 1,
@@ -495,7 +495,7 @@
         }
       },
       "authors": "Peyton Hunter",
-      "name": "Version cc96e220",
+      "name": "Version 65564fd1",
       "description": "",
       "autosaved": true
     },
@@ -623,6 +623,71 @@
         "createdAt": "2026-03-17T09:31:58.508Z",
         "role": "workflow:owner",
         "workflowId": "BvivyG9x6oUQWIM1Qt-uL",
+        "projectId": "U6s8CwDPyCKnn9l7"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-18T09:23:40.101Z",
+    "createdAt": "2026-03-18T09:23:40.101Z",
+    "id": "L5rkSYwuhV8UNi3V",
+    "name": "My Sub-Workflow 2",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "id": "c055762a-8fe7-4141-a639-df2372f30060",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          260,
+          340
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "b5942df6-0160-4ef7-965d-57583acdc8aa",
+        "name": "Replace me with your logic",
+        "type": "n8n-nodes-base.noOp",
+        "position": [
+          520,
+          340
+        ],
+        "parameters": {}
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Replace me with your logic",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "60a1bf1c-d1ab-4572-823c-3cb6ffbdf50a",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-18T09:23:40.104Z",
+        "createdAt": "2026-03-18T09:23:40.104Z",
+        "role": "workflow:owner",
+        "workflowId": "L5rkSYwuhV8UNi3V",
         "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
@@ -842,6 +907,123 @@
         "createdAt": "2026-03-17T09:34:37.720Z",
         "role": "workflow:owner",
         "workflowId": "Xgd2flbp4fPcMlLNzwAZV",
+        "projectId": "U6s8CwDPyCKnn9l7"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-18T09:23:43.589Z",
+    "createdAt": "2026-03-18T09:17:19.936Z",
+    "id": "ZrOMsqzSrxGPy8ku2BM_O",
+    "name": "RAG-Hybrid Search-Orchestrator",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "626c11a5-e247-4d88-b4bc-805704ac2065",
+        "name": "Manual Trigger"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "78963d64-e447-485a-b5f3-74b4abd60c32",
+                "name": "query",
+                "value": "What is llm?",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          208,
+          0
+        ],
+        "id": "984b3163-5d96-4904-8bca-71ac9ab97ff9",
+        "name": "Input - User Query"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "L5rkSYwuhV8UNi3V",
+            "mode": "list",
+            "cachedResultName": "My Sub-Workflow 2",
+            "cachedResultUrl": "/workflow/L5rkSYwuhV8UNi3V"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          416,
+          0
+        ],
+        "id": "fb1d1749-fa7f-4e2b-bf1e-e9f44d6a0ff9",
+        "name": "Execute Workflow"
+      }
+    ],
+    "connections": {
+      "Manual Trigger": {
+        "main": [
+          [
+            {
+              "node": "Input - User Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Input - User Query": {
+        "main": [
+          [
+            {
+              "node": "Execute Workflow",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "47059d84-6924-4d97-b4e8-ea1eb3371621",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-18T09:17:19.940Z",
+        "createdAt": "2026-03-18T09:17:19.940Z",
+        "role": "workflow:owner",
+        "workflowId": "ZrOMsqzSrxGPy8ku2BM_O",
         "projectId": "U6s8CwDPyCKnn9l7"
       }
     ],
@@ -1216,6 +1398,71 @@
       "description": "",
       "autosaved": true
     },
+    "tags": []
+  },
+  {
+    "updatedAt": "2026-03-18T09:19:13.000Z",
+    "createdAt": "2026-03-18T09:18:59.055Z",
+    "id": "szK4I92V7E2gGE8h",
+    "name": "My Sub-Workflow 1",
+    "active": false,
+    "isArchived": true,
+    "nodes": [
+      {
+        "id": "c055762a-8fe7-4141-a639-df2372f30060",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          260,
+          340
+        ],
+        "parameters": {}
+      },
+      {
+        "id": "b5942df6-0160-4ef7-965d-57583acdc8aa",
+        "name": "Replace me with your logic",
+        "type": "n8n-nodes-base.noOp",
+        "position": [
+          520,
+          340
+        ],
+        "parameters": {}
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Replace me with your logic",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "122316a8-5668-4dfe-8a6b-5f347aa88700",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-18T09:18:59.058Z",
+        "createdAt": "2026-03-18T09:18:59.058Z",
+        "role": "workflow:owner",
+        "workflowId": "szK4I92V7E2gGE8h",
+        "projectId": "U6s8CwDPyCKnn9l7"
+      }
+    ],
+    "activeVersion": null,
     "tags": []
   },
   {
