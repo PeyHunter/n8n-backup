@@ -1,23 +1,12 @@
 [
   {
-    "updatedAt": "2026-03-18T09:14:31.855Z",
+    "updatedAt": "2026-03-18T09:53:04.445Z",
     "createdAt": "2026-03-18T08:49:55.509Z",
     "id": "0pMZsPZDHEc5vjXMw0mKE",
     "name": "RAG-Hybrid Seach-Vector Retrieval workflow",
     "active": false,
     "isArchived": false,
     "nodes": [
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
-        "typeVersion": 1,
-        "position": [
-          0,
-          0
-        ],
-        "id": "2249655a-bf11-4114-a5df-89be0426d430",
-        "name": "Manual Trigger"
-      },
       {
         "parameters": {
           "assignments": {
@@ -35,7 +24,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          208,
+          416,
           0
         ],
         "id": "472eeedd-c065-4045-a064-4fbe7169dca9",
@@ -56,7 +45,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.3,
         "position": [
-          784,
+          992,
           0
         ],
         "id": "089c6a68-939a-43a8-967e-47792c5e8980",
@@ -70,12 +59,12 @@
       },
       {
         "parameters": {
-          "jsCode": "const results = $json.results[0].data;\nreturn results.map(r => ({\n  json: { title: r.row[0], score: r.row[1] }\n}));"
+          "jsCode": "// Tjek om der er results fra Neo4j\nconst results = $json.results?.[0]?.data || [];\n\nif (results.length === 0) {\n  return [{ json: { message: \"No matches found\" } }];\n}\n\n// Map over Neo4j rows og returner title + score\nreturn results.map(r => ({\n  json: {\n    title: r.row?.[0] || \"Unknown\",\n    score: r.row?.[1] || 0\n  }\n}));"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          992,
+          1408,
           0
         ],
         "id": "20071149-6d2d-4a9a-970c-003aa9abd61c",
@@ -104,7 +93,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.3,
         "position": [
-          416,
+          624,
           0
         ],
         "id": "a588de38-3504-49dc-b5f8-a2a5f14c4711",
@@ -123,25 +112,40 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          624,
+          832,
           0
         ],
         "id": "61eb93bc-f726-4166-92a4-d2333f758b66",
         "name": "Embed Array"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "b673f8c8-be78-4470-b057-8b0272db2bfe",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "jsCode": "console.log($json);\nreturn [{json: $json}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1200,
+          0
+        ],
+        "id": "65a4dcb1-88c3-4943-8ee3-05ec6453d710",
+        "name": "Code in JavaScript"
       }
     ],
     "connections": {
-      "Manual Trigger": {
-        "main": [
-          [
-            {
-              "node": "Input - User Query",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Input - User Query": {
         "main": [
           [
@@ -157,7 +161,7 @@
         "main": [
           [
             {
-              "node": "Parse Node",
+              "node": "Code in JavaScript",
               "type": "main",
               "index": 0
             }
@@ -185,6 +189,28 @@
             }
           ]
         ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Input - User Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Parse Node",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -196,7 +222,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "a5df9fed-e7e8-4711-889b-7626b36c1b49",
+    "versionId": "654b378c-bd0f-4ecd-8c89-69a361042659",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -630,12 +656,12 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T09:23:40.101Z",
+    "updatedAt": "2026-03-18T09:40:48.000Z",
     "createdAt": "2026-03-18T09:23:40.101Z",
     "id": "L5rkSYwuhV8UNi3V",
     "name": "My Sub-Workflow 2",
     "active": false,
-    "isArchived": false,
+    "isArchived": true,
     "nodes": [
       {
         "id": "c055762a-8fe7-4141-a639-df2372f30060",
@@ -679,7 +705,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "60a1bf1c-d1ab-4572-823c-3cb6ffbdf50a",
+    "versionId": "53cd36b7-489c-4f03-bd91-ddb547b0c2a1",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -914,24 +940,13 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T09:23:43.589Z",
+    "updatedAt": "2026-03-18T09:59:21.363Z",
     "createdAt": "2026-03-18T09:17:19.936Z",
     "id": "ZrOMsqzSrxGPy8ku2BM_O",
     "name": "RAG-Hybrid Search-Orchestrator",
     "active": false,
     "isArchived": false,
     "nodes": [
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
-        "typeVersion": 1,
-        "position": [
-          0,
-          0
-        ],
-        "id": "626c11a5-e247-4d88-b4bc-805704ac2065",
-        "name": "Manual Trigger"
-      },
       {
         "parameters": {
           "assignments": {
@@ -956,13 +971,52 @@
         "name": "Input - User Query"
       },
       {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -32,
+          0
+        ],
+        "id": "a839f6f9-2999-481c-a1b0-a51ab58fef9d",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
         "parameters": {
           "workflowId": {
             "__rl": true,
-            "value": "L5rkSYwuhV8UNi3V",
+            "value": "e_wxC9gp033cA-G4i7xgH",
             "mode": "list",
-            "cachedResultName": "My Sub-Workflow 2",
-            "cachedResultUrl": "/workflow/L5rkSYwuhV8UNi3V"
+            "cachedResultUrl": "/workflow/e_wxC9gp033cA-G4i7xgH",
+            "cachedResultName": "RAG-Hybrid Seach-Keyword Retrieval workflow"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          624,
+          0
+        ],
+        "id": "fb1d1749-fa7f-4e2b-bf1e-e9f44d6a0ff9",
+        "name": "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "0pMZsPZDHEc5vjXMw0mKE",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/0pMZsPZDHEc5vjXMw0mKE",
+            "cachedResultName": "RAG-Hybrid Seach-Vector Retrieval workflow"
           },
           "workflowInputs": {
             "mappingMode": "defineBelow",
@@ -980,12 +1034,51 @@
           416,
           0
         ],
-        "id": "fb1d1749-fa7f-4e2b-bf1e-e9f44d6a0ff9",
-        "name": "Execute Workflow"
+        "id": "a2d17017-a5d2-4478-a2c6-73272b91e0eb",
+        "name": "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'1"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "iKKDB5fKT2DJsYqRdIqwl",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/iKKDB5fKT2DJsYqRdIqwl",
+            "cachedResultName": "RAG-Hybrid Seach-Graph Retrieval workflow"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          832,
+          0
+        ],
+        "id": "e21a24ac-5ef3-46f9-a0b7-4ea0b39c3d2e",
+        "name": "Call 'RAG-Hybrid Seach-Graph Retrieval workflow'"
       }
     ],
     "connections": {
-      "Manual Trigger": {
+      "Input - User Query": {
+        "main": [
+          [
+            {
+              "node": "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
         "main": [
           [
             {
@@ -996,11 +1089,22 @@
           ]
         ]
       },
-      "Input - User Query": {
+      "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'1": {
         "main": [
           [
             {
-              "node": "Execute Workflow",
+              "node": "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'": {
+        "main": [
+          [
+            {
+              "node": "Call 'RAG-Hybrid Seach-Graph Retrieval workflow'",
               "type": "main",
               "index": 0
             }
@@ -1015,7 +1119,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "47059d84-6924-4d97-b4e8-ea1eb3371621",
+    "versionId": "f3ddbe6f-da2d-463f-bf7e-7fb8a4f9dc3d",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -1031,24 +1135,13 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T08:49:24.045Z",
+    "updatedAt": "2026-03-18T09:51:41.274Z",
     "createdAt": "2026-03-18T08:38:04.042Z",
     "id": "e_wxC9gp033cA-G4i7xgH",
     "name": "RAG-Hybrid Seach-Keyword Retrieval workflow",
     "active": false,
     "isArchived": false,
     "nodes": [
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
-        "typeVersion": 1,
-        "position": [
-          0,
-          0
-        ],
-        "id": "81148b3a-f6ba-4f79-817c-ca43dd099646",
-        "name": "Manual Trigger"
-      },
       {
         "parameters": {
           "assignments": {
@@ -1066,7 +1159,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          208,
+          416,
           0
         ],
         "id": "d9e21224-f3e8-44a4-9b53-473302dbbf55",
@@ -1087,7 +1180,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.3,
         "position": [
-          416,
+          624,
           0
         ],
         "id": "8412d5ab-327f-4a6c-a617-77877533237e",
@@ -1106,25 +1199,27 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          624,
+          832,
           0
         ],
         "id": "17bf0e32-c481-4a60-9565-3c387d0875fe",
         "name": "Parse Node"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "18561914-069b-4451-9a66-0508ad7ecf83",
+        "name": "When Executed by Another Workflow"
       }
     ],
     "connections": {
-      "Manual Trigger": {
-        "main": [
-          [
-            {
-              "node": "Input - User Query",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Input - User Query": {
         "main": [
           [
@@ -1146,6 +1241,17 @@
             }
           ]
         ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Input - User Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -1155,7 +1261,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "e91e9b16-869f-46ce-ae46-15704b9697a1",
+    "versionId": "6e400219-d22e-4051-9f81-b8d62a1237a6",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -1171,24 +1277,13 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T08:49:32.580Z",
+    "updatedAt": "2026-03-18T09:56:43.789Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach-Graph Retrieval workflow",
     "active": true,
     "isArchived": false,
     "nodes": [
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
-        "typeVersion": 1,
-        "position": [
-          208,
-          0
-        ],
-        "id": "d8953853-604d-4787-a6b9-7abaccd95385",
-        "name": "Trigger Node"
-      },
       {
         "parameters": {
           "method": "POST",
@@ -1204,7 +1299,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
-          880,
+          1088,
           0
         ],
         "name": "Graph Search – Neo4j",
@@ -1233,7 +1328,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          416,
+          624,
           0
         ],
         "id": "77540220-7f51-417e-8127-3c55f8dcefb4",
@@ -1246,7 +1341,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1088,
+          1296,
           0
         ],
         "id": "f634fda6-4719-41b5-b312-f801bfa2b68b",
@@ -1254,35 +1349,24 @@
       },
       {
         "parameters": {
-          "jsCode": "const q = $json.query\n  .toLowerCase()\n  .replace(/\\s+/g, \"_\");\n\nreturn [{\n  json: {\n    query: q\n  }\n}];"
+          "inputSource": "passthrough"
         },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
         "position": [
-          624,
+          416,
           0
         ],
-        "id": "6f520d41-c9aa-409e-92fd-cc00393d9b63",
-        "name": "Normalisering af tekst"
+        "id": "04cf74e7-0c3b-49db-a945-e6e61ee3f04e",
+        "name": "When Executed by Another Workflow"
       }
     ],
     "connections": {
-      "Trigger Node": {
-        "main": [
-          [
-            {
-              "node": "Input – User Query",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Input – User Query": {
         "main": [
           [
             {
-              "node": "Normalisering af tekst",
+              "node": "Graph Search – Neo4j",
               "type": "main",
               "index": 0
             }
@@ -1300,11 +1384,11 @@
           ]
         ]
       },
-      "Normalisering af tekst": {
+      "When Executed by Another Workflow": {
         "main": [
           [
             {
-              "node": "Graph Search – Neo4j",
+              "node": "Input – User Query",
               "type": "main",
               "index": 0
             }
@@ -1319,9 +1403,9 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "183c8446-14f0-4e34-bcd6-09be700133b3",
-    "activeVersionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
-    "triggerCount": 1,
+    "versionId": "9c9d4ca8-ecd3-414d-9c5e-fd0a842046a2",
+    "activeVersionId": "9c9d4ca8-ecd3-414d-9c5e-fd0a842046a2",
+    "triggerCount": 0,
     "shared": [
       {
         "updatedAt": "2026-03-17T10:24:56.520Z",
@@ -1332,45 +1416,30 @@
       }
     ],
     "activeVersion": {
-      "updatedAt": "2026-03-17T12:10:50.000Z",
-      "createdAt": "2026-03-17T11:52:44.888Z",
-      "versionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
+      "updatedAt": "2026-03-18T09:59:06.000Z",
+      "createdAt": "2026-03-18T09:56:43.791Z",
+      "versionId": "9c9d4ca8-ecd3-414d-9c5e-fd0a842046a2",
       "workflowId": "iKKDB5fKT2DJsYqRdIqwl",
       "nodes": [
         {
           "parameters": {
-            "path": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2",
-            "options": {}
-          },
-          "type": "n8n-nodes-base.webhook",
-          "typeVersion": 2.1,
-          "position": [
-            0,
-            0
-          ],
-          "id": "775aad77-d55e-4ac7-95aa-a27df6cf7878",
-          "name": "Webhook",
-          "webhookId": "53e03e99-8d3d-411c-bb07-c2d0f6c232d2"
-        },
-        {
-          "parameters": {
             "method": "POST",
-            "url": "http://neo4j:7474/db/neo4j/tx/commit",
+            "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
             "authentication": "genericCredentialType",
             "genericAuthType": "httpBasicAuth",
             "sendBody": true,
             "contentType": "raw",
             "rawContentType": "application/json",
-            "body": "={ \"statements\": [ { \"statement\": \"MATCH (d:Document) RETURN d.title, substring(d.content,0,200) AS preview LIMIT 5\", \"parameters\": {} } ] }",
+            "body": "={\n  \"statements\": [\n    {\n      \"statement\": \"MATCH (d:Document) WHERE toLower(d.content) CONTAINS toLower($query) OPTIONAL MATCH (d)-[:LINKS_TO]->(related) RETURN d.title AS title, collect(related.title) AS related\",\n      \"parameters\": {\n        \"query\": \"{{$json.query}}\"\n      }\n    }\n  ]\n}",
             "options": {}
           },
           "type": "n8n-nodes-base.httpRequest",
           "typeVersion": 4,
           "position": [
-            256,
+            1088,
             0
           ],
-          "name": "Query Neo4j",
+          "name": "Graph Search – Neo4j",
           "id": "ddadad9b-4aa8-4055-94f6-8ae94ff4bb06",
           "credentials": {
             "httpBasicAuth": {
@@ -1378,14 +1447,85 @@
               "name": "Unnamed credential 3"
             }
           }
+        },
+        {
+          "parameters": {
+            "assignments": {
+              "assignments": [
+                {
+                  "id": "33f301c0-753a-42ae-92d3-6d3c536b858a",
+                  "name": "query",
+                  "value": "={{$json.query}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "options": {}
+          },
+          "type": "n8n-nodes-base.set",
+          "typeVersion": 3.4,
+          "position": [
+            624,
+            0
+          ],
+          "id": "77540220-7f51-417e-8127-3c55f8dcefb4",
+          "name": "Input – User Query"
+        },
+        {
+          "parameters": {
+            "jsCode": "const results = $json.results;\n\nif (!results || results.length === 0) {\n  return [{ json: { message: \"No graph results\" } }];\n}\n\nconst rows = results[0].data;\n\nif (!rows || rows.length === 0) {\n  return [{ json: { message: \"No matches found\" } }];\n}\n\nreturn rows.map(r => ({\n  json: {\n    title: r.row[0],\n    related: r.row[1]\n  }\n}));"
+          },
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "position": [
+            1296,
+            0
+          ],
+          "id": "f634fda6-4719-41b5-b312-f801bfa2b68b",
+          "name": "Parse Graph Results"
+        },
+        {
+          "parameters": {
+            "inputSource": "passthrough"
+          },
+          "type": "n8n-nodes-base.executeWorkflowTrigger",
+          "typeVersion": 1.1,
+          "position": [
+            416,
+            0
+          ],
+          "id": "04cf74e7-0c3b-49db-a945-e6e61ee3f04e",
+          "name": "When Executed by Another Workflow"
         }
       ],
       "connections": {
-        "Webhook": {
+        "Input – User Query": {
           "main": [
             [
               {
-                "node": "Query Neo4j",
+                "node": "Graph Search – Neo4j",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "Graph Search – Neo4j": {
+          "main": [
+            [
+              {
+                "node": "Parse Graph Results",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "When Executed by Another Workflow": {
+          "main": [
+            [
+              {
+                "node": "Input – User Query",
                 "type": "main",
                 "index": 0
               }
@@ -1394,7 +1534,7 @@
         }
       },
       "authors": "Peyton Hunter",
-      "name": "Version de5ce7cd",
+      "name": "Version 9c9d4ca8",
       "description": "",
       "autosaved": true
     },
