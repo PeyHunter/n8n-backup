@@ -637,10 +637,10 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T08:25:24.360Z",
+    "updatedAt": "2026-03-18T08:34:47.914Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
-    "name": "RAG-Hybrid Seach",
+    "name": "RAG-Hybrid Seach-Graph Retrieval workflow",
     "active": true,
     "isArchived": false,
     "nodes": [
