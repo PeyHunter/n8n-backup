@@ -637,7 +637,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T08:23:15.853Z",
+    "updatedAt": "2026-03-18T08:25:24.360Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach",
@@ -658,7 +658,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "http://neo4j:7474/db/neo4j/tx/commit",
+          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBasicAuth",
           "sendBody": true,
@@ -785,7 +785,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "0639f8d1-de7c-4fc7-8e43-cb501fcf6017",
+    "versionId": "64c717b3-199e-47f4-a6c6-1019353217bc",
     "activeVersionId": "de5ce7cd-e1af-4fac-bc16-3eb246bbf109",
     "triggerCount": 1,
     "shared": [
