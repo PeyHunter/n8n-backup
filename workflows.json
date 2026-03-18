@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-03-18T08:59:59.041Z",
+    "updatedAt": "2026-03-18T09:01:36.123Z",
     "createdAt": "2026-03-18T08:49:55.509Z",
     "id": "0pMZsPZDHEc5vjXMw0mKE",
     "name": "RAG-Hybrid Seach-Vector Retrieval workflow",
@@ -88,8 +88,17 @@
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBearerAuth",
           "sendHeaders": true,
-          "specifyHeaders": "json",
-          "jsonHeaders": "={\n  \"model\": \"text-embedding-3-small\",\n  \"input\": \"{{$json.query}}\"\n}",
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"text-embedding-3-small\",\n  \"input\": \"{{$json.query}}\"\n}",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
@@ -187,7 +196,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "c16a78f4-04b0-4d06-ac60-e910f46dc3c2",
+    "versionId": "f2fb99ff-ee07-4084-bab1-7a800e615aba",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
