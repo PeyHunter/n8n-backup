@@ -940,7 +940,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T10:29:52.655Z",
+    "updatedAt": "2026-03-18T10:32:20.341Z",
     "createdAt": "2026-03-18T09:17:19.936Z",
     "id": "ZrOMsqzSrxGPy8ku2BM_O",
     "name": "RAG-Hybrid Search-Orchestrator",
@@ -1077,6 +1077,19 @@
         ],
         "id": "04983d3c-fcf5-45c8-ae29-17976667452f",
         "name": "Merge"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.filter(item => item.json.title !== undefined);"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          848,
+          -32
+        ],
+        "id": "e4089de8-6b6f-4d8b-bdc8-b1c8ad34ec0e",
+        "name": "Clean up"
       }
     ],
     "connections": {
@@ -1144,6 +1157,17 @@
             }
           ]
         ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Clean up",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -1153,7 +1177,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "47989cbf-2a82-49f1-9b2a-af2fe3abf111",
+    "versionId": "1593be86-1d19-4435-b950-e3da404365e2",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
