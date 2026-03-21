@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-03-21T09:48:32.207Z",
+    "updatedAt": "2026-03-21T09:52:45.173Z",
     "createdAt": "2026-03-18T08:49:55.509Z",
     "id": "0pMZsPZDHEc5vjXMw0mKE",
     "name": "RAG-Hybrid Seach-Vector Retrieval workflow",
@@ -59,7 +59,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const results = $json.results?.[0]?.data || [];\n\nreturn results.map(r => ({\n  json: {\n    title: r.row?.[0],\n    score: r.row?.[1],\n    source: \"vector\"\n  }\n}));"
+          "jsCode": "const results = $json.results?.[0]?.data || [];\n\nreturn results.map(r => ({\n  json: {\n    title: r.row?.[0] || \"Unknown\",\n    score: r.row?.[1] || 0,\n    source: \"vector\"\n  }\n}));"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -222,8 +222,8 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "43ead4c7-7f50-429b-a7df-4a01a21c5f98",
-    "activeVersionId": "43ead4c7-7f50-429b-a7df-4a01a21c5f98",
+    "versionId": "46197e56-3aeb-4f25-9e34-531db6941efe",
+    "activeVersionId": "46197e56-3aeb-4f25-9e34-531db6941efe",
     "triggerCount": 0,
     "shared": [
       {
@@ -235,9 +235,9 @@
       }
     ],
     "activeVersion": {
-      "updatedAt": "2026-03-21T09:50:34.000Z",
-      "createdAt": "2026-03-21T09:48:32.208Z",
-      "versionId": "43ead4c7-7f50-429b-a7df-4a01a21c5f98",
+      "updatedAt": "2026-03-21T09:54:29.000Z",
+      "createdAt": "2026-03-21T09:52:45.174Z",
+      "versionId": "46197e56-3aeb-4f25-9e34-531db6941efe",
       "workflowId": "0pMZsPZDHEc5vjXMw0mKE",
       "nodes": [
         {
@@ -292,7 +292,7 @@
         },
         {
           "parameters": {
-            "jsCode": "const results = $json.results?.[0]?.data || [];\n\nreturn results.map(r => ({\n  json: {\n    title: r.row?.[0],\n    score: r.row?.[1],\n    source: \"vector\"\n  }\n}));"
+            "jsCode": "const results = $json.results?.[0]?.data || [];\n\nreturn results.map(r => ({\n  json: {\n    title: r.row?.[0] || \"Unknown\",\n    score: r.row?.[1] || 0,\n    source: \"vector\"\n  }\n}));"
           },
           "type": "n8n-nodes-base.code",
           "typeVersion": 2,
@@ -447,7 +447,7 @@
         }
       },
       "authors": "Peyton Hunter",
-      "name": "Version 43ead4c7",
+      "name": "Version 46197e56",
       "description": "",
       "autosaved": true
     },
@@ -1156,7 +1156,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-21T09:50:17.654Z",
+    "updatedAt": "2026-03-21T09:55:54.939Z",
     "createdAt": "2026-03-18T09:17:19.936Z",
     "id": "ZrOMsqzSrxGPy8ku2BM_O",
     "name": "RAG-Hybrid Search-Orchestrator",
@@ -1170,7 +1170,7 @@
               {
                 "id": "78963d64-e447-485a-b5f3-74b4abd60c32",
                 "name": "query",
-                "value": "hvad er llm?",
+                "value": "agents",
                 "type": "string"
               }
             ]
@@ -1310,7 +1310,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const query = $json.query || \"\";\n\nlet keywords = query\n  .toLowerCase()\n  .replace(/[^\\w\\s]/g, \"\")\n  .split(/\\s+/)\n  .filter(Boolean);\n\nconst stopwords = [\"hvad\",\"er\",\"og\",\"i\",\"på\",\"til\",\"for\",\"med\",\"about\",\"tell\",\"me\"];\n\nkeywords = keywords.filter(w => !stopwords.includes(w));\n\nif (keywords.length === 0) {\n  keywords = [query.toLowerCase()];\n}\n\nreturn [{\n  json: {\n    query,\n    keywords\n  }\n}];"
+          "jsCode": "let keywords = $json.query\n  .toLowerCase()\n  .replace(/[^\\w\\s]/g, \"\")\n  .split(/\\s+/)\n  .filter(w => ![\"hvad\",\"er\",\"og\",\"i\",\"på\",\"til\",\"for\",\"med\",\"about\",\"tell\",\"me\"].includes(w));\n\nif (keywords.length === 0) keywords = [$json.query.toLowerCase()];\n\nreturn [{ json: { query: $json.query, keywords } }];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -1442,7 +1442,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "de8baba8-e7a8-473f-a59d-6241d1cb91a6",
+    "versionId": "c8e30231-4eae-4ded-a021-ffb464aae304",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
