@@ -1156,7 +1156,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-21T09:55:54.939Z",
+    "updatedAt": "2026-03-23T07:34:02.454Z",
     "createdAt": "2026-03-18T09:17:19.936Z",
     "id": "ZrOMsqzSrxGPy8ku2BM_O",
     "name": "RAG-Hybrid Search-Orchestrator",
@@ -1170,7 +1170,7 @@
               {
                 "id": "78963d64-e447-485a-b5f3-74b4abd60c32",
                 "name": "query",
-                "value": "agents",
+                "value": "llm",
                 "type": "string"
               }
             ]
@@ -1442,7 +1442,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "c8e30231-4eae-4ded-a021-ffb464aae304",
+    "versionId": "6574c828-a657-4c54-940a-7bcbbf9919b6",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
