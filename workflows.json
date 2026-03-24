@@ -950,7 +950,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-23T12:36:31.908Z",
+    "updatedAt": "2026-03-24T08:04:52.288Z",
     "createdAt": "2026-03-23T08:48:16.345Z",
     "id": "MxnykYNQyakN9dVspHLGa",
     "name": "RAG-Hybrid Search - Embed",
@@ -1246,6 +1246,11 @@
             }
           ]
         ]
+      },
+      "Save Embedding to Neo4j": {
+        "main": [
+          []
+        ]
       }
     },
     "settings": {
@@ -1255,7 +1260,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "968d070d-013a-46e5-bbe5-59f99e267ce0",
+    "versionId": "2b04695c-6d89-469a-b306-b77faec05fff",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -1490,7 +1495,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-24T07:33:59.040Z",
+    "updatedAt": "2026-03-24T08:25:24.156Z",
     "createdAt": "2026-03-18T09:17:19.936Z",
     "id": "ZrOMsqzSrxGPy8ku2BM_O",
     "name": "RAG-Hybrid Search-Orchestrator",
@@ -1504,7 +1509,7 @@
               {
                 "id": "78963d64-e447-485a-b5f3-74b4abd60c32",
                 "name": "query",
-                "value": "hvad er ai?",
+                "value": "Fortæl mig lidt om deep learning?",
                 "type": "string"
               }
             ]
@@ -1680,6 +1685,19 @@
         ],
         "id": "d2305f46-9f30-4805-9640-aeba09b8a940",
         "name": "Fusion Node"
+      },
+      {
+        "parameters": {
+          "jsCode": "const query = items[0].json.query.toLowerCase();\nconst keywords = query.replace(/[^\\w\\s]/g, '').split(/\\s+/);\n const mainKeyword = keywords.filter(w => \n  !['hvad', 'er', 'og', 'i', 'på', 'til', 'for', 'med', 'om', 'en', 'et'].includes(w)\n)[0] || keywords[0];\nreturn [{ json: { query: mainKeyword } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          432,
+          -256
+        ],
+        "id": "f0938045-f821-48d3-9dd1-c3e467ebdcea",
+        "name": "Extract Search Word"
       }
     ],
     "connections": {
@@ -1753,17 +1771,17 @@
         "main": [
           [
             {
-              "node": "Call 'RAG-Hybrid Seach-Graph Retrieval workflow'",
-              "type": "main",
-              "index": 0
-            },
-            {
               "node": "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'1",
               "type": "main",
               "index": 0
             },
             {
               "node": "Call 'RAG-Hybrid Seach-Keyword Retrieval workflow'",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Extract Search Word",
               "type": "main",
               "index": 0
             }
@@ -1791,6 +1809,17 @@
             }
           ]
         ]
+      },
+      "Extract Search Word": {
+        "main": [
+          [
+            {
+              "node": "Call 'RAG-Hybrid Seach-Graph Retrieval workflow'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -1800,7 +1829,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "0d47863a-df72-4733-bb49-d13c93ef93d0",
+    "versionId": "e63fb49c-3a83-4e38-ad85-2b021bb9fe12",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -2080,7 +2109,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-18T09:56:43.789Z",
+    "updatedAt": "2026-03-24T08:42:41.080Z",
     "createdAt": "2026-03-17T10:24:56.515Z",
     "id": "iKKDB5fKT2DJsYqRdIqwl",
     "name": "RAG-Hybrid Seach-Graph Retrieval workflow",
@@ -2094,15 +2123,24 @@
           "authentication": "genericCredentialType",
           "genericAuthType": "httpBasicAuth",
           "sendBody": true,
-          "contentType": "raw",
-          "rawContentType": "application/json",
-          "body": "={\n  \"statements\": [\n    {\n      \"statement\": \"MATCH (d:Document) WHERE toLower(d.content) CONTAINS toLower($query) OPTIONAL MATCH (d)-[:LINKS_TO]->(related) RETURN d.title AS title, collect(related.title) AS related\",\n      \"parameters\": {\n        \"query\": \"{{$json.query}}\"\n      }\n    }\n  ]\n}",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "statements[0].statement",
+                "value": "=MATCH (d:Document) WHERE toLower(d.content) CONTAINS toLower($query) OPTIONAL MATCH (d)-[:LINKS_TO]->(related) RETURN d.title AS title, collect(related.title) AS related"
+              },
+              {
+                "name": "statements[0].parameters.query",
+                "value": "={{ $json.query }}"
+              }
+            ]
+          },
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4,
         "position": [
-          1088,
+          880,
           0
         ],
         "name": "Graph Search – Neo4j",
@@ -2116,30 +2154,7 @@
       },
       {
         "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "33f301c0-753a-42ae-92d3-6d3c536b858a",
-                "name": "query",
-                "value": "={{$json.query}}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          624,
-          0
-        ],
-        "id": "77540220-7f51-417e-8127-3c55f8dcefb4",
-        "name": "Input – User Query"
-      },
-      {
-        "parameters": {
-          "jsCode": "const results = $json.results;\n\nif (!results || results.length === 0) {\n  return [{ json: { message: \"No graph results\" } }];\n}\n\nconst rows = results[0].data;\n\nif (!rows || rows.length === 0) {\n  return [{ json: { message: \"No matches found\" } }];\n}\n\nreturn rows.map(r => ({\n  json: {\n    title: r.row[0],\n    related: r.row[1]\n  }\n}));"
+          "jsCode": "const results = $json.results;\nif (!results || results.length === 0) {\n  return [{ json: { message: \"No graph results\" } }];\n}\nconst rows = results[0].data;\nif (!rows || rows.length === 0) {\n  return [{ json: { message: \"No matches found\" } }];\n}\nreturn rows.map(r => ({\n  json: {\n    title: r.row[0],\n    related: r.row[1],\n    source: \"graph\"\n  }\n}));"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -2165,17 +2180,6 @@
       }
     ],
     "connections": {
-      "Input – User Query": {
-        "main": [
-          [
-            {
-              "node": "Graph Search – Neo4j",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Graph Search – Neo4j": {
         "main": [
           [
@@ -2191,7 +2195,7 @@
         "main": [
           [
             {
-              "node": "Input – User Query",
+              "node": "Graph Search – Neo4j",
               "type": "main",
               "index": 0
             }
@@ -2206,8 +2210,8 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "9c9d4ca8-ecd3-414d-9c5e-fd0a842046a2",
-    "activeVersionId": "9c9d4ca8-ecd3-414d-9c5e-fd0a842046a2",
+    "versionId": "47e42831-d33e-424b-96fe-c8102c80a604",
+    "activeVersionId": "e7ce0d05-4863-4e1f-bcf7-ec544a8b26b6",
     "triggerCount": 0,
     "shared": [
       {
@@ -2219,9 +2223,9 @@
       }
     ],
     "activeVersion": {
-      "updatedAt": "2026-03-18T09:59:06.000Z",
-      "createdAt": "2026-03-18T09:56:43.791Z",
-      "versionId": "9c9d4ca8-ecd3-414d-9c5e-fd0a842046a2",
+      "updatedAt": "2026-03-24T08:31:35.000Z",
+      "createdAt": "2026-03-24T08:31:18.081Z",
+      "versionId": "e7ce0d05-4863-4e1f-bcf7-ec544a8b26b6",
       "workflowId": "iKKDB5fKT2DJsYqRdIqwl",
       "nodes": [
         {
@@ -2233,7 +2237,7 @@
             "sendBody": true,
             "contentType": "raw",
             "rawContentType": "application/json",
-            "body": "={\n  \"statements\": [\n    {\n      \"statement\": \"MATCH (d:Document) WHERE toLower(d.content) CONTAINS toLower($query) OPTIONAL MATCH (d)-[:LINKS_TO]->(related) RETURN d.title AS title, collect(related.title) AS related\",\n      \"parameters\": {\n        \"query\": \"{{$json.query}}\"\n      }\n    }\n  ]\n}",
+            "body": "=={{ $json.body }}",
             "options": {}
           },
           "type": "n8n-nodes-base.httpRequest",
@@ -2276,7 +2280,7 @@
         },
         {
           "parameters": {
-            "jsCode": "const results = $json.results;\n\nif (!results || results.length === 0) {\n  return [{ json: { message: \"No graph results\" } }];\n}\n\nconst rows = results[0].data;\n\nif (!rows || rows.length === 0) {\n  return [{ json: { message: \"No matches found\" } }];\n}\n\nreturn rows.map(r => ({\n  json: {\n    title: r.row[0],\n    related: r.row[1]\n  }\n}));"
+            "jsCode": "const results = $json.results;\nif (!results || results.length === 0) {\n  return [{ json: { message: \"No graph results\" } }];\n}\nconst rows = results[0].data;\nif (!rows || rows.length === 0) {\n  return [{ json: { message: \"No matches found\" } }];\n}\nreturn rows.map(r => ({\n  json: {\n    title: r.row[0],\n    related: r.row[1],\n    source: \"graph\"\n  }\n}));"
           },
           "type": "n8n-nodes-base.code",
           "typeVersion": 2,
@@ -2299,6 +2303,19 @@
           ],
           "id": "04cf74e7-0c3b-49db-a945-e6e61ee3f04e",
           "name": "When Executed by Another Workflow"
+        },
+        {
+          "parameters": {
+            "jsCode": "const query = items[0].json.query;\nconst body = {\n  statements: [{\n    statement: \"MATCH (d:Document) WHERE toLower(d.content) CONTAINS toLower($query) OPTIONAL MATCH (d)-[:LINKS_TO]->(related) RETURN d.title AS title, collect(related.title) AS related\",\n    parameters: {\n      query: query\n    }\n  }]\n};\nreturn [{ json: { body: JSON.stringify(body) } }];"
+          },
+          "type": "n8n-nodes-base.code",
+          "typeVersion": 2,
+          "position": [
+            832,
+            0
+          ],
+          "id": "44c3f982-e28f-46ab-80a4-645c072dc777",
+          "name": "Convert Body"
         }
       ],
       "connections": {
@@ -2306,7 +2323,7 @@
           "main": [
             [
               {
-                "node": "Graph Search – Neo4j",
+                "node": "Convert Body",
                 "type": "main",
                 "index": 0
               }
@@ -2334,10 +2351,21 @@
               }
             ]
           ]
+        },
+        "Convert Body": {
+          "main": [
+            [
+              {
+                "node": "Graph Search – Neo4j",
+                "type": "main",
+                "index": 0
+              }
+            ]
+          ]
         }
       },
       "authors": "Peyton Hunter",
-      "name": "Version 9c9d4ca8",
+      "name": "Version e7ce0d05",
       "description": "",
       "autosaved": true
     },
