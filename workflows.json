@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-03-21T09:52:45.173Z",
+    "updatedAt": "2026-03-23T11:32:43.275Z",
     "createdAt": "2026-03-18T08:49:55.509Z",
     "id": "0pMZsPZDHEc5vjXMw0mKE",
     "name": "RAG-Hybrid Seach-Vector Retrieval workflow",
@@ -9,66 +9,42 @@
     "nodes": [
       {
         "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "52bd61e6-26ef-456c-9218-dc080635ded8",
-                "name": "query",
-                "value": "{{$json.query}}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          416,
-          0
-        ],
-        "id": "472eeedd-c065-4045-a064-4fbe7169dca9",
-        "name": "Input - User Query"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpBasicAuth",
-          "sendBody": true,
-          "contentType": "raw",
-          "rawContentType": "application/json",
-          "body": "=={\n  \"statements\": [\n    {\n      \"statement\": \"CALL db.index.vector.queryNodes('documentEmbeddingIndex', 5, $embedding) YIELD node, score RETURN node.title AS title, score\",\n      \"parameters\": {\n        \"embedding\": {{$json.embedding}}\n      }\n    }\n  ]\n}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.3,
-        "position": [
-          992,
-          0
-        ],
-        "id": "089c6a68-939a-43a8-967e-47792c5e8980",
-        "name": "Request til Neo4j",
-        "credentials": {
-          "httpBasicAuth": {
-            "id": "yJRR80som9xIIRfv",
-            "name": "Unnamed credential 3"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "const results = $json.results?.[0]?.data || [];\n\nreturn results.map(r => ({\n  json: {\n    title: r.row?.[0] || \"Unknown\",\n    score: r.row?.[1] || 0,\n    source: \"vector\"\n  }\n}));"
+          "jsCode": "console.log($json);\nreturn [{json: $json}];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1408,
+          960,
+          -400
+        ],
+        "id": "748c49a5-148c-44f0-a0de-df2b48153635",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          208,
           0
         ],
-        "id": "20071149-6d2d-4a9a-970c-003aa9abd61c",
-        "name": "Parse Node"
+        "id": "b673f8c8-be78-4470-b057-8b0272db2bfe",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = items[0];\nlet embedding = item.json.data?.[0]?.embedding || item.json.embedding;\n// If it's a string, parse it\nif (typeof embedding === 'string') {\n  embedding = JSON.parse(embedding);\n}\n// If still string, try parsing the whole response\nif (typeof embedding === 'string') {\n  embedding = JSON.parse(item.json.data || item.json.data?.[0]?.embedding);\n}\nreturn [{\n  json: {\n    embedding: embedding\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1040,
+          0
+        ],
+        "id": "61eb93bc-f726-4166-92a4-d2333f758b66",
+        "name": "Embed Array"
       },
       {
         "parameters": {
@@ -107,61 +83,87 @@
       },
       {
         "parameters": {
-          "jsCode": "return [{\n  json: {\n    query: $json.query,\n    embedding: $json.data[0].embedding\n  }\n}];"
+          "jsCode": "const data = $json.results?.[0]?.data;\n\nif (!data || data.length === 0) {\n  return [];\n}\n\nreturn data.map(r => ({\n  json: {\n    title: r.row[0],\n    score: r.row[1],\n    source: \"vector\"\n  }\n}));"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          832,
+          1824,
           0
         ],
-        "id": "61eb93bc-f726-4166-92a4-d2333f758b66",
-        "name": "Embed Array"
+        "id": "20071149-6d2d-4a9a-970c-003aa9abd61c",
+        "name": "Parse Node"
       },
       {
         "parameters": {
-          "inputSource": "passthrough"
+          "assignments": {
+            "assignments": [
+              {
+                "id": "52bd61e6-26ef-456c-9218-dc080635ded8",
+                "name": "query",
+                "value": "{{$json.query}}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
         },
-        "type": "n8n-nodes-base.executeWorkflowTrigger",
-        "typeVersion": 1.1,
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
         "position": [
-          208,
+          416,
           0
         ],
-        "id": "b673f8c8-be78-4470-b057-8b0272db2bfe",
-        "name": "When Executed by Another Workflow"
+        "id": "472eeedd-c065-4045-a064-4fbe7169dca9",
+        "name": "Input - User Query"
       },
       {
         "parameters": {
-          "jsCode": "console.log($json);\nreturn [{json: $json}];"
+          "method": "POST",
+          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{$json[\"body\"]}}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          1488,
+          0
+        ],
+        "id": "089c6a68-939a-43a8-967e-47792c5e8980",
+        "name": "Request til Neo4j",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "yJRR80som9xIIRfv",
+            "name": "Unnamed credential 3"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return [{\n  json: {\n    body: {\n      statements: [\n        {\n          statement: \"CALL db.index.vector.queryNodes('documentEmbeddingIndex', 5, $embedding) YIELD node, score RETURN node.title AS title, score\",\n          parameters: {\n            embedding: $json.embedding  // ⚡ Vigtigt: brug array direkte, IKKE som string\n          }\n        }\n      ]\n    }\n  }\n}];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1200,
+          1248,
           0
         ],
-        "id": "65a4dcb1-88c3-4943-8ee3-05ec6453d710",
-        "name": "Code in JavaScript"
+        "id": "13577813-f90c-4a57-8676-907edc5637d1",
+        "name": "String to Json"
       }
     ],
     "connections": {
-      "Input - User Query": {
+      "When Executed by Another Workflow": {
         "main": [
           [
             {
-              "node": "HTTP Request",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Request til Neo4j": {
-        "main": [
-          [
-            {
-              "node": "Code in JavaScript",
+              "node": "Input - User Query",
               "type": "main",
               "index": 0
             }
@@ -183,29 +185,40 @@
         "main": [
           [
             {
-              "node": "Request til Neo4j",
+              "node": "String to Json",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "When Executed by Another Workflow": {
+      "Input - User Query": {
         "main": [
           [
             {
-              "node": "Input - User Query",
+              "node": "HTTP Request",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Code in JavaScript": {
+      "Request til Neo4j": {
         "main": [
           [
             {
               "node": "Parse Node",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "String to Json": {
+        "main": [
+          [
+            {
+              "node": "Request til Neo4j",
               "type": "main",
               "index": 0
             }
@@ -222,7 +235,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "46197e56-3aeb-4f25-9e34-531db6941efe",
+    "versionId": "251d826d-1598-46b0-998b-5db029ee8ebe",
     "activeVersionId": "46197e56-3aeb-4f25-9e34-531db6941efe",
     "triggerCount": 0,
     "shared": [
@@ -937,6 +950,327 @@
     "tags": []
   },
   {
+    "updatedAt": "2026-03-23T12:36:31.908Z",
+    "createdAt": "2026-03-23T08:48:16.345Z",
+    "id": "MxnykYNQyakN9dVspHLGa",
+    "name": "RAG-Hybrid Search - Embed",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={\"statements\":[{\"statement\":\"MATCH (d:Document) WHERE d.embedding IS NULL RETURN d.title AS title, d.content AS content\",\"parameters\":{}}]}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          496,
+          208
+        ],
+        "name": "Get Documents from Neo4j",
+        "id": "2a73f09e-f827-4f4c-a2a6-a7030e5b0adb",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "yJRR80som9xIIRfv",
+            "name": "Unnamed credential 3"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://host.docker.internal:7474/db/neo4j/tx/commit",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{ $json.body }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          2256,
+          192
+        ],
+        "name": "Save Embedding to Neo4j",
+        "id": "53c2ae0a-ddb9-4d9f-a4d3-019a977e7c01",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "yJRR80som9xIIRfv",
+            "name": "Unnamed credential 3"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          256,
+          208
+        ],
+        "id": "1e17e833-9a4f-4427-a34e-5f4888783c64",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          912,
+          208
+        ],
+        "id": "08f6812b-9655-476d-832e-324902d7f12d",
+        "name": "Split Into Batches"
+      },
+      {
+        "parameters": {
+          "jsCode": "const results = items[0].json.results;\nif (!results || !results[0] || !results[0].data) {\n  return [];\n}\nreturn results[0].data.map(row => ({\n  json: {\n    title: row.row[0],\n    content: row.row[1]\n  }\n}));"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          704,
+          208
+        ],
+        "id": "3dd165f3-6f8d-4370-be1d-4f48c851ce84",
+        "name": "Extract Nested Data"
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = items[0];\nreturn [{\n  json: {\n    title: $('Preserve Input').item.json.title,\n    embedding: item.json.data[0].embedding\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1808,
+          192
+        ],
+        "id": "efb83424-4edc-4d31-9bcc-5e7ca1dc607c",
+        "name": "Combine Data"
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = items[0];\nconst body = {\n  statements: [{\n    statement: \"MATCH (d:Document {title: $title}) SET d.embedding = $embedding\",\n    parameters: {\n      title: item.json.title,\n      embedding: item.json.embedding\n    }\n  }]\n};\nreturn [{ json: { body: JSON.stringify(body) } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2016,
+          192
+        ],
+        "id": "2b80d0bd-ffb3-4cb2-a19d-84bebb225259",
+        "name": "Build Neo4j Query"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.openai.com/v1/embeddings",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Raw",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"text-embedding-3-small\",\n  \"input\": \"{{ $json.content }}\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [
+          1584,
+          192
+        ],
+        "name": "Generate Embedding",
+        "id": "1ad8216d-91b9-4bce-85c1-d307b31db04f",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "TEdrPFtecnuBGsVa",
+            "name": "Bearer Auth account"
+          },
+          "httpBasicAuth": {
+            "id": "yJRR80som9xIIRfv",
+            "name": "Unnamed credential 3"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = items[0];\nconst body = {\n  model: \"text-embedding-3-small\",\n  input: item.json.content\n};\nreturn [{\n  json: {\n    title: item.json.title,  // ← VIGTIGT: bevar title\n    body: JSON.stringify(body)\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1344,
+          208
+        ],
+        "id": "6fc2e7d0-9ee8-454f-a3ac-1cd0b074f7ca",
+        "name": "Build OpenAi Body"
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = items[0];\nreturn [{\n  json: {\n    title: item.json.title,\n    content: item.json.content\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          208
+        ],
+        "id": "5e80437d-ad6c-4986-86e0-92119a02839f",
+        "name": "Preserve Input"
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Get Documents from Neo4j",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Documents from Neo4j": {
+        "main": [
+          [
+            {
+              "node": "Extract Nested Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Into Batches": {
+        "main": [
+          [
+            {
+              "node": "Preserve Input",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Split Into Batches",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Nested Data": {
+        "main": [
+          [
+            {
+              "node": "Split Into Batches",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Combine Data": {
+        "main": [
+          [
+            {
+              "node": "Build Neo4j Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build Neo4j Query": {
+        "main": [
+          [
+            {
+              "node": "Save Embedding to Neo4j",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate Embedding": {
+        "main": [
+          [
+            {
+              "node": "Combine Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Build OpenAi Body": {
+        "main": [
+          [
+            {
+              "node": "Generate Embedding",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preserve Input": {
+        "main": [
+          [
+            {
+              "node": "Build OpenAi Body",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": {},
+    "versionId": "968d070d-013a-46e5-bbe5-59f99e267ce0",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-03-23T08:48:16.353Z",
+        "createdAt": "2026-03-23T08:48:16.353Z",
+        "role": "workflow:owner",
+        "workflowId": "MxnykYNQyakN9dVspHLGa",
+        "projectId": "U6s8CwDPyCKnn9l7"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
     "updatedAt": "2026-03-17T09:48:40.653Z",
     "createdAt": "2026-03-17T09:34:37.716Z",
     "id": "Xgd2flbp4fPcMlLNzwAZV",
@@ -1156,7 +1490,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-23T07:34:02.454Z",
+    "updatedAt": "2026-03-24T07:33:59.040Z",
     "createdAt": "2026-03-18T09:17:19.936Z",
     "id": "ZrOMsqzSrxGPy8ku2BM_O",
     "name": "RAG-Hybrid Search-Orchestrator",
@@ -1170,7 +1504,7 @@
               {
                 "id": "78963d64-e447-485a-b5f3-74b4abd60c32",
                 "name": "query",
-                "value": "llm",
+                "value": "hvad er ai?",
                 "type": "string"
               }
             ]
@@ -1301,7 +1635,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1232,
+          1440,
           -16
         ],
         "id": "e4089de8-6b6f-4d8b-bdc8-b1c8ad34ec0e",
@@ -1328,11 +1662,24 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1440,
+          1648,
           -16
         ],
         "id": "63fc27d2-7bf9-4bd3-b818-678aced3b6ea",
         "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "jsCode": "const weightVector = 0.7;\nconst weightGraph = 0.3;\n\nconst map = {};\n\nfor (const item of items) {\n\n  const title = item.json.title;\n\n  if (!map[title]) {\n    map[title] = {\n      title,\n      vectorScore: 0,\n      graphScore: 0\n    };\n  }\n\n  if (item.json.source === \"vector\") {\n    map[title].vectorScore = item.json.score || 1;\n  }\n\n  if (item.json.source === \"graph\") {\n    map[title].graphScore = 1;\n  }\n}\n\nconst result = Object.values(map).map(d => {\n  d.finalScore =\n    d.vectorScore * weightVector +\n    d.graphScore * weightGraph;\n  return { json: d };\n});\n\nresult.sort((a,b)=> b.json.finalScore - a.json.finalScore);\n\nreturn result.slice(0,5);"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1232,
+          -16
+        ],
+        "id": "d2305f46-9f30-4805-9640-aeba09b8a940",
+        "name": "Fusion Node"
       }
     ],
     "connections": {
@@ -1395,7 +1742,7 @@
         "main": [
           [
             {
-              "node": "Clean up",
+              "node": "Fusion Node",
               "type": "main",
               "index": 0
             }
@@ -1433,6 +1780,17 @@
             }
           ]
         ]
+      },
+      "Fusion Node": {
+        "main": [
+          [
+            {
+              "node": "Clean up",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -1442,7 +1800,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "6574c828-a657-4c54-940a-7bcbbf9919b6",
+    "versionId": "0d47863a-df72-4733-bb49-d13c93ef93d0",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
