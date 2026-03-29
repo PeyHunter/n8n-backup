@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-03-23T11:32:43.275Z",
+    "updatedAt": "2026-03-29T15:31:24.852Z",
     "createdAt": "2026-03-18T08:49:55.509Z",
     "id": "0pMZsPZDHEc5vjXMw0mKE",
     "name": "RAG-Hybrid Seach-Vector Retrieval workflow",
@@ -9,25 +9,12 @@
     "nodes": [
       {
         "parameters": {
-          "jsCode": "console.log($json);\nreturn [{json: $json}];"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          960,
-          -400
-        ],
-        "id": "748c49a5-148c-44f0-a0de-df2b48153635",
-        "name": "Code in JavaScript1"
-      },
-      {
-        "parameters": {
           "inputSource": "passthrough"
         },
         "type": "n8n-nodes-base.executeWorkflowTrigger",
         "typeVersion": 1.1,
         "position": [
-          208,
+          416,
           0
         ],
         "id": "b673f8c8-be78-4470-b057-8b0272db2bfe",
@@ -69,7 +56,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.3,
         "position": [
-          624,
+          832,
           0
         ],
         "id": "a588de38-3504-49dc-b5f8-a2a5f14c4711",
@@ -111,7 +98,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          416,
+          624,
           0
         ],
         "id": "472eeedd-c065-4045-a064-4fbe7169dca9",
@@ -235,7 +222,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "251d826d-1598-46b0-998b-5db029ee8ebe",
+    "versionId": "bc4362af-45fe-407c-bab9-2063471f70b3",
     "activeVersionId": "46197e56-3aeb-4f25-9e34-531db6941efe",
     "triggerCount": 0,
     "shared": [
@@ -950,7 +937,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-24T08:04:52.288Z",
+    "updatedAt": "2026-03-29T15:39:23.218Z",
     "createdAt": "2026-03-23T08:48:16.345Z",
     "id": "MxnykYNQyakN9dVspHLGa",
     "name": "RAG-Hybrid Search - Embed",
@@ -966,7 +953,7 @@
           "sendBody": true,
           "contentType": "raw",
           "rawContentType": "application/json",
-          "body": "={\"statements\":[{\"statement\":\"MATCH (d:Document) WHERE d.embedding IS NULL RETURN d.title AS title, d.content AS content\",\"parameters\":{}}]}",
+          "body": "={\"statements\":[{\"statement\":\"MATCH (d:Document) RETURN d.title LIMIT 5\",\"parameters\":{}}]}",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
@@ -1260,7 +1247,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "2b04695c-6d89-469a-b306-b77faec05fff",
+    "versionId": "f30503e7-8e74-4918-b9c4-060c97312042",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -1495,7 +1482,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-03-29T15:29:12.606Z",
+    "updatedAt": "2026-03-29T15:43:38.292Z",
     "createdAt": "2026-03-18T09:17:19.936Z",
     "id": "ZrOMsqzSrxGPy8ku2BM_O",
     "name": "RAG-Hybrid Search-Orchestrator",
@@ -1509,7 +1496,7 @@
               {
                 "id": "78963d64-e447-485a-b5f3-74b4abd60c32",
                 "name": "query",
-                "value": "ai agenter",
+                "value": "Hvad er llm?",
                 "type": "string"
               }
             ]
@@ -1829,7 +1816,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "a0e72d09-be94-4584-95c7-53f95738ca7f",
+    "versionId": "bbde43bc-4574-4ae4-9ad3-ec2ac84339c9",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
