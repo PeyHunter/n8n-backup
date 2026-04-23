@@ -872,7 +872,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-04-23T12:26:10.221Z",
+    "updatedAt": "2026-04-23T12:54:06.815Z",
     "createdAt": "2026-04-23T12:22:47.525Z",
     "id": "Kl7T-OJ-9GKIR8ZRSJ-7y",
     "name": "MCP",
@@ -880,24 +880,15 @@
     "isArchived": false,
     "nodes": [
       {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
-        "typeVersion": 1,
-        "position": [
-          0,
-          0
-        ],
-        "id": "25d2deb5-603a-4c5c-9659-8ad26918e4ae",
-        "name": "When clicking ‘Execute workflow’"
-      },
-      {
         "parameters": {
-          "options": {}
+          "options": {
+            "systemMessage": "You are an AI agent.\nUse connected tools when needed.\nUse memory to maintain context.\nKeep answers short and clear."
+          }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 3.1,
         "position": [
-          304,
+          672,
           0
         ],
         "id": "a7d9d4af-90fc-4426-9fb8-9c88114bdab7",
@@ -916,7 +907,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
         "typeVersion": 1.3,
         "position": [
-          304,
+          672,
           192
         ],
         "id": "37cd2d15-daa6-4b2c-b28f-87e059fabdd1",
@@ -927,10 +918,46 @@
             "name": "OpenAi account"
           }
         }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          352,
+          0
+        ],
+        "id": "3c5f8d83-e78c-420e-8e44-2db11c9a88cc",
+        "name": "When chat message received",
+        "webhookId": "6d5d61cc-a255-4621-88fb-a573e23efd53"
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          768,
+          384
+        ],
+        "id": "96bfa081-4521-4476-b7f5-026d4c0d92bd",
+        "name": "Simple Memory"
       }
     ],
     "connections": {
-      "When clicking ‘Execute workflow’": {
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When chat message received": {
         "main": [
           [
             {
@@ -941,12 +968,12 @@
           ]
         ]
       },
-      "OpenAI Chat Model": {
-        "ai_languageModel": [
+      "Simple Memory": {
+        "ai_memory": [
           [
             {
               "node": "AI Agent",
-              "type": "ai_languageModel",
+              "type": "ai_memory",
               "index": 0
             }
           ]
@@ -962,7 +989,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "7c53dc2c-7c1a-4ade-ac7c-c53cab6676be",
+    "versionId": "969c055f-9a03-44f0-a9b8-0e4478c6fe00",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
