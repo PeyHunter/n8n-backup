@@ -872,6 +872,112 @@
     "tags": []
   },
   {
+    "updatedAt": "2026-04-23T12:26:10.221Z",
+    "createdAt": "2026-04-23T12:22:47.525Z",
+    "id": "Kl7T-OJ-9GKIR8ZRSJ-7y",
+    "name": "MCP",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "25d2deb5-603a-4c5c-9659-8ad26918e4ae",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          304,
+          0
+        ],
+        "id": "a7d9d4af-90fc-4426-9fb8-9c88114bdab7",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          304,
+          192
+        ],
+        "id": "37cd2d15-daa6-4b2c-b28f-87e059fabdd1",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "ixmI9i4jIDxysSAl",
+            "name": "OpenAi account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "7c53dc2c-7c1a-4ade-ac7c-c53cab6676be",
+    "activeVersionId": null,
+    "triggerCount": 0,
+    "shared": [
+      {
+        "updatedAt": "2026-04-23T12:22:47.532Z",
+        "createdAt": "2026-04-23T12:22:47.532Z",
+        "role": "workflow:owner",
+        "workflowId": "Kl7T-OJ-9GKIR8ZRSJ-7y",
+        "projectId": "U6s8CwDPyCKnn9l7"
+      }
+    ],
+    "activeVersion": null,
+    "tags": []
+  },
+  {
     "updatedAt": "2026-03-18T09:40:48.000Z",
     "createdAt": "2026-03-18T09:23:40.101Z",
     "id": "L5rkSYwuhV8UNi3V",
