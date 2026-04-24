@@ -872,7 +872,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-04-23T12:54:06.815Z",
+    "updatedAt": "2026-04-24T13:57:35.734Z",
     "createdAt": "2026-04-23T12:22:47.525Z",
     "id": "Kl7T-OJ-9GKIR8ZRSJ-7y",
     "name": "MCP",
@@ -943,6 +943,33 @@
         ],
         "id": "96bfa081-4521-4476-b7f5-026d4c0d92bd",
         "name": "Simple Memory"
+      },
+      {
+        "parameters": {
+          "endpointUrl": "http://host.docker.internal:3000/mcp",
+          "tool": {
+            "__rl": true,
+            "mode": "list",
+            "value": ""
+          },
+          "parameters": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.mcpClient",
+        "typeVersion": 1,
+        "position": [
+          1296,
+          16
+        ],
+        "id": "d9d5cc86-cfea-46b2-bd12-7acb4989e49b",
+        "name": "MCP Client"
       }
     ],
     "connections": {
@@ -978,6 +1005,17 @@
             }
           ]
         ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "MCP Client",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "settings": {
@@ -989,7 +1027,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "969c055f-9a03-44f0-a9b8-0e4478c6fe00",
+    "versionId": "29d00b8d-9563-4b03-b509-62600cb8cab1",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
