@@ -872,7 +872,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-04-25T06:26:50.671Z",
+    "updatedAt": "2026-04-25T06:33:55.628Z",
     "createdAt": "2026-04-23T12:22:47.525Z",
     "id": "Kl7T-OJ-9GKIR8ZRSJ-7y",
     "name": "MCP",
@@ -947,33 +947,7 @@
       {
         "parameters": {
           "endpointUrl": "http://host.docker.internal:3000/mcp",
-          "tool": {
-            "__rl": true,
-            "mode": "list",
-            "value": ""
-          },
-          "parameters": {
-            "mappingMode": "defineBelow",
-            "value": {},
-            "matchingColumns": [],
-            "schema": [],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.mcpClient",
-        "typeVersion": 1,
-        "position": [
-          1440,
-          96
-        ],
-        "id": "d9d5cc86-cfea-46b2-bd12-7acb4989e49b",
-        "name": "MCP Client"
-      },
-      {
-        "parameters": {
-          "endpointUrl": "http://host.docker.internal:3000/mcp",
+          "authentication": "bearerAuth",
           "options": {}
         },
         "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
@@ -983,7 +957,13 @@
           384
         ],
         "id": "03e6d567-cee9-4e64-a17c-31cff1369bd7",
-        "name": "MCP Client1"
+        "name": "MCP Client1",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "dw1hocerHYDdEWQK",
+            "name": "Bearer Auth account 3"
+          }
+        }
       }
     ],
     "connections": {
@@ -1046,7 +1026,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "523f5162-fcce-45a9-9879-50005700005d",
+    "versionId": "7582ce0b-5d16-4ef6-bb1e-6c9518c18598",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
