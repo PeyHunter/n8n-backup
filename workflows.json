@@ -900,12 +900,12 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-04-25T10:48:46.800Z",
+    "updatedAt": "2026-04-25T11:04:48.000Z",
     "createdAt": "2026-04-25T10:48:18.193Z",
     "id": "4U0QSMT6VKwrRzL6Vp9M2",
     "name": "MCP - tiny workflow",
     "active": false,
-    "isArchived": false,
+    "isArchived": true,
     "nodes": [
       {
         "parameters": {},
@@ -962,7 +962,7 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "83050fe0-8011-4af9-ac05-b25a9abd39a0",
+    "versionId": "920f85ea-93c4-4331-88eb-037e222a3123",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -1106,7 +1106,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-04-25T10:59:47.205Z",
+    "updatedAt": "2026-04-25T11:03:55.082Z",
     "createdAt": "2026-04-25T10:38:20.363Z",
     "id": "F3Zts6ySaE84jgKDTxZSI",
     "name": "MCP Server",
@@ -1152,11 +1152,11 @@
           208
         ],
         "id": "20bee54a-866e-4572-b801-6f6e0e21e5c6",
-        "name": "Call n8n Workflow Tool"
+        "name": "Call 'mcp - tiny workflow - use this'"
       }
     ],
     "connections": {
-      "Call n8n Workflow Tool": {
+      "Call 'mcp - tiny workflow - use this'": {
         "ai_tool": [
           [
             {
@@ -1177,7 +1177,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "33fa055e-f6c4-4262-ad3e-f4971ab60525",
+    "versionId": "0e2d73b3-8a74-4b50-8ddf-ba3159b8a001",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
@@ -1754,7 +1754,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-04-25T10:52:02.096Z",
+    "updatedAt": "2026-04-25T11:03:02.654Z",
     "createdAt": "2026-04-25T10:49:07.179Z",
     "id": "TPZUKFAS2AgavpH8",
     "name": "mcp - tiny workflow - use this",
@@ -1766,23 +1766,32 @@
         "type": "n8n-nodes-base.executeWorkflowTrigger",
         "typeVersion": 1,
         "position": [
-          928,
-          624
+          1296,
+          832
         ],
-        "id": "4943a937-7de7-44c7-8199-83c9d7a13874",
+        "id": "ab05b2c7-87f7-4571-a36e-eb11daae1aea",
         "name": "Execute Workflow Trigger"
       },
       {
         "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "name": "message",
+                "value": "Hello from Peyton's own MCP server 🚀",
+                "type": "string"
+              }
+            ]
+          },
           "options": {}
         },
         "type": "n8n-nodes-base.set",
-        "typeVersion": 2,
+        "typeVersion": 3.4,
         "position": [
-          1136,
-          624
+          1504,
+          832
         ],
-        "id": "e147967a-0c28-4406-bb78-bf1cf44185ed",
+        "id": "9cb77593-af23-4230-9872-7f95753e70f4",
         "name": "Set Response"
       }
     ],
@@ -1806,8 +1815,8 @@
     "staticData": null,
     "meta": null,
     "pinData": {},
-    "versionId": "476aac40-839c-4b24-815c-c4c98176838f",
-    "activeVersionId": "476aac40-839c-4b24-815c-c4c98176838f",
+    "versionId": "40e4c71b-0544-4b8c-9ce1-02faf9cf7e03",
+    "activeVersionId": "40e4c71b-0544-4b8c-9ce1-02faf9cf7e03",
     "triggerCount": 0,
     "shared": [
       {
@@ -1819,9 +1828,9 @@
       }
     ],
     "activeVersion": {
-      "updatedAt": "2026-04-25T10:52:49.000Z",
-      "createdAt": "2026-04-25T10:52:02.097Z",
-      "versionId": "476aac40-839c-4b24-815c-c4c98176838f",
+      "updatedAt": "2026-04-25T11:03:12.000Z",
+      "createdAt": "2026-04-25T11:03:02.655Z",
+      "versionId": "40e4c71b-0544-4b8c-9ce1-02faf9cf7e03",
       "workflowId": "TPZUKFAS2AgavpH8",
       "nodes": [
         {
@@ -1829,23 +1838,32 @@
           "type": "n8n-nodes-base.executeWorkflowTrigger",
           "typeVersion": 1,
           "position": [
-            928,
-            624
+            1296,
+            832
           ],
-          "id": "4943a937-7de7-44c7-8199-83c9d7a13874",
+          "id": "ab05b2c7-87f7-4571-a36e-eb11daae1aea",
           "name": "Execute Workflow Trigger"
         },
         {
           "parameters": {
+            "assignments": {
+              "assignments": [
+                {
+                  "name": "message",
+                  "value": "Hello from Peyton's own MCP server 🚀",
+                  "type": "string"
+                }
+              ]
+            },
             "options": {}
           },
           "type": "n8n-nodes-base.set",
-          "typeVersion": 2,
+          "typeVersion": 3.4,
           "position": [
-            1136,
-            624
+            1504,
+            832
           ],
-          "id": "e147967a-0c28-4406-bb78-bf1cf44185ed",
+          "id": "9cb77593-af23-4230-9872-7f95753e70f4",
           "name": "Set Response"
         }
       ],
@@ -1863,7 +1881,7 @@
         }
       },
       "authors": "Peyton Hunter",
-      "name": "Version 476aac40",
+      "name": "Version 40e4c71b",
       "description": "",
       "autosaved": true
     },
