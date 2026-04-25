@@ -872,7 +872,7 @@
     "tags": []
   },
   {
-    "updatedAt": "2026-04-25T06:33:55.628Z",
+    "updatedAt": "2026-04-25T10:29:39.466Z",
     "createdAt": "2026-04-23T12:22:47.525Z",
     "id": "Kl7T-OJ-9GKIR8ZRSJ-7y",
     "name": "MCP",
@@ -960,8 +960,8 @@
         "name": "MCP Client1",
         "credentials": {
           "httpBearerAuth": {
-            "id": "dw1hocerHYDdEWQK",
-            "name": "Bearer Auth account 3"
+            "id": "9PkD4JWcBTH95ew6",
+            "name": "Bearer Auth account 4"
           }
         }
       }
@@ -1026,7 +1026,7 @@
       "templateCredsSetupCompleted": true
     },
     "pinData": {},
-    "versionId": "7582ce0b-5d16-4ef6-bb1e-6c9518c18598",
+    "versionId": "a4f462a8-d946-4667-9258-288446a309d7",
     "activeVersionId": null,
     "triggerCount": 0,
     "shared": [
